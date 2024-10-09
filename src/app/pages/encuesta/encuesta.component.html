@@ -1,0 +1,34 @@
+<nz-layout class="survey-page-layout">
+    <!-- Barra lateral izquierda para las encuestas -->
+    <nz-sider [nzWidth]="250" class="survey-sidebar">
+      <h3>Encuestas</h3>
+      <ul class="survey-list">
+        <li *ngFor="let encuesta of encuestas" (click)="seleccionarEncuesta(encuesta)">
+          {{ encuesta.nombre }}
+        </li>
+      </ul>
+    </nz-sider>
+  
+    <!-- Contenido principal -->
+    <nz-content class="survey-content">
+      <nz-card *ngIf="encuestaSeleccionada" nzTitle="{{ encuestaSeleccionada.nombre }}">
+        <p>{{ encuestaSeleccionada.descripcion }}</p>
+        <form nz-form [formGroup]="formularioEncuesta" (ngSubmit)="enviarEncuesta()">
+          <div *ngFor="let pregunta of preguntas; let i = index" class="form-item">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="24">{{ pregunta.texto }}</nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <nz-radio-group [formControlName]="'pregunta' + i">
+                  <label nz-radio *ngFor="let opcion of opciones" [nzValue]="opcion.valor">
+                    {{ opcion.texto }}
+                  </label>
+                </nz-radio-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <button nz-button nzType="primary" [disabled]="!formularioEncuesta.valid">Enviar</button>
+        </form>
+      </nz-card>
+    </nz-content>
+  </nz-layout>
+  

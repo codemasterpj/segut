@@ -1,0 +1,41 @@
+.results-page-layout {
+    height: 100vh;
+    display: flex;
+    background-color: #f0f2f5;
+  }
+  
+  .results-sidebar {
+    background-color: #001529;
+    color: #ffffff;
+    padding: 20px;
+  }
+  
+  .results-sidebar h3 {
+    color: #40a9ff;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-section {
+    margin-top: 20px;
+  }
+  
+  .results-content {
+    padding: 40px;
+  }
+  
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .nz-input-group {
+    margin-bottom: 20px;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  

@@ -1,0 +1,21 @@
+.login-form {
+    max-width: 300px;
+    margin: 0 auto; /* Centra el formulario horizontalmente */
+    padding: 40px 20px;
+    
+    border-radius: 10px;
+    text-align: center; /* Centra el contenido de texto */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-form-margin {
+    margin-bottom: 16px;
+  }
+
+  .login-form-forgot {
+    float: right;
+  }
+
+  .login-form-button {
+    width: 100%;
+  }

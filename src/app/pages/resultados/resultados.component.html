@@ -1,0 +1,64 @@
+<nz-layout class="results-page-layout">
+    <!-- Barra lateral izquierda para filtros y opciones -->
+    <nz-sider [nzWidth]="250" class="results-sidebar">
+      <h3>Resultados de Encuestas</h3>
+  
+      <!-- Campo de búsqueda -->
+<!--       <nz-input-group nzPrefixIcon="search">
+        <input type="text" nz-input placeholder="Buscar encuesta" [(ngModel)]="busqueda">
+      </nz-input-group> -->
+  
+      <!-- Selección de encuesta -->
+      <div class="filter-section">
+        <nz-select
+          [(ngModel)]="encuestaSeleccionada"
+          (ngModelChange)="cargarResultados()"
+          nzShowSearch
+          nzPlaceHolder="Selecciona una encuesta"
+          style="width: 100%;">
+          <nz-option *ngFor="let encuesta of encuestas$ | async" [nzLabel]="encuesta.nombre" [nzValue]="encuesta"></nz-option>
+        </nz-select>
+  
+        <nz-divider></nz-divider>
+  
+        <!-- Botón para generar PDF -->
+        <button nz-button nzType="primary" (click)="imprimirResultados()">Imprimir PDF</button>
+      </div>
+    </nz-sider>
+  
+    <!-- Contenido principal -->
+    <nz-content class="results-content">
+      <nz-card *ngIf="encuestaSeleccionada" nzTitle="{{ encuestaSeleccionada.nombre }}">
+        <p>{{ encuestaSeleccionada.descripcion }}</p>
+  
+        <!-- Contenedor de gráficos -->
+        <div class="chart-container">
+          <!-- Gráfico de pastel -->
+          <ngx-charts-pie-chart
+            *ngIf="tipoGrafico === 'pastel'"
+            [results]="datosGrafico"
+            [view]="[400, 400]"
+            
+            [legend]="true"
+            [doughnut]="true">
+          </ngx-charts-pie-chart>
+  
+          <!-- Gráfico de barras -->
+          <ngx-charts-bar-vertical
+            *ngIf="tipoGrafico === 'barra'"
+            [results]="datosGrafico"
+            [view]="[700, 400]"
+            
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxisLabel]="'Preguntas'"
+            [yAxisLabel]="'Puntaje'">
+          </ngx-charts-bar-vertical>
+        </div>
+      </nz-card>
+    </nz-content>
+  </nz-layout>
+  

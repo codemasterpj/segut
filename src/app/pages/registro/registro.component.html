@@ -1,0 +1,110 @@
+<form nz-form [formGroup]="form!" >
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Correo</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un correo valido">
+        <input nz-input formControlName="email" id="email" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Contraseña</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese su contraseña">
+        <input
+          nz-input
+          type="password"
+          id="password"
+          formControlName="password"
+          (ngModelChange)="updateConfirmValidator()"
+          
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="confirmPassword" nzRequired>Confirmar Contraseña</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+        <input nz-input type="password" formControlName="confirmPassword" id="confirmPassword" />
+        <ng-template #errorTpl let-control>
+          @if (control.errors?.['required']) {
+            Confirma tu contraseña
+          }
+          @if (control.errors?.['confirm']) {
+            Las dos contraseñas son diferentes!
+        }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Nombre -->
+<nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Nombre</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese su nombre">
+      <input nz-input formControlName="nombre" id="nombre" />
+    </nz-form-control>
+  </nz-form-item>
+  
+  <!-- Apellido -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="apellido">Apellido</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese su apellido">
+      <input nz-input formControlName="apellido" id="apellido" />
+    </nz-form-control>
+  </nz-form-item>
+  
+<!-- Fecha de Nacimiento -->
+<nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="fechaNacimiento">Fecha de Nacimiento</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Debe ser mayor de 18 años">
+      <nz-date-picker formControlName="fechaNacimiento" id="fechaNacimiento" [nzDisabledDate]="deshabilitarMenores" />
+    </nz-form-control>
+  </nz-form-item>
+  
+  <!-- Teléfono -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="telefono">Teléfono</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un número de teléfono válido">
+      <input nz-input formControlName="telefono" id="telefono" />
+    </nz-form-control>
+  </nz-form-item>
+  
+<!-- Áreas -->
+<nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="areas">Áreas</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione al menos un área">
+    <div formArrayName="areas">
+      <label *ngFor="let area of opcionesAreas; let i = index" nz-checkbox>      
+        {{ area.label }}
+      </label>
+    </div>
+  </nz-form-control>
+</nz-form-item>
+
+
+  
+  <!-- Nombre de la Empresa -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombreEmpresa">Nombre de la Empresa</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese el nombre de la empresa">
+      <input nz-input formControlName="nombreEmpresa" id="nombreEmpresa" />
+    </nz-form-control>
+  </nz-form-item>
+  
+  <!-- Categoría de la Empresa -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="categoriaEmpresa">Categoría de la Empresa</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione una categoría">
+      <nz-select formControlName="categoriaEmpresa" id="categoriaEmpresa" nzPlaceHolder="Seleccione categoría">
+        <nz-option *ngFor="let categoria of listaCategorias" [nzValue]="categoria" [nzLabel]="categoria"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+   
+  
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" type="button" (click)="onClickRegister()">Registrarme</button>
+        </nz-form-control>
+    </nz-form-item>
+
+
+  </form>

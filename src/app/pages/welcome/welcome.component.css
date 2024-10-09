@@ -1,0 +1,71 @@
+.home-container {
+    text-align: center; /* Centra el contenido */
+    padding: 20px;
+  }
+  
+  .home-container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .home-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  /* Ajuste del tamaño del video */
+  .home-container video {
+    width: 60%; /* Ajusta el video a un 60% del ancho del contenedor */
+    max-width: 600px; /* Tamaño máximo para pantallas grandes */
+    height: auto; /* Mantiene la proporción del video */
+    border: 2px solid #001529; /* Añade un borde para darle un toque visual */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra ligera */
+    margin-top: 20px;
+  }
+
+  /* Botón para realizar encuestas */
+.button-container {
+  margin-top: 30px;
+}
+
+.survey-button {
+  display: inline-block;
+  padding: 12px 30px;
+  font-size: 18px;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 50px; /* Botón con bordes redondeados */
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+  margin-bottom: 20px;
+}
+
+.survey-button:hover {
+  background-color: #0056b3; /* Cambia el color en hover */
+  transform: translateY(-2px); /* Efecto de desplazamiento */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* Sombra más fuerte al hacer hover */
+}
+
+  
+  /* Responsividad: Ajusta el video para pantallas más pequeñas */
+  @media (max-width: 768px) {
+    .home-container video {
+      width: 90%; /* El video ocupa el 90% en pantallas pequeñas */
+    }
+  
+    .home-container h1 {
+      font-size: 20px;
+    }
+  
+    .home-container p {
+      font-size: 14px;
+    }
+
+    
+  }
+  

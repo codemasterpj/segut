@@ -1,0 +1,81 @@
+/* Layout principal */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa la altura completa de la ventana */
+}
+
+/* Contenedor completo del layout */
+nz-layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+  background-color: #001529;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.navbar .logo img {
+  height: 40px;
+}
+
+/* Menú */
+ul[nz-menu] {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+ul[nz-menu] li {
+  font-size: 16px;
+  padding: 0 16px;
+}
+
+ul[nz-menu] li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+ul[nz-menu] li a:hover {
+  color: #1890ff;
+}
+
+/* Contenido principal */
+nz-content {
+  padding: 24px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 80px); /* Altura mínima del tamaño de la pantalla menos el navbar */
+  display: flex;
+  flex-direction: column;
+}
+
+.router-outlet {
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  flex-grow: 1; /* Asegura que el contenido principal también se expanda */
+}
+
+/* Footer */
+app-footer {
+  background-color: #001529;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+}
