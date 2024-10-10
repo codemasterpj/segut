@@ -4,10 +4,15 @@
       <div nz-col [nzSpan]="6" class="footer-column">
         <img src="assets/images/logo.png" alt="Logo de la Empresa" class="footer-logo">
         <div class="social-icons">
-          <a href="#" aria-label="Instagram"><i nz-icon nzType="instagram" nzTheme="outline"></i></a>
-          <a href="#" aria-label="YouTube"><i nz-icon nzType="youtube" nzTheme="outline"></i></a>
-          <a href="#" aria-label="WhatsApp"><i nz-icon nzType="whats-app" nzTheme="outline"></i></a>
-          <a href="#" aria-label="LinkedIn"><i nz-icon nzType="linkedin" nzTheme="outline"></i></a>
+
+          <div class="icons-list">
+            <a href="https://otra-pagina.com" target="_blank" aria-label="Otra página">
+              <span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+            </a>
+            <span nz-icon [nzIconfont]="'icon-facebook'"></span>
+            <span nz-icon [nzIconfont]="'icon-twitter'"></span>           
+          </div>
+
         </div>
       </div>
   

@@ -25,14 +25,15 @@
       <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
         <input nz-input type="password" formControlName="confirmPassword" id="confirmPassword" />
         <ng-template #errorTpl let-control>
-          @if (control.errors?.['required']) {
+          <ng-container *ngIf="control.hasError('required')">
             Confirma tu contraseña
-          }
-          @if (control.errors?.['confirm']) {
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
             Las dos contraseñas son diferentes!
-        }
+          </ng-container>
         </ng-template>
       </nz-form-control>
+      
     </nz-form-item>
 
     <!-- Nombre -->
@@ -51,13 +52,16 @@
     </nz-form-control>
   </nz-form-item>
   
-<!-- Fecha de Nacimiento -->
+<!-- Edad -->
 <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="fechaNacimiento">Fecha de Nacimiento</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Debe ser mayor de 18 años">
-      <nz-date-picker formControlName="fechaNacimiento" id="fechaNacimiento" [nzDisabledDate]="deshabilitarMenores" />
-    </nz-form-control>
-  </nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="edad">Edad</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Debe ser mayor de 18 años">
+    <nz-select formControlName="edad" nzPlaceHolder="Seleccione su edad">
+      <nz-option *ngFor="let age of edades" [nzValue]="age" [nzLabel]="age"></nz-option>
+    </nz-select>
+  </nz-form-control>
+</nz-form-item>
+
   
   <!-- Teléfono -->
   <nz-form-item>
@@ -69,15 +73,18 @@
   
 <!-- Áreas -->
 <nz-form-item>
-  <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="areas">Áreas</nz-form-label>
-  <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione al menos un área">
-    <div formArrayName="areas">
-      <label *ngFor="let area of opcionesAreas; let i = index" nz-checkbox>      
-        {{ area.label }}
-      </label>
-    </div>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="areas">Tipo de Encuesta</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione al menos un tipo de encuesta">
+    <nz-select
+      formControlName="areas"
+      nzMode="multiple"
+      nzPlaceHolder="Seleccione los tipos de encuesta"
+    >
+      <nz-option *ngFor="let area of opcionesAreas" [nzValue]="area.value" [nzLabel]="area.label"></nz-option>
+    </nz-select>
   </nz-form-control>
 </nz-form-item>
+
 
 
   
@@ -102,7 +109,7 @@
   
     <nz-form-item nz-row class="register-area">
       <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button nz-button nzType="primary" type="button" (click)="onClickRegister()">Registrarme</button>
+        <button nz-button nzType="primary" type="button" (click)="onClickRegister()" [disabled]="form.invalid">Registrarme</button>
         </nz-form-control>
     </nz-form-item>
 

@@ -1,4 +1,5 @@
 <form nz-form [formGroup]="form" class="login-form" >
+
   <nz-form-item>
     <nz-form-control nzErrorTip="Ingrese un correo!">
       <nz-input-group nzPrefixIcon="user">
@@ -6,6 +7,7 @@
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
+
   <nz-form-item>
     <nz-form-control nzErrorTip="Ingrese la contraseña!">
       <nz-input-group nzPrefixIcon="lock">
@@ -13,17 +15,22 @@
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
+
   <div nz-row class="login-form-margin">
     <div nz-col [nzSpan]="12">
       <label nz-checkbox formControlName="remember">
         <span>Recordar Inicio de Sesión</span>
       </label>
     </div>
+
     <div nz-col [nzSpan]="12">
       <a class="login-form-forgot">Olvidaste tu contraseña?</a>
     </div>
+    
   </div>
-  <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Iniciar Sesión</button>
+
+  <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" type="button"
+  (click)="onClickLogin()">Iniciar Sesión</button>
   O
   <a routerLink="/registro">Registrarse ahora!</a>
 </form>

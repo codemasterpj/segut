@@ -21,7 +21,7 @@ export interface Register {
   email: string;
   nombre: string;
   apellido: string;
-  fechaNacimiento: Date;
+  edad: Date;
   telefono: string;
   areas: string[];
   nombreEmpresa: string;
@@ -67,7 +67,7 @@ export class RegistroService {
     return getDocs(q);
   }
 
-  async createRegister(loginInfo: LoginInfo, {email, nombre, apellido, fechaNacimiento, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
+  async createRegister(loginInfo: LoginInfo, {email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
     let userCredential : UserCredential = await this.usersService.register(loginInfo)
       .then((response) => {
         return response;
@@ -77,14 +77,14 @@ export class RegistroService {
         return error;
       });
     const uid = userCredential.user.uid;
-    this.currentRegister = {uid, email, nombre, apellido, fechaNacimiento, telefono, areas, nombreEmpresa, categoriaEmpresa, role};
+    this.currentRegister = {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role};
     const registersRef = collection(this.firestore, 'registers');
-    return addDoc(registersRef, {uid, email, nombre, apellido, fechaNacimiento, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
+    return addDoc(registersRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
   }
 
-  updateRegister({uid, email, nombre, apellido, fechaNacimiento, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
+  updateRegister({uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
     const docRef = doc(this.firestore, `registers/${uid}`);
-    return updateDoc(docRef, {uid, email, nombre, apellido, fechaNacimiento, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
+    return updateDoc(docRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
   }
  
   async deleteRegister(register: Register) : Promise<any> {
