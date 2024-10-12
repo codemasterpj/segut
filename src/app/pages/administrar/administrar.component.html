@@ -1,1 +1,42 @@
-<p>administrar works!</p>
+<div>
+    <h2>Administrar Encuestas</h2>
+    <!-- Botón para agregar nueva encuesta -->
+    <button nz-button nzType="primary" (click)="mostrarModalCrear()">Añadir Nueva Encuesta</button>
+  
+    <!-- Listado de encuestas existentes -->
+    <ul class="survey-list">
+      <li *ngFor="let encuesta of encuestas">
+        <nz-card nzTitle="{{ encuesta.label }}" nzBordered [nzExtra]="extraTemplate">
+          <p>{{ encuesta.descripcion }}</p>
+        </nz-card>
+  
+        <!-- Botones de acciones -->
+        <ng-template #extraTemplate>
+          <button nz-button nzType="default" nzSize="small" (click)="mostrarModalEditar(encuesta)">Editar</button>
+          <button nz-button nzType="default" nzDanger (click)="eliminarEncuesta(encuesta.id)">Eliminar</button>
+        </ng-template>
+      </li>
+    </ul>
+  
+    <!-- Modal para Crear y Editar Encuesta -->
+    <nz-modal [(nzVisible)]="isModalVisible" nzTitle="Encuesta" (nzOnCancel)="cancelarModal()" (nzOnOk)="confirmarModal()">
+      <form nz-form [formGroup]="formularioEncuesta">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="label">Título</nz-form-label>
+          <nz-form-control [nzSpan]="18">
+            <input nz-input formControlName="label" id="label" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="descripcion">Descripción</nz-form-label>
+          <nz-form-control [nzSpan]="18">
+            <textarea nz-input formControlName="descripcion" id="descripcion"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+  
+        <!-- Aquí puedes añadir más campos para preguntas, opciones, etc. -->
+      </form>
+    </nz-modal>
+  </div>
+  

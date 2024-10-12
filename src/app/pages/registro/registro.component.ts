@@ -96,8 +96,9 @@ export class RegistroComponent {
       this.message.success('¡Registro exitoso!'); // Muestra el mensaje de éxito
       this.form.reset();
     })
-    .catch((error)=>{console.log('Error al registrar',error)});
+    .catch((error)=>{console.log('Error al registrar',error)
     this.message.error('Error al realizar el registro, correo ya registrado.');
+  });
    }
 
    updateConfirmValidator(): void {

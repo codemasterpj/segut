@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
 import { icons } from './icons-provider';
@@ -29,17 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
 
     // Configuración de Firebase
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: "web-segut",
-        appId: "1:955600859150:web:5e27be9c6f57e77a02cc5f",
-        storageBucket: "web-segut.appspot.com",
-        apiKey: "AIzaSyCZlcqZnXy-RezezHCyPDIwbi6Qck_GCH0",
-        authDomain: "web-segut.firebaseapp.com",
-        messagingSenderId: "955600859150",
-        measurementId: "G-Z8KLCZGB58",
-      })
-    ),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     provideFirestore(() => getFirestore()),
@@ -47,6 +38,10 @@ export const appConfig: ApplicationConfig = {
 
     // Servicios adicionales de seguimiento
     ScreenTrackingService,
-    UserTrackingService, provideFirebaseApp(() => initializeApp({"projectId":"web-segut","appId":"1:955600859150:web:5e27be9c6f57e77a02cc5f","storageBucket":"web-segut.appspot.com","apiKey":"AIzaSyCZlcqZnXy-RezezHCyPDIwbi6Qck_GCH0","authDomain":"web-segut.firebaseapp.com","messagingSenderId":"955600859150","measurementId":"G-Z8KLCZGB58"})), provideAuth(() => getAuth()), provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService, provideFirestore(() => getFirestore()), provideStorage(() => getStorage()),
+    UserTrackingService,     provideFirebaseApp(() => initializeApp(environment.firebaseConfig))    ,
+    provideAuth(() => getAuth()),
+    provideAnalytics(() => getAnalytics()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
   ],
 };
