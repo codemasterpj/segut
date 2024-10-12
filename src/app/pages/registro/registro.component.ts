@@ -10,6 +10,8 @@ import { RegistroService } from '../../services/registro/registro.service';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -47,7 +49,7 @@ export class RegistroComponent {
 
   form: FormGroup;
 
-  constructor( private formBuilder: FormBuilder, private registerService: RegistroService,  private message: NzMessageService ) {
+  constructor( private formBuilder: FormBuilder, private registerService: RegistroService,  private message: NzMessageService, private router: Router ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -95,6 +97,11 @@ export class RegistroComponent {
       console.log('Registro exitoso',response);
       this.message.success('¡Registro exitoso!'); // Muestra el mensaje de éxito
       this.form.reset();
+      
+      // Retrasa la redirección por 2 segundos
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1500);
     })
     .catch((error)=>{console.log('Error al registrar',error)
     this.message.error('Error al realizar el registro, correo ya registrado.');
