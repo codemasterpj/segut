@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { EncuestasService } from '../../services/encuestas/encuestas.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -9,79 +9,157 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzListModule } from 'ng-zorro-antd/list';
-import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
 
+import { CommonModule } from '@angular/common';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-administrar',
   standalone: true,
-  imports: [  CommonModule, 
+  imports: [  
+    CommonModule, 
     FormsModule,
-    ReactiveFormsModule,    NzButtonModule,
+    ReactiveFormsModule,
+    NzButtonModule,
     NzCardModule,
     NzFormModule,
     NzInputModule,
     NzLayoutModule,
     NzModalModule,
     NzRadioModule,
-    NzListModule],
+    NzListModule,
+    NzIconModule  
+  ],
   templateUrl: './administrar.component.html',
-  styleUrl: './administrar.component.css'
+  styleUrls: ['./administrar.component.css']
 })
 export class AdministrarComponent {
+  form: FormGroup;
+  encuestas: Encuesta[] = [];
+  isEditMode = false;
+  encuestaSeleccionadaId: string | null = null;
 
-  encuestas: any[] = [];
-  isModalVisible = false;
-  formularioEncuesta: FormGroup;
-  encuestaEditando: any = null;
-
-  constructor(private encuestasService: EncuestasService, private fb: FormBuilder) { 
-    this.formularioEncuesta = this.fb.group ({
-      label: [''],
-      descripcion: [''],
-      //añadir mas campos
+  constructor(
+    private fb: FormBuilder,
+    private encuestasService: EncuestasService,
+    private message: NzMessageService
+  ) {
+    this.form = this.fb.group({
+      titulo: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      preguntas: this.fb.array([])
     });
-  }ngOnInit(): void {
-    this.encuestasService.obtenerEncuestas().subscribe(data => {
-      this.encuestas = data;
+    this.cargarEncuestas();
+  }
+
+  get preguntas(): FormArray {
+    return this.form.get('preguntas') as FormArray;
+  }
+
+  nuevaPregunta(): FormGroup {
+    return this.fb.group({
+      texto: ['', Validators.required]
     });
   }
 
-  mostrarModalCrear() {
-    this.isModalVisible = true;
-    this.encuestaEditando = null;
-    this.formularioEncuesta.reset();
+  agregarPregunta(): void {
+    this.preguntas.push(this.nuevaPregunta());
   }
 
-  mostrarModalEditar(encuesta: any) {
-    this.isModalVisible = true;
-    this.encuestaEditando = encuesta;
-    this.formularioEncuesta.patchValue({
-      label: encuesta.label,
+  eliminarPregunta(index: number): void {
+    this.preguntas.removeAt(index);
+  }
+
+  crearEncuesta(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const encuesta: Encuesta = this.form.value;
+    this.encuestasService.crearEncuesta(encuesta)
+      .then(() => {
+        this.message.success('Encuesta creada con éxito.');
+        this.form.reset();
+        this.preguntas.clear();
+        this.cargarEncuestas();
+      })
+      .catch((error) => {
+        console.error('Error al crear la encuesta:', error);
+        this.message.error('Error al crear la encuesta.');
+      });
+  }
+
+  cargarEncuestas(): void {
+    this.encuestasService.obtenerEncuestas().subscribe((encuestas) => {
+      this.encuestas = encuestas;
+    });
+  }
+
+  eliminarEncuesta(id: string): void {
+    this.encuestasService.eliminarEncuesta({id} as Encuesta)
+      .then(() => {
+        this.message.success('Encuesta eliminada con éxito.');
+        this.cargarEncuestas();
+      })
+      .catch((error) => {
+        console.error('Error al eliminar la encuesta:', error);
+        this.message.error('Error al eliminar la encuesta.');
+      });
+  }
+
+  editarEncuesta(encuesta: Encuesta): void {
+    this.isEditMode = true;
+    this.encuestaSeleccionadaId = encuesta.id || null;
+    this.form.patchValue({
+      titulo: encuesta.titulo,
       descripcion: encuesta.descripcion
-      // Rellena otros campos según sea necesario
     });
-  }
-
-  cancelarModal() {
-    this.isModalVisible = false;
-    this.formularioEncuesta.reset();
-  }
-
-  confirmarModal() {
-    if (this.encuestaEditando) {
-      // Editar encuesta
-      this.encuestasService.editarEncuesta(this.encuestaEditando.id, this.formularioEncuesta.value)
-        .then(() => this.cancelarModal());
-    } else {
-      // Crear nueva encuesta
-      this.encuestasService.crearEncuesta(this.formularioEncuesta.value)
-        .then(() => this.cancelarModal());
+    this.preguntas.clear();
+    if (encuesta.preguntas) {
+      encuesta.preguntas.forEach((pregunta: any) => {
+        const preguntaForm = this.fb.group({
+          texto: [pregunta.texto, Validators.required]
+        });
+        this.preguntas.push(preguntaForm);
+      });
     }
   }
 
-  eliminarEncuesta(id: string) {
-    this.encuestasService.eliminarEncuesta(id);
+  actualizarEncuesta(): void {
+    if (!this.encuestaSeleccionadaId) {
+      this.message.error('No se ha seleccionado ninguna encuesta para actualizar.');
+      return;
+    }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const encuestaActualizada: Encuesta = {
+      id: this.encuestaSeleccionadaId,
+      ...this.form.value
+    };
+
+    this.encuestasService.actualizarEncuesta(encuestaActualizada)
+      .then(() => {
+        this.message.success('Encuesta actualizada con éxito.');
+        this.form.reset();
+        this.preguntas.clear();
+        this.isEditMode = false;
+        this.cargarEncuestas();
+        this.encuestaSeleccionadaId = null; // Limpia el ID seleccionado
+      })
+      .catch((error) => {
+        console.error('Error al actualizar la encuesta:', error);
+        this.message.error('Error al actualizar la encuesta.');
+      });
+  }
+
+  cancelarEdicion(): void {
+    this.isEditMode = false;
+    this.form.reset();
+    this.preguntas.clear();
   }
 }

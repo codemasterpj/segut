@@ -1,42 +1,61 @@
-<div>
-    <h2>Administrar Encuestas</h2>
-    <!-- Botón para agregar nueva encuesta -->
-    <button nz-button nzType="primary" (click)="mostrarModalCrear()">Añadir Nueva Encuesta</button>
-  
-    <!-- Listado de encuestas existentes -->
-    <ul class="survey-list">
-      <li *ngFor="let encuesta of encuestas">
-        <nz-card nzTitle="{{ encuesta.label }}" nzBordered [nzExtra]="extraTemplate">
-          <p>{{ encuesta.descripcion }}</p>
-        </nz-card>
-  
-        <!-- Botones de acciones -->
-        <ng-template #extraTemplate>
-          <button nz-button nzType="default" nzSize="small" (click)="mostrarModalEditar(encuesta)">Editar</button>
-          <button nz-button nzType="default" nzDanger (click)="eliminarEncuesta(encuesta.id)">Eliminar</button>
-        </ng-template>
-      </li>
-    </ul>
-  
-    <!-- Modal para Crear y Editar Encuesta -->
-    <nz-modal [(nzVisible)]="isModalVisible" nzTitle="Encuesta" (nzOnCancel)="cancelarModal()" (nzOnOk)="confirmarModal()">
-      <form nz-form [formGroup]="formularioEncuesta">
-        <nz-form-item>
-          <nz-form-label [nzSpan]="6" nzFor="label">Título</nz-form-label>
-          <nz-form-control [nzSpan]="18">
-            <input nz-input formControlName="label" id="label" />
-          </nz-form-control>
-        </nz-form-item>
-  
-        <nz-form-item>
-          <nz-form-label [nzSpan]="6" nzFor="descripcion">Descripción</nz-form-label>
-          <nz-form-control [nzSpan]="18">
-            <textarea nz-input formControlName="descripcion" id="descripcion"></textarea>
-          </nz-form-control>
-        </nz-form-item>
-  
-        <!-- Aquí puedes añadir más campos para preguntas, opciones, etc. -->
-      </form>
-    </nz-modal>
-  </div>
-  
+<!-- admin-encuestas.component.html -->
+<nz-card nzTitle="Administración de Encuestas" class="admin-card">
+  <form [formGroup]="form" (ngSubmit)="isEditMode ? actualizarEncuesta() : crearEncuesta()">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Título</nz-form-label>
+      <nz-form-control [nzSpan]="18">
+        <input nz-input formControlName="titulo" placeholder="Título de la encuesta" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Descripción</nz-form-label>
+      <nz-form-control [nzSpan]="18">
+        <textarea nz-input formControlName="descripcion" placeholder="Descripción de la encuesta"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item formArrayName="preguntas">
+      <nz-form-label [nzSpan]="6">Preguntas</nz-form-label>
+      <nz-form-control [nzSpan]="18">
+        <div *ngFor="let pregunta of preguntas.controls; let i = index" [formGroupName]="i" class="pregunta-item">
+          <input nz-input formControlName="texto" placeholder="Texto de la pregunta" style="width: 80%;" />
+          <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i)" nz-tooltip="Eliminar pregunta">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </button>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button nz-button nzType="dashed" (click)="agregarPregunta()">
+      <i nz-icon nzType="plus"></i> Añadir pregunta
+    </button>
+
+    <div class="button-group">
+      <button nz-button nzType="primary" [disabled]="form.invalid" nzBlock>
+        {{ isEditMode ? 'Actualizar Encuesta' : 'Crear Encuesta' }}
+      </button>
+      <button *ngIf="isEditMode" nz-button nzType="default" nzBlock (click)="cancelarEdicion()">Cancelar</button>
+    </div>
+  </form>
+</nz-card>
+
+<!-- Lista de encuestas existentes -->
+<nz-list [nzDataSource]="encuestas" [nzRenderItem]="item" [nzBordered]="true">
+  <ng-template #item let-encuesta>
+    <nz-list-item>
+      <nz-list-item-meta
+        [nzTitle]="encuesta.titulo"
+        [nzDescription]="encuesta.descripcion"
+      ></nz-list-item-meta>
+      <div class="list-buttons">
+        <button nz-button nzType="default" (click)="editarEncuesta(encuesta)">
+          <i nz-icon nzType="edit"></i> Editar
+        </button>
+        <button nz-button nzType="default" nzDanger (click)="eliminarEncuesta(encuesta.id)">
+          <i nz-icon nzType="delete"></i> Eliminar
+        </button>
+      </div>
+    </nz-list-item>
+  </ng-template>
+</nz-list>

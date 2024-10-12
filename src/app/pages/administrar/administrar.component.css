@@ -1,0 +1,27 @@
+.admin-card {
+    margin-bottom: 20px;
+  }
+  .pregunta-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
+  .list-buttons button {
+    margin-right: 10px;
+  }
+  .eliminar-boton {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .eliminar-boton i {
+    font-size: 18px;
+  }
+  

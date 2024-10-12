@@ -1,28 +1,41 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+
+export interface Encuesta {
+  id?: string;
+  titulo: string;
+  descripcion: string;
+  preguntas?: { texto: string }[]; 
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class EncuestasService {
+export class EncuestasService { 
+  
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: Firestore) {}
 
-  obtenerEncuestas(): Observable<any[]> {
-    return this.firestore.collection('encuestas').valueChanges({ idField: 'id' });
+  crearEncuesta(encuesta: Encuesta): Promise<any> {
+    const encuestaRef = collection(this.firestore, 'encuestas');
+    return addDoc(encuestaRef, encuesta);
   }
 
-  crearEncuesta(encuesta: any) {
-    return this.firestore.collection('encuestas').add(encuesta);
+  obtenerEncuestas(): Observable<Encuesta[]> {
+    const encuestasRef = collection(this.firestore, 'encuestas');
+    return collectionData(encuestasRef, { idField: 'id' }) as Observable<Encuesta[]>;
+
   }
 
-  editarEncuesta(id: string, encuesta: any) {
-    return this.firestore.collection('encuestas').doc(id).update(encuesta);
+  actualizarEncuesta(encuesta: Encuesta): Promise<void> {
+    const docRef = doc(this.firestore, `encuestas/${encuesta.id}`);
+    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, preguntas: encuesta.preguntas});
+    
   }
 
-  eliminarEncuesta(id: string) {
-    return this.firestore.collection('encuestas').doc(id).delete();
+  eliminarEncuesta(encuesta : Encuesta): Promise<void> {
+    const productoRef = doc(this.firestore, `encuestas/${encuesta.id}`);
+    return deleteDoc(productoRef);
   }
-
 }
