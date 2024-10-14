@@ -15,6 +15,20 @@
       </nz-form-control>
     </nz-form-item>
 
+        <!-- Nuevo campo para seleccionar el tipo de encuesta -->
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6">Tipo de Encuesta</nz-form-label>
+          <nz-form-control [nzSpan]="18">
+            <nz-select formControlName="tipo" placeholder="Seleccione el tipo de encuesta">
+              <nz-option nzValue="seguridad" nzLabel="Seguridad Empresarial"></nz-option>
+              <nz-option nzValue="acoso_laboral" nzLabel="Acoso Laboral"></nz-option>
+              <nz-option nzValue="acoso_escolar" nzLabel="Acoso Escolar"></nz-option>
+              <nz-option nzValue="salud_mental" nzLabel="Salud Mental"></nz-option>
+              <nz-option nzValue="otro" nzLabel="Otro"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
     <nz-form-item formArrayName="preguntas">
       <nz-form-label [nzSpan]="6">Preguntas</nz-form-label>
       <nz-form-control [nzSpan]="18">

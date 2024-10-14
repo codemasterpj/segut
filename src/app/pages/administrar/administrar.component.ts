@@ -13,6 +13,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'app-administrar',
@@ -29,7 +30,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzModalModule,
     NzRadioModule,
     NzListModule,
-    NzIconModule  
+    NzIconModule,
+    NzSelectModule  
   ],
   templateUrl: './administrar.component.html',
   styleUrls: ['./administrar.component.css']
@@ -48,6 +50,7 @@ export class AdministrarComponent {
     this.form = this.fb.group({
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
+      tipo: ['', Validators.required],
       preguntas: this.fb.array([])
     });
     this.cargarEncuestas();

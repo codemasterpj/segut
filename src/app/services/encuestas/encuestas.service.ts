@@ -6,6 +6,7 @@ export interface Encuesta {
   id?: string;
   titulo: string;
   descripcion: string;
+  tipo: string;
   preguntas?: { texto: string }[]; 
 }
 
@@ -30,7 +31,7 @@ export class EncuestasService {
 
   actualizarEncuesta(encuesta: Encuesta): Promise<void> {
     const docRef = doc(this.firestore, `encuestas/${encuesta.id}`);
-    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, preguntas: encuesta.preguntas});
+    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, tipo: encuesta.tipo, preguntas: encuesta.preguntas});
     
   }
 
