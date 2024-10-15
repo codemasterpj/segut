@@ -34,13 +34,11 @@
       <nz-form-control [nzSpan]="18">
         <div *ngFor="let pregunta of preguntas.controls; let i = index" [formGroupName]="i" class="pregunta-item">
           <input nz-input formControlName="texto" placeholder="Texto de la pregunta" style="width: 80%;" />
-          <nz-select formControlName="tipoRespuesta" placeholder="Seleccione el tipo de respuesta" nzAllowClear style="width: 80%;">
+          <nz-select formControlName="tipoRespuesta" nzPlaceHolder="Seleccione el tipo de respuesta" nzAllowClear style="width: 80%;">
             <nz-option nzValue="corta" nzLabel="Respuesta corta"></nz-option>
             <nz-option nzValue="parrafo" nzLabel="Párrafo"></nz-option>
             <nz-option nzValue="opcion" nzLabel="Opción"></nz-option>
-            <nz-option nzValue="casilla" nzLabel="Casilla"></nz-option>
-            <nz-option nzValue="desplegable" nzLabel="Desplegable"></nz-option>
-            <nz-option nzValue="escala" nzLabel="Escala de 1 a 5"></nz-option>
+            <nz-option nzValue="escala" nzLabel="Escala"></nz-option>
           </nz-select>
           <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>

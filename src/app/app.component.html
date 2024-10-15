@@ -37,9 +37,8 @@
         </li>
 
         <!-- Login (Cambiar a Logout si está autenticado) -->
-        <li nz-menu-item>
-          <a routerLink="/login">Iniciar Sesión</a>
-          
+        <li nz-menu-item (click)="handleAuthAction()">
+          <a>{{ isLoggedIn ? 'Cerrar Sesión' : 'Iniciar Sesión' }}</a>
         </li>
       </ul>
     </div>

@@ -6,7 +6,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
 import { RegistroService } from '../../services/registro/registro.service';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -50,7 +50,8 @@ export class EncuestaComponent implements OnInit {
   constructor(
     private firestore: Firestore,
     private encuestasService: EncuestasService,
-    private registroService: RegistroService
+    private registroService: RegistroService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {

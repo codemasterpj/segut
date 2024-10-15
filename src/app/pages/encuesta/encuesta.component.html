@@ -71,10 +71,10 @@
         </nz-radio-group>
       </ng-container>
 
-      <!-- Casilla -->
+      <!-- Casilla 
       <ng-container *ngSwitchCase="'casilla'">
         <label nz-checkbox [(ngModel)]="respuestas[i]">Marcar esta casilla</label>
-      </ng-container>
+      </ng-container>-->
 
       <!-- Desplegable -->
       <ng-container *ngSwitchCase="'desplegable'">
@@ -89,11 +89,11 @@
       <!-- Escala de 1 a 5 -->
       <ng-container *ngSwitchCase="'escala'">
         <div class="escala-botones">
-          <button *ngFor="let valor of ['Nunca','A veces', 'Frecuentemente', 'Siempre']" 
+          <button *ngFor="let valor of ['Nunca', 'A veces', 'Frecuentemente', 'Siempre']; let j = index" 
                   nz-button 
                   nzType="default" 
                   (click)="respuestas[i] = valor" 
-                  [class.selected]="respuestas[i] === valor">
+                  [ngClass]="{'selected': respuestas[i] === valor}">
             {{ valor }}
           </button>
         </div>

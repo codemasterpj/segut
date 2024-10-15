@@ -168,3 +168,9 @@
 .boton-enviar:hover {
   background-color: #3e4e63;
 }
+
+
+.selected {
+  background-color: #1890ff; /* Color de fondo para el botón seleccionado */
+  color: #fff; /* Color del texto para el botón seleccionado */
+}

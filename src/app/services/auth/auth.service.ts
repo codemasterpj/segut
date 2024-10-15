@@ -5,7 +5,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   User,
-  deleteUser
+  deleteUser,
+  onAuthStateChanged
  } from '@angular/fire/auth';
 
  export interface LoginInfo {
@@ -30,7 +31,12 @@ export class AuthService {
     }
 
     logout() : Promise<any> {
-      return signOut(this.auth);
+      return signOut(this.auth).then(() => {
+        console.log('Sesión cerrada exitosamente');
+        // Limpia cualquier estado adicional del usuario si lo manejas aquí
+      }).catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
     }
 
     getCurrentUser() : User | null {
@@ -41,5 +47,10 @@ export class AuthService {
       let user : User = {uid} as User;
       return deleteUser(user);
     }
+
+      // Nuevo método para escuchar cambios de autenticación
+    onAuthStateChanged(callback: (user: User | null) => void): void {
+    onAuthStateChanged(this.auth, callback);
+  }
   
 }
