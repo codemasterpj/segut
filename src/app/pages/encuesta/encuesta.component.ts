@@ -6,81 +6,132 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
+import { RegistroService } from '../../services/registro/registro.service';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore'; 
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 
-
-interface Encuesta {
-  nombre: string;
-  descripcion: string;
-}
-
-interface Pregunta{
-  texto: string;
-  opciones: Opcion[];
-}
-
-interface Opcion{
-  texto: string;
-  valor: number;
-}
 @Component({
   selector: 'app-encuesta',
   standalone: true,
-  imports: [CommonModule, NzLayoutModule, NzGridModule,  NzButtonModule, NzFormModule, NzCardModule, NzRadioModule, ReactiveFormsModule],
+  imports: [    CommonModule,
+    NzLayoutModule,
+    NzGridModule,
+    NzButtonModule,
+    NzFormModule,
+    NzCardModule,
+    NzRadioModule,
+    ReactiveFormsModule,
+    NzListModule,
+    FormsModule,
+    NzRateModule,NzSelectModule
+  ],
   templateUrl: './encuesta.component.html',
   styleUrl: './encuesta.component.css'
 })
 export class EncuestaComponent implements OnInit {
-  encuestas: Encuesta[] = [
-    { nombre: 'Seguridad de la Información', descripcion: 'Encuesta sobre seguridad en la información' },
-    { nombre: 'Acoso Laboral', descripcion: 'Encuesta sobre acoso en el trabajo' },
-    { nombre: 'Acoso Estudiantil', descripcion: 'Encuesta sobre acoso en el ámbito educativo' },
-    { nombre: 'Phishing', descripcion: 'Encuesta sobre métodos de phishing' },
-    { nombre: 'Salud Mental', descripcion: 'Encuesta sobre bienestar mental' }
-  ];
+  encuestasPorTipo: { [tipo: string]: Encuesta[] } = {};
+  tiposDeInteres: string[] = [];
+  tipoSeleccionado: string | null = null;
   encuestaSeleccionada: Encuesta | null = null;
-  preguntas: Pregunta[] = [];
-  formularioEncuesta!: FormGroup;
-  opciones = [
-    { texto: '1', valor: 1 },
-    { texto: '2', valor: 2 },
-    { texto: '3', valor: 3 },
-    { texto: '4', valor: 4 },
-    { texto: '5', valor: 5 }
-  ];
+  respuestas: (string | null)[] = [];
+  nombre: string = '';
+  apellido: string = '';
+  areaCurso: string = '';
+  proposito: string = '';
+  edad: number | string = ''; 
+  sexo: string = '';
+  
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private firestore: Firestore,
+    private encuestasService: EncuestasService,
+    private registroService: RegistroService
+  ) {}
 
   ngOnInit(): void {
-    this.formularioEncuesta = this.fb.group({});
+    this.tiposDeInteres = this.registroService.obtenerAreasPreferidas() || [];
+    this.cargarEncuestas();
   }
 
-  seleccionarEncuesta(encuesta: Encuesta): void {
-    this.encuestaSeleccionada = encuesta;
-    this.preguntas = this.generarPreguntas();
-    this.cargarFormulario();
-  }
-
-  generarPreguntas(): Pregunta[] {
-    return Array.from({ length: 15 }, (_, i) => ({
-      texto: `Pregunta ${i + 1}`,
-      opciones: this.opciones
-    }));
-  }
-
-  cargarFormulario(): void {
-    this.formularioEncuesta = this.fb.group({});
-    this.preguntas.forEach((pregunta, index) => {
-      this.formularioEncuesta.addControl(`pregunta${index}`, this.fb.control(null, Validators.required));
+  cargarEncuestas(): void {
+    this.encuestasService.obtenerEncuestas().subscribe((encuestas) => {
+      const encuestasFiltradas = encuestas.filter((encuesta) => 
+        this.tiposDeInteres.includes(encuesta.tipo)
+      );
+      this.encuestasPorTipo = this.agruparPorTipo(encuestasFiltradas);
     });
   }
 
+  agruparPorTipo(encuestas: Encuesta[]): { [tipo: string]: Encuesta[] } {
+    return encuestas.reduce((grupos, encuesta) => {
+      const tipo = encuesta.tipo || 'Sin tipo';
+      if (!grupos[tipo]) {
+        grupos[tipo] = [];
+      }
+      grupos[tipo].push(encuesta);
+      return grupos;
+    }, {} as { [tipo: string]: Encuesta[] });
+  }
+
+  obtenerClaves(obj: { [key: string]: any }): string[] {
+    return Object.keys(obj);
+  }
+
+  toggleTipo(tipo: string): void {
+    this.tipoSeleccionado = this.tipoSeleccionado === tipo ? null : tipo;
+  }
+
+  seleccionarEncuesta(encuesta: Encuesta, event: Event): void {
+    event.stopPropagation();
+    this.encuestaSeleccionada = encuesta;
+    this.respuestas = Array(encuesta.preguntas?.length).fill(null);
+  }
+
   enviarEncuesta(): void {
-    if (this.formularioEncuesta.valid) {
-      const respuestas = this.formularioEncuesta.value;
-      console.log('Respuestas enviadas:', respuestas);
-      // Lógica para guardar en Firebase
-    }
+    const userId = this.registroService.getUserId();
+
+      // Verifica si userId está disponible
+  if (!userId) {
+    console.error('No se pudo obtener el ID del usuario.');
+    alert('Hubo un problema con la autenticación del usuario. Por favor, intenta iniciar sesión nuevamente.');
+    return;
+  }
+    const respuesta = {
+      encuestaId: this.encuestaSeleccionada?.id,
+      userId: userId,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      edad: this.edad,
+      sexo: this.sexo,
+      areaCurso: this.areaCurso,
+      proposito: this.proposito,
+      respuestas: this.respuestas
+    };
+
+    const respuestasRef = collection(this.firestore, 'respuestas');
+    addDoc(respuestasRef, respuesta)
+      .then(() => {
+        alert('Encuesta enviada con éxito.');
+        this.limpiarFormulario();
+      })
+      .catch(error => {
+        console.error('Error al enviar la encuesta:', error);
+        alert('Hubo un problema al enviar la encuesta.');
+      });
+  }
+
+  limpiarFormulario(): void {
+    this.nombre = '';
+    this.apellido = '';
+    this.edad = '';
+    this.sexo = '';
+    this.areaCurso = '';
+    this.proposito = '';
+    this.respuestas = Array(this.encuestaSeleccionada?.preguntas?.length).fill(null);
   }
 }

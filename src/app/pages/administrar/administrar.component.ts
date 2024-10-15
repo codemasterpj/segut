@@ -62,7 +62,8 @@ export class AdministrarComponent {
 
   nuevaPregunta(): FormGroup {
     return this.fb.group({
-      texto: ['', Validators.required]
+      texto: ['', Validators.required],
+      tipoRespuesta: [null, Validators.required]
     });
   }
 
@@ -117,13 +118,15 @@ export class AdministrarComponent {
     this.encuestaSeleccionadaId = encuesta.id || null;
     this.form.patchValue({
       titulo: encuesta.titulo,
+      tipo: encuesta.tipo,
       descripcion: encuesta.descripcion
     });
     this.preguntas.clear();
     if (encuesta.preguntas) {
       encuesta.preguntas.forEach((pregunta: any) => {
         const preguntaForm = this.fb.group({
-          texto: [pregunta.texto, Validators.required]
+          texto: [pregunta.texto, Validators.required],
+          tipoRespuesta: [pregunta.tipoRespuesta, Validators.required]
         });
         this.preguntas.push(preguntaForm);
       });
@@ -139,12 +142,12 @@ export class AdministrarComponent {
       this.form.markAllAsTouched();
       return;
     }
-
+  
     const encuestaActualizada: Encuesta = {
       id: this.encuestaSeleccionadaId,
       ...this.form.value
     };
-
+  
     this.encuestasService.actualizarEncuesta(encuestaActualizada)
       .then(() => {
         this.message.success('Encuesta actualizada con éxito.');
@@ -159,6 +162,7 @@ export class AdministrarComponent {
         this.message.error('Error al actualizar la encuesta.');
       });
   }
+  
 
   cancelarEdicion(): void {
     this.isEditMode = false;

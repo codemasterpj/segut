@@ -1,27 +1,127 @@
-.admin-card {
-    margin-bottom: 20px;
-  }
-  .pregunta-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .button-group {
-    display: flex;
-    gap: 10px;
-  }
-  .list-buttons button {
-    margin-right: 10px;
-  }
-  .eliminar-boton {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .eliminar-boton i {
-    font-size: 18px;
-  }
-  
+.encuesta-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.panel-izquierdo {
+  background-color: #f0f2f5;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tipo-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tipo-item {
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.tipo-item:hover {
+  background-color: #e6f7ff;
+}
+
+.tipo-titulo {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.encuestas-lista {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 10px;
+}
+
+.encuesta-item {
+  cursor: pointer;
+  padding: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.encuesta-item:hover {
+  background-color: #bae7ff;
+}
+
+.panel-derecho {
+  padding: 20px;
+  background-color: white;
+  width: 100%;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.descripcion {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.campos-adicionales {
+  margin-bottom: 20px;
+}
+
+.campo-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-campo, .textarea-campo {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.textarea-campo {
+  height: 80px;
+}
+
+.pregunta {
+  margin-bottom: 20px;
+}
+
+.pregunta-texto {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.respuesta {
+  display: flex;
+  gap: 15px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-opcion {
+  margin-right: 10px;
+}
+
+.rate-input {
+  display: inline-block;
+}
+
+.boton-enviar {
+  background-color: #1890ff;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-enviar:hover {
+  background-color: #40a9ff;
+}

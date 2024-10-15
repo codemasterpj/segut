@@ -23,7 +23,7 @@ export class AppComponent {
   constructor(private router: Router) { 
     this.router.events.subscribe(() => {
       // Verifica si estás en la página de encuestas
-      this.mostrarFooter = this.router.url !== '/encuesta';
+      this.mostrarFooter = this.router.url !== '/encuesta' && this.router.url !== '/resultados';
     });
   }
 

@@ -1,34 +1,116 @@
-<nz-layout class="survey-page-layout">
-    <!-- Barra lateral izquierda para las encuestas -->
-    <nz-sider [nzWidth]="250" class="survey-sidebar">
-      <h3>Encuestas</h3>
-      <ul class="survey-list">
-        <li *ngFor="let encuesta of encuestas" (click)="seleccionarEncuesta(encuesta)">
-          {{ encuesta.nombre }}
-        </li>
-      </ul>
-    </nz-sider>
-  
-    <!-- Contenido principal -->
-    <nz-content class="survey-content">
-      <nz-card *ngIf="encuestaSeleccionada" nzTitle="{{ encuestaSeleccionada.nombre }}">
-        <p>{{ encuestaSeleccionada.descripcion }}</p>
-        <form nz-form [formGroup]="formularioEncuesta" (ngSubmit)="enviarEncuesta()">
-          <div *ngFor="let pregunta of preguntas; let i = index" class="form-item">
-            <nz-form-item>
-              <nz-form-label [nzSpan]="24">{{ pregunta.texto }}</nz-form-label>
-              <nz-form-control [nzSpan]="24">
-                <nz-radio-group [formControlName]="'pregunta' + i">
-                  <label nz-radio *ngFor="let opcion of opciones" [nzValue]="opcion.valor">
-                    {{ opcion.texto }}
-                  </label>
-                </nz-radio-group>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <button nz-button nzType="primary" [disabled]="!formularioEncuesta.valid">Enviar</button>
-        </form>
-      </nz-card>
-    </nz-content>
-  </nz-layout>
-  
+<div class="encuesta-layout">
+  <!-- Panel Izquierdo (20%) -->
+  <nz-sider nzWidth="20%" class="panel-izquierdo">
+    <ul class="tipo-lista">
+      <li *ngFor="let tipo of obtenerClaves(encuestasPorTipo)" (click)="toggleTipo(tipo)" class="tipo-item">
+        <span class="tipo-titulo">{{ tipo }}</span>
+        <ul *ngIf="tipoSeleccionado === tipo" class="encuestas-lista">
+          <li *ngFor="let encuesta of encuestasPorTipo[tipo]" (click)="seleccionarEncuesta(encuesta, $event)" class="encuesta-item">
+            {{ encuesta.titulo }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+
+  <!-- Panel Derecho (centrado y con fondo blanco) -->
+  <div class="panel-derecho" *ngIf="encuestaSeleccionada">
+    <h2 class="titulo">{{ encuestaSeleccionada.titulo }}</h2>
+    <p class="descripcion">{{ encuestaSeleccionada.descripcion }}</p>
+    
+    <!-- Campos adicionales para el encuestador -->
+    <div class="campos-adicionales">
+      <label class="campo-label">Nombre:</label>
+      <input nz-input [(ngModel)]="nombre" placeholder="Ingrese su nombre" class="input-campo" />
+      
+      <label class="campo-label">Apellido:</label>
+      <input nz-input [(ngModel)]="apellido" placeholder="Ingrese su apellido" class="input-campo" />
+      
+      <label class="campo-label">Área o Curso:</label>
+      <input nz-input [(ngModel)]="areaCurso" placeholder="Ingrese su área o curso" class="input-campo" />
+      
+      <label class="campo-label">Edad:</label>
+      <nz-select [(ngModel)]="edad" placeholder="Seleccione su rango de edad" class="input-campo">
+        <nz-option nzValue="18-25" nzLabel="18-25 años"></nz-option>
+        <nz-option nzValue="26-35" nzLabel="26-35 años"></nz-option>
+        <nz-option nzValue="36-45" nzLabel="36-45 años"></nz-option>
+        <nz-option nzValue="46-55" nzLabel="46-55 años"></nz-option>
+        <nz-option nzValue="56+" nzLabel="56 años o más"></nz-option>
+      </nz-select>
+
+      <label class="campo-label">Sexo:</label>
+      <nz-select [(ngModel)]="sexo" placeholder="Seleccione su sexo" class="input-campo">
+        <nz-option nzValue="M" nzLabel="Masculino"></nz-option>
+        <nz-option nzValue="F" nzLabel="Femenino"></nz-option>
+      </nz-select>
+    </div>
+
+    
+    
+<!-- Preguntas de la encuesta -->
+<div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta">
+  <p class="pregunta-texto">{{ pregunta.texto }}</p>
+  <div class="respuesta">
+    <ng-container [ngSwitch]="pregunta.tipoRespuesta">
+      
+      <!-- Respuesta corta -->
+      <ng-container *ngSwitchCase="'corta'">
+        <input nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta corta" class="input-campo" />
+      </ng-container>
+
+      <!-- Párrafo -->
+      <ng-container *ngSwitchCase="'parrafo'">
+        <textarea nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta en párrafo" class="textarea-campo"></textarea>
+      </ng-container>
+
+      <!-- Opción -->
+      <ng-container *ngSwitchCase="'opcion'">
+        <nz-radio-group [(ngModel)]="respuestas[i]" class="radio-group">
+          <label nz-radio nzValue="opcion1">si</label>
+          <label nz-radio nzValue="opcion2">no</label>
+        </nz-radio-group>
+      </ng-container>
+
+      <!-- Casilla -->
+      <ng-container *ngSwitchCase="'casilla'">
+        <label nz-checkbox [(ngModel)]="respuestas[i]">Marcar esta casilla</label>
+      </ng-container>
+
+      <!-- Desplegable -->
+      <ng-container *ngSwitchCase="'desplegable'">
+        <nz-select [(ngModel)]="respuestas[i]" placeholder="Seleccione una opción" class="desplegable-campo">
+          <nz-option nzValue="opcion1" nzLabel="Siempre"></nz-option>
+          <nz-option nzValue="opcion2" nzLabel="Frecuentemente"></nz-option>
+          <nz-option nzValue="opcion3" nzLabel="A veces"></nz-option>
+          <nz-option nzValue="opcion3" nzLabel="Nunca"></nz-option>
+        </nz-select>
+      </ng-container>
+
+      <!-- Escala de 1 a 5 -->
+      <ng-container *ngSwitchCase="'escala'">
+        <div class="escala-botones">
+          <button *ngFor="let valor of ['Nunca','A veces', 'Frecuentemente', 'Siempre']" 
+                  nz-button 
+                  nzType="default" 
+                  (click)="respuestas[i] = valor" 
+                  [class.selected]="respuestas[i] === valor">
+            {{ valor }}
+          </button>
+        </div>
+      </ng-container>
+      
+      <!-- Fallback para tipo desconocido -->
+      <ng-container *ngSwitchDefault>
+        <p class="texto-advertencia">Tipo de respuesta desconocido.</p>
+      </ng-container>
+
+    </ng-container>
+  </div>
+</div>
+
+
+    
+    <!-- Botón para enviar la encuesta -->
+    <button nz-button nzType="primary" (click)="enviarEncuesta()" class="boton-enviar">Enviar Encuesta</button>
+  </div>
+</div>

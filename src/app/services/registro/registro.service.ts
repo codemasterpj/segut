@@ -40,6 +40,17 @@ export class RegistroService {
 
   constructor(private firestore: Firestore, private usersService: AuthService) { }
 
+  obtenerAreasPreferidas(): string[] | undefined {
+    return this.currentRegister?.areas;
+  }
+
+    // Nuevo método para obtener el ID del usuario actual
+    getUserId(): string | null {
+      const currentUser = this.usersService.getCurrentUser();
+      return currentUser ? currentUser.uid : null;
+    }
+  
+
   async login(loginInfo: LoginInfo) : Promise<any> {
     let userCredential : UserCredential = await this.usersService.login(loginInfo)
       .then((response) => {

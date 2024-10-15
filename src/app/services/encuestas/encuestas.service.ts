@@ -7,7 +7,7 @@ export interface Encuesta {
   titulo: string;
   descripcion: string;
   tipo: string;
-  preguntas?: { texto: string }[]; 
+  preguntas?: { texto: string, tipoRespuesta: string }[]; 
 }
 
 @Injectable({
@@ -22,6 +22,8 @@ export class EncuestasService {
     const encuestaRef = collection(this.firestore, 'encuestas');
     return addDoc(encuestaRef, encuesta);
   }
+
+  
 
   obtenerEncuestas(): Observable<Encuesta[]> {
     const encuestasRef = collection(this.firestore, 'encuestas');

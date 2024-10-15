@@ -21,10 +21,10 @@
           <nz-form-control [nzSpan]="18">
             <nz-select formControlName="tipo" placeholder="Seleccione el tipo de encuesta">
               <nz-option nzValue="seguridad" nzLabel="Seguridad Empresarial"></nz-option>
-              <nz-option nzValue="acoso_laboral" nzLabel="Acoso Laboral"></nz-option>
-              <nz-option nzValue="acoso_escolar" nzLabel="Acoso Escolar"></nz-option>
-              <nz-option nzValue="salud_mental" nzLabel="Salud Mental"></nz-option>
-              <nz-option nzValue="otro" nzLabel="Otro"></nz-option>
+              <nz-option nzValue="acosoLaboral" nzLabel="Acoso Laboral"></nz-option>
+              <nz-option nzValue="acosoEscolar" nzLabel="Acoso Escolar"></nz-option>
+              <nz-option nzValue="saludMental" nzLabel="Salud Mental"></nz-option>
+              <nz-option nzValue="temasVariados" nzLabel="Otro"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -34,6 +34,14 @@
       <nz-form-control [nzSpan]="18">
         <div *ngFor="let pregunta of preguntas.controls; let i = index" [formGroupName]="i" class="pregunta-item">
           <input nz-input formControlName="texto" placeholder="Texto de la pregunta" style="width: 80%;" />
+          <nz-select formControlName="tipoRespuesta" placeholder="Seleccione el tipo de respuesta" nzAllowClear style="width: 80%;">
+            <nz-option nzValue="corta" nzLabel="Respuesta corta"></nz-option>
+            <nz-option nzValue="parrafo" nzLabel="Párrafo"></nz-option>
+            <nz-option nzValue="opcion" nzLabel="Opción"></nz-option>
+            <nz-option nzValue="casilla" nzLabel="Casilla"></nz-option>
+            <nz-option nzValue="desplegable" nzLabel="Desplegable"></nz-option>
+            <nz-option nzValue="escala" nzLabel="Escala de 1 a 5"></nz-option>
+          </nz-select>
           <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>
           </button>
