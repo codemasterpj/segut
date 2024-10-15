@@ -13,6 +13,7 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore'; 
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { TituloEncuestaPipe } from '../../pipe/titulo-encuesta.pipe';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     ReactiveFormsModule,
     NzListModule,
     FormsModule,
-    NzRateModule,NzSelectModule
+    NzRateModule,NzSelectModule, TituloEncuestaPipe
   ],
   templateUrl: './encuesta.component.html',
   styleUrl: './encuesta.component.css'

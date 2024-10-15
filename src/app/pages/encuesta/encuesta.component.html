@@ -3,7 +3,8 @@
   <nz-sider nzWidth="20%" class="panel-izquierdo">
     <ul class="tipo-lista">
       <li *ngFor="let tipo of obtenerClaves(encuestasPorTipo)" (click)="toggleTipo(tipo)" class="tipo-item">
-        <span class="tipo-titulo">{{ tipo }}</span>
+        <!-- Aplicar el Pipe aquí -->
+        <span class="tipo-titulo">{{ tipo | tituloEncuesta }}</span>
         <ul *ngIf="tipoSeleccionado === tipo" class="encuestas-lista">
           <li *ngFor="let encuesta of encuestasPorTipo[tipo]" (click)="seleccionarEncuesta(encuesta, $event)" class="encuesta-item">
             {{ encuesta.titulo }}
