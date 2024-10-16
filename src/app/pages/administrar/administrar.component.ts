@@ -51,7 +51,7 @@ export class AdministrarComponent {
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       tipo: ['', Validators.required],
-      preguntas: this.fb.array([])
+      preguntas: this.fb.array([], [Validators.required, Validators.minLength(1)])
     });
     this.cargarEncuestas();
   }
@@ -73,10 +73,14 @@ export class AdministrarComponent {
 
   eliminarPregunta(index: number): void {
     this.preguntas.removeAt(index);
+    if (this.preguntas.length === 0) {
+      this.form.get('preguntas')?.setErrors({ 'minlength': true }); // Marca error si no hay preguntas
+    }
   }
+  
 
   crearEncuesta(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.preguntasCompletas()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -138,7 +142,7 @@ export class AdministrarComponent {
       this.message.error('No se ha seleccionado ninguna encuesta para actualizar.');
       return;
     }
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.preguntasCompletas()) {
       this.form.markAllAsTouched();
       return;
     }
@@ -169,4 +173,11 @@ export class AdministrarComponent {
     this.form.reset();
     this.preguntas.clear();
   }
+
+  preguntasCompletas(): boolean {
+    return this.preguntas.controls.every((pregunta) => {
+      return pregunta.get('texto')?.value && pregunta.get('tipoRespuesta')?.value;
+    });
+  }
+  
 }
