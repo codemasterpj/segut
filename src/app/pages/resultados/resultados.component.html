@@ -26,8 +26,12 @@
       <!-- Agrega opciones de área aquí -->
       <nz-option nzValue="area1" nzLabel="Área 1"></nz-option>
       <nz-option nzValue="area2" nzLabel="Área 2"></nz-option>
-      <!-- Más opciones según las áreas que tengas -->
     </nz-select>
+
+
+
+    <!-- Botón para Limpiar -->
+   <button nz-button nzType="default" (click)="limpiarFiltros()" class="boton-limpiar">Limpiar</button>
 
     <!-- Botón para Generar PDF -->
     <button nz-button nzType="primary" (click)="exportarPDF()" class="boton-pdf">Generar PDF</button>
@@ -37,20 +41,40 @@
   <div class="panel-derecho">
     <h2 class="titulo">Resultados de la Encuesta</h2>
     
-    <!-- Gráfico de Resultados -->
-    <div class="grafico-container">
-      <canvas id="resultadosChart"></canvas>
-    </div>
+      
+    
+<!-- Lista de Encuestas Filtradas Automáticamente -->
+<div *ngFor="let respuesta of filtrarRespuestas()" class="respuesta-item-resumida">
+  <h3>{{ respuesta.nombre }} {{ respuesta.apellido }}</h3>
+  <div class="acciones">
+    <button nz-button nzType="link" (click)="verDetalles(respuesta)">Ver Detalles</button>
+    <button nz-button nzType="default" (click)="generarPDFIndividual(respuesta)">Generar PDF</button>
+  </div>
+</div>
 
-    <!-- Lista de Respuestas Individuales -->
-    <div *ngFor="let respuesta of filtrarRespuestas()" class="respuesta-item">
-      <h3>Encuesta: {{ respuesta.encuestaId }}</h3>
-      <p><strong>Nombre:</strong> {{ respuesta.nombre }}</p>
-      <p><strong>Apellido:</strong> {{ respuesta.apellido }}</p>
-      <p><strong>Edad:</strong> {{ respuesta.edad }}</p>
-      <p><strong>Sexo:</strong> {{ respuesta.sexo }}</p>
-      <p><strong>Área:</strong> {{ respuesta.areaCurso }}</p>
-      <p><strong>Respuestas:</strong> {{ respuesta.respuestas | json }}</p>
+
+    <!-- Detalle de la Encuesta Seleccionada -->
+    <div *ngIf="respuestaSeleccionada" class="detalle-respuesta">
+      <h3 class="detalle-titulo">Resultados de la Encuesta: {{ respuestaSeleccionada.encuestaId }}</h3>
+      <p><strong>Nombre:</strong> {{ respuestaSeleccionada.nombre }}</p>
+      <p><strong>Apellido:</strong> {{ respuestaSeleccionada.apellido }}</p>
+      <p><strong>Edad:</strong> {{ respuestaSeleccionada.edad }}</p>
+      <p><strong>Sexo:</strong> {{ respuestaSeleccionada.sexo }}</p>
+      <p><strong>Área:</strong> {{ respuestaSeleccionada.areaCurso }}</p>
+    
+      <!-- Lista de preguntas y respuestas alineadas -->
+      <div *ngFor="let resp of respuestaSeleccionada.respuestas; let i = index" class="item-pregunta-respuesta">
+        <div class="texto-pregunta">
+          <strong>{{ i + 1 }}. {{ resp.pregunta?.texto || 'Pregunta no disponible' }}</strong>
+        </div>
+        <div class="texto-respuesta">
+          <span class="respuesta-icono">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
+        </div>
+      </div>
     </div>
+    
+    
+    
+    
   </div>
 </div>

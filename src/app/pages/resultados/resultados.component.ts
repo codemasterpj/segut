@@ -13,6 +13,12 @@ import { collection, collectionData, Firestore,query, where } from '@angular/fir
 import { EncuestasService } from '../../services/encuestas/encuestas.service';
 import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Register, RegistroService } from '../../services/registro/registro.service';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable'; 
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+
+
 
 
 
@@ -55,11 +61,11 @@ interface Respuesta {
 })
 export class ResultadosComponent implements OnInit {
   
-  currentRegister?: Register;
   respuestas: Respuesta[] = [];
   filtroEdad: string = '';
   filtroSexo: string = '';
   filtroArea: string = '';
+  respuestaSeleccionada: Respuesta | null = null;
   chart: any;
 
   constructor(
@@ -69,89 +75,181 @@ export class ResultadosComponent implements OnInit {
     private registroService: RegistroService 
   ) {}
 
-  ngOnInit(): void {
-    // Registra los componentes específicos de Chart.js que necesitas
-    Chart.register(PieController, ArcElement, Tooltip, Legend);
-    this.cargarRespuestas();
-  }
-
-  ngAfterViewInit(): void {
-    // Deja el gráfico en blanco hasta que lleguen los datos
-  }
-
-    // Método para obtener el ID del usuario actual
-    getUserId(): string | undefined {
-      return this.currentRegister?.uid;
-    }
-
-  // En el componente donde se filtran resultados
-  cargarRespuestas(): void {
-    const userId = this.registroService.getUserId();  // Obtiene el ID del usuario actual
-    if (!userId) {
+  async ngOnInit(): Promise<void> {
+    
+  
+    const userId = await this.registroService.getUserId();
+    if (userId) {
+      try {
+        await this.cargarRespuestas(userId);
+      } catch (error) {
+        console.error('Error al cargar respuestas:', error);
+      }
+    } else {
       console.error('No se pudo obtener el ID del usuario.');
-      return;
     }
-
-    const respuestasRef = collection(this.firestore, 'respuestas');
-    const q = query(respuestasRef, where('userId', '==', userId));
-
-    collectionData(q).subscribe((respuestas: any[]) => {
-      this.respuestas = respuestas;
-      this.generarGraficoGlobal();
-    });
   }
-
+  
+ 
+  
+  
+  
+  
+  
   
 
-  generarGraficoGlobal(): void {
-    const ctx = document.getElementById('resultadosChart') as HTMLCanvasElement;
-    if (this.chart) this.chart.destroy();
-
-    if (!ctx) {
-      console.error("No se pudo encontrar el elemento 'canvas' con el ID 'resultadosChart'.");
-      return;
-    }
-
-    const dataConteo = this.respuestas.reduce((conteo: { [key: string]: number }, respuesta) => {
-      respuesta.respuestas.forEach((valor: string) => {
-        conteo[valor] = (conteo[valor] || 0) + 1;
-      });
-      return conteo;
-    }, {});
-
-    const labels = Object.keys(dataConteo);
-    const data = Object.values(dataConteo);
-
-    this.chart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#f79f1f'],
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'bottom'
-          }
+  cargarRespuestas(userId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const respuestasRef = collection(this.firestore, 'respuestas');
+      const q = query(respuestasRef, where('userId', '==', userId));
+  
+      collectionData(q).subscribe(
+        (respuestas: any[]) => {
+          this.respuestas = respuestas;
+          resolve(); // Resuelve la promesa al finalizar la carga de respuestas
+        },
+        (error: unknown) => {
+          console.error('Error al cargar respuestas:', error);
+          reject(error); // Rechaza la promesa si ocurre un error
         }
-      }
+      );
     });
   }
+  
+  
+
+  
+  
+  
+  
+  
 
   filtrarRespuestas(): Respuesta[] {
     return this.respuestas.filter(respuesta => {
-      return (this.filtroEdad ? respuesta.edad === this.filtroEdad : true) &&
-             (this.filtroSexo ? respuesta.sexo === this.filtroSexo : true) &&
-             (this.filtroArea ? respuesta.areaCurso === this.filtroArea : true);
+      return (!this.filtroEdad || respuesta.edad === this.filtroEdad) &&
+             (!this.filtroSexo || respuesta.sexo === this.filtroSexo) &&
+             (!this.filtroArea || respuesta.areaCurso === this.filtroArea);
     });
   }
 
-  exportarPDF(): void {
-    // Implementación de generación de PDF
+  buscarRespuestas(): void {
+    // Lógica de búsqueda basada en los filtros aplicados
+    this.filtrarRespuestas();
   }
+
+  verDetalles(respuesta: Respuesta): void {
+    this.respuestaSeleccionada = respuesta;
+  }
+
+  exportarPDF(): void {
+    const doc = new jsPDF();
+    const encuestadorData = this.registroService.currentRegister;
+
+    if (!encuestadorData) {
+      console.error('No se encontró la información del encuestador.');
+      return;
+    }
+
+    // Encabezado con los datos del encuestador obtenidos de currentRegister
+    doc.setFontSize(12);
+    doc.text('Informe de Resultados de Encuestas', 14, 20);
+    doc.text(`Nombre: ${encuestadorData.nombre} ${encuestadorData.apellido}`, 14, 30);
+    doc.text(`Correo: ${encuestadorData.email}`, 14, 36);
+    doc.text(`Fecha y Hora: ${new Date().toLocaleString()}`, 14, 42);
+    doc.text(`Cargo: ${encuestadorData.role}`, 14, 48);
+    doc.text(`Empresa: ${encuestadorData.nombreEmpresa}`, 14, 54);
+
+    // Generar PDF individual o global
+    if (this.respuestaSeleccionada) {
+      this.generarPDFIndividual(this.respuestaSeleccionada);
+    } else {
+      this.generarPDFGlobal(doc);
+    }
+  }
+
+  generarPDFIndividual(respuesta: Respuesta): void {
+    const doc = new jsPDF();
+    const encuestadorData = this.registroService.currentRegister;
+  
+    if (!encuestadorData) {
+      console.error('No se encontró la información del encuestador.');
+      return;
+    }
+  
+    // Encabezado del PDF
+    doc.setFontSize(12);
+    doc.text('Informe de Resultados de Encuesta Individual', 14, 20);
+    doc.text(`Nombre del Encuestador: ${encuestadorData.nombre} ${encuestadorData.apellido}`, 14, 30);
+    doc.text(`Correo: ${encuestadorData.email}`, 14, 36);
+    doc.text(`Fecha y Hora: ${new Date().toLocaleString()}`, 14, 42);
+    doc.text(`Cargo: ${encuestadorData.role}`, 14, 48);
+    doc.text(`Empresa: ${encuestadorData.nombreEmpresa}`, 14, 54);
+  
+    // Detalles del encuestado
+    doc.text('Detalles del Encuestado:', 14, 70);
+    doc.text(`ID de Encuesta: ${respuesta.encuestaId}`, 14, 76);
+    doc.text(`Nombre: ${respuesta.nombre}`, 14, 82);
+    doc.text(`Apellido: ${respuesta.apellido}`, 14, 88);
+    doc.text(`Edad: ${respuesta.edad}`, 14, 94);
+    doc.text(`Sexo: ${respuesta.sexo}`, 14, 100);
+    doc.text(`Área: ${respuesta.areaCurso}`, 14, 106);
+  
+    // Verificar que `respuesta.respuestas` sea un array y contenga preguntas válidas
+    if (Array.isArray(respuesta.respuestas) && respuesta.respuestas.length > 0) {
+      const respuestaData = respuesta.respuestas.map((resp, index) => {
+        const preguntaTexto = typeof resp.pregunta === 'string'
+          ? resp.pregunta
+          : resp.pregunta?.texto || JSON.stringify(resp.pregunta); // Ajusta según la estructura
+        
+        return [index + 1, preguntaTexto, resp.respuesta || ''];
+      });
+  
+      if (respuestaData.length > 0) {
+        autoTable(doc, {
+          head: [['#', 'Pregunta', 'Respuesta']],
+          body: respuestaData,
+          startY: 112
+        });
+      } else {
+        doc.text('No se encontraron preguntas y respuestas.', 14, 112);
+      }
+    } else {
+      doc.text('No se encontraron preguntas y respuestas.', 14, 112);
+    }
+  
+    doc.save(`Informe_Individual_${respuesta.encuestaId}.pdf`);
+  }
+  
+  
+
+  generarPDFGlobal(doc: jsPDF): void {
+    doc.text('Resumen de Encuestas Globales', 14, 70);
+
+    const allData = this.respuestas.map((respuesta, index) => [
+      index + 1,
+      respuesta.nombre,
+      respuesta.apellido,
+      respuesta.edad,
+      respuesta.sexo,
+      respuesta.areaCurso
+    ]);
+
+    // Tabla global con todas las encuestas
+    autoTable(doc,{
+      head: [['#', 'Nombre', 'Apellido', 'Edad', 'Sexo', 'Área']],
+      body: allData,
+      startY: 80
+    });
+
+    doc.save('Informe_Global_Encuestas.pdf');
+  }
+
+  limpiarFiltros(): void {
+    this.filtroEdad = '';
+    this.filtroSexo = '';
+    this.filtroArea = '';
+    this.respuestaSeleccionada = null;  // Opcional, para deseleccionar cualquier detalle activo
+    this.buscarRespuestas();  // Vuelve a filtrar las respuestas con todos los filtros vacíos
+  }
+  
 }

@@ -96,15 +96,27 @@ export class EncuestaComponent implements OnInit {
 
   enviarEncuesta(): void {
     const userId = this.registroService.getUserId();
-
-      // Verifica si userId está disponible
-  if (!userId) {
-    console.error('No se pudo obtener el ID del usuario.');
-    alert('Hubo un problema con la autenticación del usuario. Por favor, intenta iniciar sesión nuevamente.');
-    return;
-  }
+  
+    if (!userId) {
+      console.error('No se pudo obtener el ID del usuario.');
+      alert('Hubo un problema con la autenticación del usuario. Por favor, intenta iniciar sesión nuevamente.');
+      return;
+    }
+  
+    if (!this.encuestaSeleccionada || !this.encuestaSeleccionada.preguntas) {
+      console.error('No se ha seleccionado una encuesta o faltan preguntas en la encuesta seleccionada.');
+      alert('Por favor selecciona una encuesta válida.');
+      return;
+    }
+  
+    // Mapeo para incluir tanto la pregunta como la respuesta
+    const preguntasYRespuestas = this.encuestaSeleccionada.preguntas.map((pregunta, index) => ({
+      pregunta: pregunta,
+      respuesta: this.respuestas[index] || null
+    }));
+  
     const respuesta = {
-      encuestaId: this.encuestaSeleccionada?.id,
+      encuestaId: this.encuestaSeleccionada.id,
       userId: userId,
       nombre: this.nombre,
       apellido: this.apellido,
@@ -112,9 +124,9 @@ export class EncuestaComponent implements OnInit {
       sexo: this.sexo,
       areaCurso: this.areaCurso,
       proposito: this.proposito,
-      respuestas: this.respuestas
+      respuestas: preguntasYRespuestas // Aquí se guardan tanto preguntas como respuestas
     };
-
+  
     const respuestasRef = collection(this.firestore, 'respuestas');
     addDoc(respuestasRef, respuesta)
       .then(() => {
@@ -126,6 +138,7 @@ export class EncuestaComponent implements OnInit {
         alert('Hubo un problema al enviar la encuesta.');
       });
   }
+  
 
   limpiarFormulario(): void {
     this.nombre = '';

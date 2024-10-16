@@ -1,118 +1,163 @@
 .resultados-layout {
   display: flex;
-  height: 100vh;
-  font-family: Arial, sans-serif;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
 
-/* Estilos para el Panel Izquierdo (Filtros) */
 .panel-izquierdo {
-  background-color: #f4f6f9;
+  width: 20%;
   padding: 20px;
-  border-right: 1px solid #dcdcdc;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  background-color: #f0f2f5;
+  border-right: 1px solid #e0e0e0;
 }
 
-.panel-izquierdo h3 {
+.panel-derecho {
+  width: 80%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
-  font-weight: 600;
-  font-size: 18px;
+  text-align: center;
 }
 
 .campo-label {
   display: block;
-  margin-top: 15px;
-  font-weight: 500;
-  color: #555;
+  font-weight: bold;
+  margin: 15px 0 5px;
 }
 
 .input-campo {
   width: 100%;
-  margin-top: 5px;
   margin-bottom: 15px;
+}
+
+.boton-limpiar,
+.boton-pdf {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.boton-limpiar {
+  background-color: #ffcccc;
+  color: #333;
+  border: none;
 }
 
 .boton-pdf {
-  width: 100%;
-  margin-top: 20px;
-  background-color: #409eff;
-  color: white;
-  font-weight: bold;
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
 }
 
-.boton-pdf:hover {
-  background-color: #347cca;
-}
-
-/* Estilos para el Panel Derecho (Resultados) */
-.panel-derecho {
-  flex: 1;
-  padding: 30px;
-  overflow-y: auto;
-  background-color: #fff;
-}
-
-.panel-derecho .titulo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.grafico-container {
-  margin-top: 20px;
-  margin-bottom: 30px;
+.respuesta-item-resumida {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0;
+  margin: 10px 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
 }
 
-canvas {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #dcdcdc;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+.acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.detalle-respuesta {
+  margin-top: 20px;
   padding: 15px;
-  background-color: #f8f8f8;
-}
-
-.respuesta-item {
   background-color: #fafafa;
-  padding: 15px;
-  margin-bottom: 15px;
   border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.respuesta-item h3 {
-  font-size: 18px;
-  font-weight: 600;
+.detalle-titulo {
+  font-size: 20px;
+  font-weight: bold;
   margin-bottom: 10px;
-  color: #409eff;
 }
 
-.respuesta-item p {
-  font-size: 14px;
-  margin: 3px 0;
-  color: #555;
+.item-pregunta-respuesta {
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-start;
 }
 
-.respuesta-item p strong {
-  color: #333;
+.texto-pregunta {
+  flex: 1;
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
+.texto-respuesta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.respuesta-icono {
+  margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
   .resultados-layout {
     flex-direction: column;
   }
 
-  .panel-izquierdo {
-    border-right: none;
-    border-bottom: 1px solid #dcdcdc;
+  .panel-izquierdo,
+  .panel-derecho {
+    width: 100%;
   }
 
+  .panel-izquierdo {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .titulo {
+    font-size: 20px;
+  }
+
+  .detalle-titulo {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .titulo {
+    font-size: 18px;
+  }
+
+  .detalle-titulo {
+    font-size: 16px;
+  }
+
+  .panel-izquierdo,
   .panel-derecho {
-    padding: 20px;
+    padding: 10px;
+  }
+
+  .acciones {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo {
+    font-size: 16px;
+  }
+
+  .detalle-titulo {
+    font-size: 14px;
+  }
+
+  .input-campo,
+  .boton-limpiar,
+  .boton-pdf {
+    font-size: 14px;
   }
 }
