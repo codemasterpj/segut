@@ -1,0 +1,103 @@
+<div class="usuarios-layout">
+    <h2>Administrar Usuarios</h2>
+    <p>Lista de usuarios registrados. Selecciona un usuario para ver o editar sus detalles.</p>
+
+    <!-- Lista de Usuarios con nz-table -->
+    <nz-table #basicTable [nzData]="usuarios" [nzBordered]="true">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Empresa</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of basicTable.data">
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.apellido }}</td>
+          <td>{{ usuario.nombreEmpresa }}</td>
+          <td>
+            <button nz-button nzType="link" nz-tooltip="Ver detalles del usuario" (click)="verDetalles(usuario)">Detalles</button>
+            <button nz-button nzType="default" nzDanger nz-tooltip="Eliminar usuario" (click)="eliminarUsuario(usuario)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  
+    <!-- Detalles del Usuario Seleccionado -->
+    <div *ngIf="usuarioSeleccionado" class="detalle-usuario">
+        <h3>Detalles de {{ usuarioSeleccionado.nombre }} {{ usuarioSeleccionado.apellido }}</h3>
+      
+        <!-- Formulario en modo edición -->
+        <form [formGroup]="usuarioForm" *ngIf="editMode">
+          <label>Email: 
+            <input formControlName="email" />
+            <div *ngIf="usuarioForm.get('email')?.invalid && (usuarioForm.get('email')?.dirty || usuarioForm.get('email')?.touched)">
+                <small *ngIf="usuarioForm.get('email')?.errors?.['required']" class="error">El correo es obligatorio.</small>
+                <small *ngIf="usuarioForm.get('email')?.errors?.['email']" class="error">Formato de correo inválido.</small>
+              </div>
+              
+          </label>
+          <label>Nombre: <input formControlName="nombre" /></label>
+          <label>Apellido: <input formControlName="apellido" /></label>
+          <label>Edad: <input formControlName="edad" type="number" min="18" /></label>
+          <label>Teléfono: <input formControlName="telefono" /></label>
+        
+          <!-- Campo de selección múltiple para Áreas de Interés -->
+          <label>Áreas de Interés:</label>
+          <nz-select 
+            formControlName="areas" 
+            nzMode="multiple" 
+            nzPlaceHolder="Selecciona las áreas de interés" 
+            nzShowArrow="true" 
+            style="width: 100%;">
+            <nz-option 
+              *ngFor="let opcion of opcionesAreas" 
+              [nzLabel]="opcion.label | tituloEncuesta" 
+              [nzValue]="opcion.value">
+            </nz-option>
+          </nz-select>
+              
+          <label>Empresa: <input formControlName="nombreEmpresa" /></label>
+          <label>Categoría de Empresa: <input formControlName="categoriaEmpresa" /></label>
+          
+          <!-- Selector para el rol solo en modo edición -->
+          <label>Rol:
+            <select formControlName="role">
+              <option *ngFor="let rol of rolesDisponibles" [value]="rol">{{ rol }}</option>
+            </select>
+          </label>
+
+          <!-- Botones para Guardar y Cancelar -->
+          <button nz-button nzType="primary" (click)="guardarCambios()" [disabled]="usuarioForm.get('email')?.invalid || usuarioForm.invalid">Guardar</button>
+          <button nz-button nzType="default" (click)="cancelarEdicion()">Cancelar</button>
+        </form>
+      
+        <!-- Vista de detalles sin modo edición -->
+        <div *ngIf="!editMode">
+          <p><strong>Email:</strong> {{ usuarioSeleccionado.email }}</p>
+          <p><strong>Nombre:</strong> {{ usuarioSeleccionado.nombre }}</p>
+          <p><strong>Apellido:</strong> {{ usuarioSeleccionado.apellido }}</p>
+          <p><strong>Edad:</strong> {{ usuarioSeleccionado.edad }}</p>
+          <p><strong>Teléfono:</strong> {{ usuarioSeleccionado.telefono }}</p>
+          
+          <!-- Visualización amigable de Áreas de Interés -->
+          <p><strong>Áreas de Interés:</strong> 
+            <span *ngFor="let area of usuarioSeleccionado.areas">
+              {{ area | tituloEncuesta }}<span *ngIf="!isLast(area, usuarioSeleccionado.areas)">, </span>
+            </span>
+          </p>
+
+          <p><strong>Empresa:</strong> {{ usuarioSeleccionado.nombreEmpresa }}</p>
+          <p><strong>Categoría de Empresa:</strong> {{ usuarioSeleccionado.categoriaEmpresa }}</p>
+          <p><strong>Rol:</strong> {{ usuarioSeleccionado.role }}</p>
+          <button nz-button nzType="primary" (click)="activarEdicion()">Editar</button>
+        </div>
+      
+        <!-- Botón para cerrar los detalles -->
+        <button nz-button nzType="default" (click)="usuarioSeleccionado = null">Cerrar Detalles</button>
+    </div>
+</div>

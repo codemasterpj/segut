@@ -6,6 +6,7 @@ import { AdministrarComponent } from './pages/administrar/administrar.component'
 import { ContactoComponent } from './pages/contacto/contacto.component';
 import { PoliticasComponent } from './pages/politicas/politicas.component';
 import { RegistroComponent } from './pages/registro/registro.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'encuesta', component: EncuestaComponent},
   { path: 'resultados', component: ResultadosComponent},
   { path: 'administrar', component: AdministrarComponent},
+  { path: 'usuarios', component: UsuariosComponent },
   { path: 'contacto', component: ContactoComponent},
   { path: 'politicas', component: PoliticasComponent},
   { path: 'login', component: LoginComponent },

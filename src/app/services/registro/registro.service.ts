@@ -98,9 +98,14 @@ export class RegistroService {
     return updateDoc(docRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
   }
  
-  async deleteRegister(register: Register) : Promise<any> {
-    await this.usersService.deleteRegister(register.uid);
-    const docRef = doc(this.firestore, `registers/${register.uid}`);
-    return deleteDoc(docRef);
+  async deleteRegister(register: Register): Promise<any> {
+    try {
+      const docRef = doc(this.firestore, `registers/${register.uid}`);
+      await deleteDoc(docRef); // Elimina el documento del Firestore
+      console.log('Usuario eliminado de Firestore');
+    } catch (error) {
+      console.error('Error al eliminar usuario de Firestore:', error);
+    }
   }
+  
 }
