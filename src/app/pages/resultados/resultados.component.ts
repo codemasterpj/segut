@@ -67,6 +67,12 @@ export class ResultadosComponent implements OnInit {
   filtroArea: string = '';
   respuestaSeleccionada: Respuesta | null = null;
   chart: any;
+  puntuaciones: { [key: string]: number } = {
+    'nunca': 0,
+    'a veces': 1,
+    'frecuentemente': 2,
+    'siempre': 3
+  };
 
   constructor(
     private firestore: Firestore,
@@ -91,6 +97,26 @@ export class ResultadosComponent implements OnInit {
   }
   
  
+  calcularPuntuacion(respuesta: Respuesta): number {
+    let puntuacionTotal = 0;
+  
+    respuesta.respuestas.forEach(resp => {
+      const puntuacion = this.puntuaciones[resp.respuesta.toLowerCase()];
+      if (puntuacion !== undefined) {
+        puntuacionTotal += puntuacion;
+      }
+    });
+  
+    // Retornar la puntuación total
+    return puntuacionTotal;
+  }
+  
+
+  obtenerPuntuacion(respuestaTexto: string): number | null {
+    const puntuacion = this.puntuaciones[respuestaTexto.toLowerCase()];
+    return puntuacion !== undefined ? puntuacion : null;  // Retorna null si la respuesta no es válida
+  }
+  
   
   
   
@@ -193,6 +219,10 @@ export class ResultadosComponent implements OnInit {
     doc.text(`Edad: ${respuesta.edad}`, 14, 94);
     doc.text(`Sexo: ${respuesta.sexo}`, 14, 100);
     doc.text(`Área: ${respuesta.areaCurso}`, 14, 106);
+
+    // Puntuación cuantitativa
+  const puntuacion = this.calcularPuntuacion(respuesta);
+  doc.text(`Puntuación: ${puntuacion.toFixed(2)}`, 14, 112);
   
     // Verificar que `respuesta.respuestas` sea un array y contenga preguntas válidas
     if (Array.isArray(respuesta.respuestas) && respuesta.respuestas.length > 0) {

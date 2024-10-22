@@ -61,6 +61,8 @@
       <p><strong>Edad:</strong> {{ respuestaSeleccionada.edad }}</p>
       <p><strong>Sexo:</strong> {{ respuestaSeleccionada.sexo }}</p>
       <p><strong>Área:</strong> {{ respuestaSeleccionada.areaCurso }}</p>
+      <p><strong>Puntuación:</strong> {{ calcularPuntuacion(respuestaSeleccionada) }}</p>
+
     
       <!-- Lista de preguntas y respuestas alineadas -->
       <div *ngFor="let resp of respuestaSeleccionada.respuestas; let i = index" class="item-pregunta-respuesta">
@@ -69,10 +71,12 @@
         </div>
         <div class="texto-respuesta">
           <span class="respuesta-icono">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
+          <span *ngIf="obtenerPuntuacion(resp.respuesta) !== null">
+            - Puntuación: {{ obtenerPuntuacion(resp.respuesta) }}
+          </span>
         </div>
       </div>
-    </div>
-    
+      
     
     
     
