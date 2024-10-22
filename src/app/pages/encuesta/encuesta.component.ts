@@ -86,11 +86,13 @@ export class EncuestaComponent implements OnInit {
 
   toggleTipo(tipo: string): void {
     this.tipoSeleccionado = this.tipoSeleccionado === tipo ? null : tipo;
+    console.log('Tipo Seleccionado:', this.tipoSeleccionado);
   }
 
   seleccionarEncuesta(encuesta: Encuesta, event: Event): void {
     event.stopPropagation();
     this.encuestaSeleccionada = encuesta;
+    console.log('Encuesta Seleccionada:', this.encuestaSeleccionada);
     this.respuestas = Array(encuesta.preguntas?.length).fill(null);
   }
 

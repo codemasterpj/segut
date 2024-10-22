@@ -93,9 +93,24 @@ export class RegistroService {
     return addDoc(registersRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
   }
 
+
   updateRegister({uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
     const docRef = doc(this.firestore, `registers/${uid}`);
-    return updateDoc(docRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
+    
+    // Crea un objeto solo con los campos que se van a actualizar, sin el `uid`
+    const updatedData = {
+      email,
+      nombre,
+      apellido,
+      edad,
+      telefono,
+      areas,
+      nombreEmpresa,
+      categoriaEmpresa,
+      role
+    };
+    
+    return updateDoc(docRef, updatedData); // Solo actualiza los campos relevantes, el uid no cambia
   }
  
   async deleteRegister(register: Register): Promise<any> {

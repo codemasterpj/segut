@@ -26,8 +26,8 @@
           <a routerLink="/resultados">Resultados</a>
         </li>
 
-        <!-- Administrar Encuestas (Solo para administradores) -->
-        <li nz-menu-item >
+        <!-- Administrar Encuestas (Solo para administradores y gestores) -->
+        <li nz-menu-item *ngIf="isAdmin || isGestor">
           <a routerLink="/panel">Administrar</a>
         </li>
 
