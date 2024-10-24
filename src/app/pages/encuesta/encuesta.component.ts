@@ -46,13 +46,13 @@ export class EncuestaComponent implements OnInit {
   proposito: string = '';
   edad: number | string = ''; 
   sexo: string = '';
-  
+  linkGenerado: string | null = null;  // Variable para almacenar el link generado
 
   constructor(
     private firestore: Firestore,
     private encuestasService: EncuestasService,
     private registroService: RegistroService,
-    private fb: FormBuilder
+    
   ) {}
 
   ngOnInit(): void {
@@ -94,7 +94,23 @@ export class EncuestaComponent implements OnInit {
     this.encuestaSeleccionada = encuesta;
     console.log('Encuesta Seleccionada:', this.encuestaSeleccionada);
     this.respuestas = Array(encuesta.preguntas?.length).fill(null);
+    this.linkGenerado = null;  // Reiniciar el link cuando se selecciona una nueva encuesta
   }
+
+  generarLinkEncuesta(encuesta: Encuesta): string {
+    const encuestadorId = this.registroService.getUserId();  // Asegúrate de obtener el ID del encuestador correctamente
+  
+    if (!encuestadorId || !encuesta?.id) {
+      alert('No se puede generar el link, falta información.');
+      return '';
+    }
+  
+    // Genera el enlace con los parámetros de encuestaId y encuestadorId
+    const link = `${window.location.origin}/responde-encuesta?encuestaId=${encuesta.id}&encuestadorId=${encuestadorId}`;
+    return link;
+  }
+  
+  
 
   enviarEncuesta(): void {
     const userId = this.registroService.getUserId();
@@ -140,7 +156,6 @@ export class EncuestaComponent implements OnInit {
         alert('Hubo un problema al enviar la encuesta.');
       });
   }
-  
 
   limpiarFormulario(): void {
     this.nombre = '';
@@ -150,5 +165,16 @@ export class EncuestaComponent implements OnInit {
     this.areaCurso = '';
     this.proposito = '';
     this.respuestas = Array(this.encuestaSeleccionada?.preguntas?.length).fill(null);
+    this.linkGenerado = null;  // Limpiar el link después de enviar la encuesta
   }
+
+  mostrarLink(): void {
+    if (this.encuestaSeleccionada) {
+      this.linkGenerado = this.generarLinkEncuesta(this.encuestaSeleccionada);
+    } else {
+      alert('Selecciona una encuesta para generar el link.');
+    }
+  }
+
+
 }

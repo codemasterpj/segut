@@ -1,7 +1,7 @@
 /* Contenedor principal del layout */
 .encuesta-layout {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
   background-color: #f2f4f8;
   min-height: 100vh;
@@ -15,8 +15,10 @@
   color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  max-width: 240px;
+  width: 20%;
+  min-width: 240px;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .tipo-lista {
@@ -66,8 +68,8 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  max-width: 800px;
-  width: 100%;
+  flex-grow: 1;
+  width: 75%;
 }
 
 /* Contenido del panel derecho */
@@ -150,8 +152,23 @@
   margin-right: 10px;
 }
 
+/* Botones de escala */
+.escala-botones {
+  display: flex;
+  gap: 10px;
+}
 
-/* Botón */
+.escala-botones button {
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.escala-botones button.selected {
+  background-color: #1890ff; /* Color de fondo para el botón seleccionado */
+  color: #fff; /* Color del texto para el botón seleccionado */
+}
+
+/* Botón de enviar */
 .boton-enviar {
   margin-top: 25px;
   background-color: #2b3e50;
@@ -169,8 +186,17 @@
   background-color: #3e4e63;
 }
 
+/* Link generado */
+.link-generado {
+  margin-top: 20px;
+  font-size: 14px;
+}
 
-.selected {
-  background-color: #1890ff; /* Color de fondo para el botón seleccionado */
-  color: #fff; /* Color del texto para el botón seleccionado */
+.link-generado a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.link-generado a:hover {
+  text-decoration: underline;
 }

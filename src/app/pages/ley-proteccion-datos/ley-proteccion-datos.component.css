@@ -1,0 +1,50 @@
+/* Contenedor principal para la página legal */
+.legal-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Título de la página */
+  .legal-container h2 {
+    font-size: 28px;
+    color: #2b3e50;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    animation: slideIn 1s ease-in-out;
+  }
+  
+  /* Texto introductorio y secciones */
+  .legal-container p {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  /* Título de cada sección */
+  .legal-section h3 {
+    font-size: 22px;
+    color: #2b3e50;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .legal-container {
+      padding: 20px;
+    }
+  
+    .legal-section h3 {
+      font-size: 20px;
+    }
+  }
+  

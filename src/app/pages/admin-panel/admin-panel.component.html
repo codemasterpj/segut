@@ -1,38 +1,37 @@
 <div class="admin-panel">
-    <h2>Panel de Administración</h2>
-  
-    <div class="cards-container">
-      <!-- Tarjeta de Administración de Usuarios -->
-      <nz-card nzTitle="Administración de Usuarios" [nzBordered]="true">
-        <p>Gestiona los usuarios registrados en el sistema.</p>
-        <div class="centered-button">
-          <button nz-button nzType="primary" (click)="navigateTo('usuarios')">Administrar Usuarios</button>
-        </div>
-      </nz-card>
-  
-      <!-- Tarjeta de Administración de Encuestas -->
-      <nz-card nzTitle="Administración de Encuestas" [nzBordered]="true">
-        <p>Administra, crea y edita las encuestas disponibles.</p>
-        <div class="centered-button">
-          <button nz-button nzType="primary" (click)="navigateTo('administrar')">Administrar Encuestas</button>
-        </div>
-      </nz-card>
-  
-      <!-- Tarjeta de Reportes de Encuestas -->
-      <nz-card nzTitle="Reportes de Encuestas" [nzBordered]="true">
-        <p>Visualiza los reportes y estadísticas de todas las encuestas.</p>
-        <div class="centered-button">
-          <button nz-button nzType="primary" (click)="navigateTo('reportes')">Ver Reportes</button>
-        </div>
-      </nz-card>
-  
-      <!-- Tarjeta de Cerrar Sesión -->
-      <nz-card nzTitle="Cerrar Sesión" [nzBordered]="true">
-        <p>Cierra la sesión del administrador.</p>
-        <div class="centered-button">
-          <button nz-button nzType="default" nzDanger (click)="logout()">Cerrar Sesión</button>
-        </div>
-      </nz-card>
-    </div>
+  <h2 class="titulo">Panel de Administración</h2>
+
+  <div class="cards-container">
+    <!-- Tarjeta de Administración de Usuarios -->
+    <nz-card nzTitle="Administración de Usuarios" [nzBordered]="true" class="admin-card">
+      <p class="card-description">Gestiona los usuarios registrados en el sistema.</p>
+      <div class="centered-button">
+        <button nz-button nzType="primary" (click)="navigateTo('usuarios')">Administrar Usuarios</button>
+      </div>
+    </nz-card>
+
+    <!-- Tarjeta de Administración de Encuestas -->
+    <nz-card nzTitle="Administración de Encuestas" [nzBordered]="true" class="admin-card">
+      <p class="card-description">Administra, crea y edita las encuestas disponibles.</p>
+      <div class="centered-button">
+        <button nz-button nzType="primary" (click)="navigateTo('administrar')">Administrar Encuestas</button>
+      </div>
+    </nz-card>
+
+    <!-- Tarjeta de Reportes de Encuestas -->
+    <nz-card nzTitle="Reportes de Encuestas" [nzBordered]="true" class="admin-card">
+      <p class="card-description">Visualiza los reportes y estadísticas de todas las encuestas.</p>
+      <div class="centered-button">
+        <button nz-button nzType="primary" (click)="navigateTo('reportes')">Ver Reportes</button>
+      </div>
+    </nz-card>
+
+    <!-- Tarjeta de Cerrar Sesión -->
+    <nz-card nzTitle="Cerrar Sesión" [nzBordered]="true" class="admin-card">
+      <p class="card-description">Cierra la sesión del administrador.</p>
+      <div class="centered-button">
+        <button nz-button nzType="default" nzDanger (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </nz-card>
   </div>
-  
+</div>

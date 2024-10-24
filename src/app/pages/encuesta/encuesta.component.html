@@ -46,72 +46,76 @@
       </nz-select>
     </div>
 
-    
-    
-<!-- Preguntas de la encuesta -->
-<div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta">
-  <p class="pregunta-texto">{{ pregunta.texto }}</p>
-  <div class="respuesta">
-    <ng-container [ngSwitch]="pregunta.tipoRespuesta">
+    <!-- Preguntas de la encuesta -->
+    <div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta">
+      <p class="pregunta-texto">{{ pregunta.texto }}</p>
+      <div class="respuesta">
+        <ng-container [ngSwitch]="pregunta.tipoRespuesta">
       
-      <!-- Respuesta corta -->
-      <ng-container *ngSwitchCase="'corta'">
-        <input nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta corta" class="input-campo" />
-      </ng-container>
-
-      <!-- Párrafo -->
-      <ng-container *ngSwitchCase="'parrafo'">
-        <textarea nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta en párrafo" class="textarea-campo"></textarea>
-      </ng-container>
-
-      <!-- Opción -->
-      <ng-container *ngSwitchCase="'opcion'">
-        <nz-radio-group [(ngModel)]="respuestas[i]" class="radio-group">
-          <label nz-radio nzValue="opcion1">si</label>
-          <label nz-radio nzValue="opcion2">no</label>
-        </nz-radio-group>
-      </ng-container>
-
-      <!-- Casilla 
-      <ng-container *ngSwitchCase="'casilla'">
-        <label nz-checkbox [(ngModel)]="respuestas[i]">Marcar esta casilla</label>
-      </ng-container>-->
-
-      <!-- Desplegable -->
-      <ng-container *ngSwitchCase="'desplegable'">
-        <nz-select [(ngModel)]="respuestas[i]" placeholder="Seleccione una opción" class="desplegable-campo">
-          <nz-option nzValue="opcion1" nzLabel="Siempre"></nz-option>
-          <nz-option nzValue="opcion2" nzLabel="Frecuentemente"></nz-option>
-          <nz-option nzValue="opcion3" nzLabel="A veces"></nz-option>
-          <nz-option nzValue="opcion3" nzLabel="Nunca"></nz-option>
-        </nz-select>
-      </ng-container>
-
-      <!-- Escala de 1 a 5 -->
-      <ng-container *ngSwitchCase="'escala'">
-        <div class="escala-botones">
-          <button *ngFor="let valor of ['Nunca', 'A veces', 'Frecuentemente', 'Siempre']; let j = index" 
-                  nz-button 
-                  nzType="default" 
-                  (click)="respuestas[i] = valor" 
-                  [ngClass]="{'selected': respuestas[i] === valor}">
-            {{ valor }}
-          </button>
-        </div>
-      </ng-container>
-      
-      <!-- Fallback para tipo desconocido -->
-      <ng-container *ngSwitchDefault>
-        <p class="texto-advertencia">Tipo de respuesta desconocido.</p>
-      </ng-container>
-
-    </ng-container>
-  </div>
-</div>
-
-
+          <!-- Respuesta corta -->
+          <ng-container *ngSwitchCase="'corta'">
+            <input nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta corta" class="input-campo" />
+          </ng-container>
     
-    <!-- Botón para enviar la encuesta -->
-    <button nz-button nzType="primary" (click)="enviarEncuesta()" class="boton-enviar">Enviar Encuesta</button>
+          <!-- Párrafo -->
+          <ng-container *ngSwitchCase="'parrafo'">
+            <textarea nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta en párrafo" class="textarea-campo"></textarea>
+          </ng-container>
+    
+          <!-- Opción -->
+          <ng-container *ngSwitchCase="'opcion'">
+            <nz-radio-group [(ngModel)]="respuestas[i]" class="radio-group">
+              <label nz-radio nzValue="opcion1">si</label>
+              <label nz-radio nzValue="opcion2">no</label>
+            </nz-radio-group>
+          </ng-container>
+    
+          <!-- Casilla 
+          <ng-container *ngSwitchCase="'casilla'">
+            <label nz-checkbox [(ngModel)]="respuestas[i]">Marcar esta casilla</label>
+          </ng-container>-->
+    
+          <!-- Desplegable -->
+          <ng-container *ngSwitchCase="'desplegable'">
+            <nz-select [(ngModel)]="respuestas[i]" placeholder="Seleccione una opción" class="desplegable-campo">
+              <nz-option nzValue="opcion1" nzLabel="Siempre"></nz-option>
+              <nz-option nzValue="opcion2" nzLabel="Frecuentemente"></nz-option>
+              <nz-option nzValue="opcion3" nzLabel="A veces"></nz-option>
+              <nz-option nzValue="opcion3" nzLabel="Nunca"></nz-option>
+            </nz-select>
+          </ng-container>
+    
+          <!-- Escala de 1 a 5 -->
+          <ng-container *ngSwitchCase="'escala'">
+            <div class="escala-botones">
+              <button *ngFor="let valor of ['Nunca', 'A veces', 'Frecuentemente', 'Siempre']; let j = index" 
+                      nz-button 
+                      nzType="default" 
+                      (click)="respuestas[i] = valor" 
+                      [ngClass]="{'selected': respuestas[i] === valor}">
+                {{ valor }}
+              </button>
+            </div>
+          </ng-container>
+          
+          <!-- Fallback para tipo desconocido -->
+          <ng-container *ngSwitchDefault>
+            <p class="texto-advertencia">Tipo de respuesta desconocido.</p>
+          </ng-container>
+    
+        </ng-container>
+      </div>
+    </div>
+
+   <!-- Botón para generar el link de la encuesta -->
+<button nz-button nzType="primary" (click)="mostrarLink()">
+  Generar Link para esta Encuesta
+</button>
+
+<!-- Mostrar el link generado si existe -->
+ 
+<p *ngIf="linkGenerado">Link generado: <a [href]="linkGenerado" target="_blank">{{ linkGenerado }}</a></p>
+
+
   </div>
 </div>

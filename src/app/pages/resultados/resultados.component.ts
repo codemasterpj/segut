@@ -11,11 +11,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { collection, collectionData, Firestore,query, where } from '@angular/fire/firestore';
 import { EncuestasService } from '../../services/encuestas/encuestas.service';
-import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Register, RegistroService } from '../../services/registro/registro.service';
+import { RegistroService } from '../../services/registro/registro.service';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'; 
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 
 
@@ -30,14 +29,13 @@ interface Encuesta {
 
 interface Respuesta {
   encuestaId: string;
-  userId: string;
+  encuestadorId: string;
   nombre: string;
   apellido: string;
   edad: string;
   sexo: string;
   areaCurso: string;
-  proposito: string;
-  respuestas: any[];  // Ajusta el tipo según la estructura de tus respuestas
+  respuestas: { pregunta: string; respuesta: string | null }[];
 }
 
 
@@ -66,7 +64,6 @@ export class ResultadosComponent implements OnInit {
   filtroSexo: string = '';
   filtroArea: string = '';
   respuestaSeleccionada: Respuesta | null = null;
-  chart: any;
   puntuaciones: { [key: string]: number } = {
     'nunca': 0,
     'a veces': 1,
@@ -82,8 +79,6 @@ export class ResultadosComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    
-  
     const userId = await this.registroService.getUserId();
     if (userId) {
       try {
@@ -99,23 +94,24 @@ export class ResultadosComponent implements OnInit {
  
   calcularPuntuacion(respuesta: Respuesta): number {
     let puntuacionTotal = 0;
-  
     respuesta.respuestas.forEach(resp => {
-      const puntuacion = this.puntuaciones[resp.respuesta.toLowerCase()];
+      const puntuacion = this.puntuaciones[resp.respuesta?.toLowerCase() ?? ''];
       if (puntuacion !== undefined) {
         puntuacionTotal += puntuacion;
       }
     });
-  
-    // Retornar la puntuación total
     return puntuacionTotal;
   }
   
 
-  obtenerPuntuacion(respuestaTexto: string): number | null {
+  obtenerPuntuacion(respuestaTexto: string | null): number | null {
+    if (respuestaTexto === null) {
+      return null;
+    }
     const puntuacion = this.puntuaciones[respuestaTexto.toLowerCase()];
-    return puntuacion !== undefined ? puntuacion : null;  // Retorna null si la respuesta no es válida
+    return puntuacion !== undefined ? puntuacion : null;
   }
+  
   
   
   
@@ -127,16 +123,16 @@ export class ResultadosComponent implements OnInit {
   cargarRespuestas(userId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const respuestasRef = collection(this.firestore, 'respuestas');
-      const q = query(respuestasRef, where('userId', '==', userId));
-  
+      const q = query(respuestasRef, where('encuestadorId', '==', userId));
+
       collectionData(q).subscribe(
         (respuestas: any[]) => {
           this.respuestas = respuestas;
-          resolve(); // Resuelve la promesa al finalizar la carga de respuestas
+          resolve();
         },
         (error: unknown) => {
           console.error('Error al cargar respuestas:', error);
-          reject(error); // Rechaza la promesa si ocurre un error
+          reject(error);
         }
       );
     });
@@ -220,28 +216,30 @@ export class ResultadosComponent implements OnInit {
     doc.text(`Sexo: ${respuesta.sexo}`, 14, 100);
     doc.text(`Área: ${respuesta.areaCurso}`, 14, 106);
 
+
     // Puntuación cuantitativa
   const puntuacion = this.calcularPuntuacion(respuesta);
   doc.text(`Puntuación: ${puntuacion.toFixed(2)}`, 14, 112);
   
     // Verificar que `respuesta.respuestas` sea un array y contenga preguntas válidas
     if (Array.isArray(respuesta.respuestas) && respuesta.respuestas.length > 0) {
-      const respuestaData = respuesta.respuestas.map((resp, index) => {
-        const preguntaTexto = typeof resp.pregunta === 'string'
-          ? resp.pregunta
-          : resp.pregunta?.texto || JSON.stringify(resp.pregunta); // Ajusta según la estructura
+      
+      const respuestaData = respuesta.respuestas.map((resp, index) => [
+        index + 1,
+        resp.pregunta,
+        resp.respuesta || '',
+        `${this.obtenerPuntuacion(resp.respuesta) ?? 'N/A'}`
         
-        return [index + 1, preguntaTexto, resp.respuesta || ''];
-      });
-  
+      ]);
+
       if (respuestaData.length > 0) {
         autoTable(doc, {
-          head: [['#', 'Pregunta', 'Respuesta']],
+          head: [['#', 'Pregunta', 'Respuesta', 'Puntuación']],
           body: respuestaData,
-          startY: 112
+          startY: 118
         });
       } else {
-        doc.text('No se encontraron preguntas y respuestas.', 14, 112);
+        doc.text('No se encontraron preguntas y respuestas.', 14, 118);
       }
     } else {
       doc.text('No se encontraron preguntas y respuestas.', 14, 112);

@@ -1,150 +1,137 @@
-/* Estilos generales */
-body {
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    background-color: #f4f6f9;
-    margin: 0;
-}
-
-/* Panel de Administración */
+/* Contenedor principal del panel de administración */
 .admin-panel {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to bottom, #f2f4f8, #e2e6ec);
+    padding: 50px 20px;
+    min-height: 100vh;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Título del panel */
+  .titulo {
+    font-size: 28px;
+    color: #2b3e50;
+    margin-bottom: 25px;
+    font-weight: bold;
     text-align: center;
-}
-
-.admin-panel h2 {
-    font-size: 2.2rem;
-    color: #4a4a4a;
-    margin-bottom: 40px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    transition: color 0.3s ease;
-}
-
-/* Disposición de las Tarjetas */
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    animation: slideIn 1s ease-in-out;
+  }
+  
+  /* Animación del título */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Contenedor de tarjetas */
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
     gap: 25px;
-    padding: 20px;
-}
-
-/* Estilo de Tarjetas */
-nz-card {
+    justify-content: center;
+    max-width: 1200px;
     width: 100%;
-    padding: 20px;
+  }
+  
+  /* Estilo de las tarjetas */
+  .admin-card {
+    background: linear-gradient(to top, #ffffff, #f9fafc);
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-    background-color: #ffffff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    overflow: hidden;
-}
-
-nz-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    background-color: #f1f5ff;
-}
-
-nz-card p {
-    font-size: 1rem;
-    color: #666;
-    margin: 15px 0;
-}
-
-/* Estilo del Contenedor Centrado para Botón */
-.centered-button {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .admin-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Descripción de la tarjeta */
+  .card-description {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    transition: color 0.3s ease;
+  }
+  
+  .admin-card:hover .card-description {
+    color: #495567;
+  }
+  
+  /* Botón centrado */
+  .centered-button {
     display: flex;
     justify-content: center;
-}
-
-/* Estilo de Botones */
-button[nz-button] {
-    margin-top: 10px;
-    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  /* Botones de la tarjeta */
+  button[nz-button] {
+    width: 100%;
+    padding: 12px;
     font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Animaciones de Hover para los botones */
-button[nzType="primary"] {
-    background-color: #4285f4;
+    border-radius: 6px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  button[nz-button][nzType="primary"] {
+    background-color: #1890ff;
+    color: #ffffff;
     border: none;
-    color: #fff;
-    box-shadow: 0 4px 6px rgba(66, 133, 244, 0.3);
-}
-
-button[nzType="primary"]:hover {
-    background-color: #357ae8;
-    box-shadow: 0 6px 10px rgba(66, 133, 244, 0.5);
-    transform: scale(1.05);
-}
-
-button[nzType="default"] {
-    background-color: #e8eaed;
-    color: #5f6368;
-    border: 1px solid #dadce0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button[nzType="default"]:hover {
-    background-color: #d3d6da;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    transform: scale(1.05);
-}
-
-button[nzDanger] {
-    color: #d32f2f;
-    background-color: #fbe9e7;
-}
-
-button[nzDanger]:hover {
-    background-color: #f8bdb7;
-}
-
-/* Efecto de Sombra y Animación para Tarjetas */
-.cards-container nz-card {
-    transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-}
-
-.cards-container nz-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    transform: translateY(-8px);
-    background-color: #f9f9f9;
-}
-
-/* Responsividad */
-@media (max-width: 1024px) {
-    .admin-panel h2 {
-        font-size: 2rem;
-    }
+  }
+  
+  button[nz-button][nzType="primary"]:hover {
+    background-color: #40a9ff;
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  }
+  
+  /* Botón de Cerrar Sesión */
+  button[nz-button][nzDanger] {
+    background-color: #ff4d4f;
+    color: #ffffff;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  button[nz-button][nzDanger]:hover {
+    background-color: #ff7875;
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+  }
+  
+  /* Responsividad */
+  @media (max-width: 768px) {
     .cards-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      flex-direction: column;
+      align-items: center;
     }
-}
-
-@media (max-width: 768px) {
-    .admin-panel h2 {
-        font-size: 1.8rem;
+  
+    .admin-card {
+      width: 90%;
     }
-
-    .cards-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
-
-@media (max-width: 576px) {
-    .admin-panel h2 {
-        font-size: 1.6rem;
-    }
-
-    button[nz-button] {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
-}
+  }
+  

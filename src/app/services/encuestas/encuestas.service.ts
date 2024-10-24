@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Encuesta {
@@ -30,6 +30,12 @@ export class EncuestasService {
     return collectionData(encuestasRef, { idField: 'id' }) as Observable<Encuesta[]>;
 
   }
+
+    // Método para obtener una encuesta específica por su ID
+    obtenerEncuestaPorId(encuestaId: string): Observable<Encuesta> {
+      const encuestaRef = doc(this.firestore, `encuestas/${encuestaId}`);
+      return docData(encuestaRef, { idField: 'id' }) as Observable<Encuesta>;
+    }
 
   actualizarEncuesta(encuesta: Encuesta): Promise<void> {
     const docRef = doc(this.firestore, `encuestas/${encuesta.id}`);

@@ -1,8 +1,8 @@
-<div class="resultados-layout">
+<nz-layout class="resultados-layout">
   <!-- Panel Izquierdo para Filtros (20%) -->
   <nz-sider nzWidth="20%" class="panel-izquierdo">
-    <h3>Filtros</h3>
-    
+    <h3 class="titulo-filtros">Filtros</h3>
+
     <!-- Filtro de Edad -->
     <label class="campo-label">Edad:</label>
     <nz-select [(ngModel)]="filtroEdad" placeholder="Seleccione un rango de edad" class="input-campo">
@@ -23,35 +23,29 @@
     <!-- Filtro de Área -->
     <label class="campo-label">Área:</label>
     <nz-select [(ngModel)]="filtroArea" placeholder="Seleccione área" class="input-campo">
-      <!-- Agrega opciones de área aquí -->
       <nz-option nzValue="area1" nzLabel="Área 1"></nz-option>
       <nz-option nzValue="area2" nzLabel="Área 2"></nz-option>
     </nz-select>
 
-
-
     <!-- Botón para Limpiar -->
-   <button nz-button nzType="default" (click)="limpiarFiltros()" class="boton-limpiar">Limpiar</button>
+    <button nz-button nzType="default" (click)="limpiarFiltros()" class="boton-limpiar">Limpiar</button>
 
     <!-- Botón para Generar PDF -->
     <button nz-button nzType="primary" (click)="exportarPDF()" class="boton-pdf">Generar PDF</button>
   </nz-sider>
 
   <!-- Panel Derecho para Resultados y Gráfico (80%) -->
-  <div class="panel-derecho">
+  <nz-content class="panel-derecho">
     <h2 class="titulo">Resultados de la Encuesta</h2>
-    
-      
-    
-<!-- Lista de Encuestas Filtradas Automáticamente -->
-<div *ngFor="let respuesta of filtrarRespuestas()" class="respuesta-item-resumida">
-  <h3>{{ respuesta.nombre }} {{ respuesta.apellido }}</h3>
-  <div class="acciones">
-    <button nz-button nzType="link" (click)="verDetalles(respuesta)">Ver Detalles</button>
-    <button nz-button nzType="default" (click)="generarPDFIndividual(respuesta)">Generar PDF</button>
-  </div>
-</div>
 
+    <!-- Lista de Encuestas Filtradas Automáticamente -->
+    <div *ngFor="let respuesta of filtrarRespuestas()" class="respuesta-item-resumida">
+      <h3>{{ respuesta.nombre }} {{ respuesta.apellido }}</h3>
+      <div class="acciones">
+        <button nz-button nzType="link" (click)="verDetalles(respuesta)">Ver Detalles</button>
+        <button nz-button nzType="default" (click)="generarPDFIndividual(respuesta)">Generar PDF</button>
+      </div>
+    </div>
 
     <!-- Detalle de la Encuesta Seleccionada -->
     <div *ngIf="respuestaSeleccionada" class="detalle-respuesta">
@@ -63,22 +57,18 @@
       <p><strong>Área:</strong> {{ respuestaSeleccionada.areaCurso }}</p>
       <p><strong>Puntuación:</strong> {{ calcularPuntuacion(respuestaSeleccionada) }}</p>
 
-    
       <!-- Lista de preguntas y respuestas alineadas -->
       <div *ngFor="let resp of respuestaSeleccionada.respuestas; let i = index" class="item-pregunta-respuesta">
         <div class="texto-pregunta">
-          <strong>{{ i + 1 }}. {{ resp.pregunta?.texto || 'Pregunta no disponible' }}</strong>
+          <strong>{{ i + 1 }}. {{ resp.pregunta || 'Pregunta no disponible' }}</strong>
         </div>
         <div class="texto-respuesta">
-          <span class="respuesta-icono">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
-          <span *ngIf="obtenerPuntuacion(resp.respuesta) !== null">
+          <span class="respuesta-icono" *ngIf="resp.respuesta">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
+          <span *ngIf="resp.respuesta && obtenerPuntuacion(resp.respuesta) !== null">
             - Puntuación: {{ obtenerPuntuacion(resp.respuesta) }}
           </span>
         </div>
       </div>
-      
-    
-    
-    
-  </div>
-</div>
+    </div>
+  </nz-content>
+</nz-layout>

@@ -1,127 +1,148 @@
-.encuesta-layout {
-  display: flex;
-  height: 100vh;
+/* Tarjeta de Administración */
+.admin-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 40px;
 }
 
-.panel-izquierdo {
-  background-color: #f0f2f5;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tipo-lista {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tipo-item {
-  cursor: pointer;
-  padding: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.tipo-item:hover {
-  background-color: #e6f7ff;
-}
-
-.tipo-titulo {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.encuestas-lista {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 0 10px;
-}
-
-.encuesta-item {
-  cursor: pointer;
-  padding: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.encuesta-item:hover {
-  background-color: #bae7ff;
-}
-
-.panel-derecho {
-  padding: 20px;
-  background-color: white;
-  width: 100%;
-}
-
-.titulo {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.descripcion {
-  font-size: 16px;
+/* Formularios */
+nz-form-item {
   margin-bottom: 20px;
 }
 
-.campos-adicionales {
-  margin-bottom: 20px;
+nz-form-label {
+  font-weight: 600;
+  color: #2b3e50;
 }
 
-.campo-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.input-campo, .textarea-campo {
+nz-form-control input[nz-input],
+nz-form-control textarea[nz-input],
+nz-select {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #d9d9d9;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d9e6;
   border-radius: 4px;
+  background-color: #f9fafc;
+  transition: border-color 0.3s;
 }
 
-.textarea-campo {
-  height: 80px;
+input[nz-input]:focus,
+textarea[nz-input]:focus,
+nz-select:focus {
+  border-color: #2b3e50;
+  outline: none;
 }
 
-.pregunta {
-  margin-bottom: 20px;
-}
-
-.pregunta-texto {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.respuesta {
+/* Preguntas */
+.pregunta-item {
   display: flex;
-  gap: 15px;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.radio-group {
+.pregunta-item input[nz-input],
+.pregunta-item nz-select {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.eliminar-boton {
+  margin-left: 10px;
+  color: #ff4d4f;
+}
+
+.eliminar-boton:hover {
+  color: #ff7875;
+}
+
+/* Botones de formulario */
+button[nz-button] {
+  margin-top: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button[nz-button]:hover {
+  background-color: #3e4e63;
+  color: #ffffff;
+}
+
+/* Botón Añadir Pregunta */
+button[nz-button][nzType="dashed"] {
+  margin-bottom: 20px;
+  border-color: #1890ff;
+  color: #1890ff;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+button[nz-button][nzType="dashed"]:hover {
+  border-color: #40a9ff;
+  color: #40a9ff;
+}
+
+/* Botón de Crear/Actualizar Encuesta */
+button[nz-button][nzType="primary"] {
+  background-color: #2b3e50;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+}
+
+button[nz-button][nzType="primary"]:hover {
+  background-color: #3e4e63;
+}
+
+/* Grupo de botones (Formulario) */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Lista de Encuestas */
+nz-list {
+  margin-top: 20px;
+}
+
+.nz-list-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.nz-list-item-meta-title {
+  font-size: 18px;
+  color: #2b3e50;
+  font-weight: bold;
+}
+
+.nz-list-item-meta-description {
+  color: #6c757d;
+}
+
+/* Botones de la Lista */
+.list-buttons {
   display: flex;
   gap: 10px;
 }
 
-.radio-opcion {
-  margin-right: 10px;
+.list-buttons button[nz-button] {
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.rate-input {
-  display: inline-block;
+.list-buttons button[nz-button]:hover {
+  background-color: #e6f7ff;
+  color: #1890ff;
 }
 
-.boton-enviar {
-  background-color: #1890ff;
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.list-buttons button[nz-button][nzDanger] {
+  color: #ff4d4f;
 }
 
-.boton-enviar:hover {
-  background-color: #40a9ff;
+.list-buttons button[nz-button][nzDanger]:hover {
+  background-color: #fff1f0;
+  color: #ff7875;
 }

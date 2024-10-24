@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzIconService } from 'ng-zorro-antd/icon';
@@ -6,7 +7,7 @@ import { NzIconService } from 'ng-zorro-antd/icon';
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [NzGridModule, NzIconModule],
+  imports: [NzGridModule, NzIconModule, RouterModule],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
 
