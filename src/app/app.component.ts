@@ -20,6 +20,7 @@ export class AppComponent {
   isLoggedIn = false;
   isAdmin = false;
   isGestor = false;
+  isEncuestador = false;
   isCollapsed = false;
 
   mostrarFooter = true;
@@ -48,6 +49,7 @@ export class AppComponent {
               // Comparar con "Administrador" y "Gestor"
               this.isAdmin = register.role.trim() === 'Administrador';
               this.isGestor = register.role.trim() === 'Gestor';
+              this.isEncuestador = register.role.trim() === 'Encuestador';
   
               // Imprimir los resultados para depuración
               console.log('isAdmin:', this.isAdmin);

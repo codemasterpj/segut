@@ -85,5 +85,52 @@ form[nz-form] {
     .register-area {
       margin-top: 20px;
     }
+
+    /* Contenido del Modal */
+/* Contenedor principal */
+.legal-container {
+  padding: 16px;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  width: 60%;
+}
+
+/* Título principal */
+.legal-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #004085;
+  margin-bottom: 12px;
+}
+
+/* Introducción */
+.legal-intro {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Sección de términos */
+.legal-section {
+  margin-top: 20px;
+}
+
+/* Títulos de las secciones */
+.section-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 8px;
+}
+
+/* Párrafos de cada sección */
+.legal-section p {
+  margin: 0;
+  color: #666;
+}
+
+
+
   }
   

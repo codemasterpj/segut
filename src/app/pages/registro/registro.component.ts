@@ -11,13 +11,15 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [NzFormModule, NzInputModule, NzButtonModule, ReactiveFormsModule, NzCheckboxModule, NzSelectModule, NzIconModule, NzDatePickerModule, CommonModule ],
+  imports: [NzFormModule, NzInputModule, NzButtonModule, ReactiveFormsModule, NzCheckboxModule, 
+    NzSelectModule, NzIconModule, NzDatePickerModule, CommonModule, NzModalModule ],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
@@ -48,6 +50,9 @@ export class RegistroComponent {
     ];
 
   form: FormGroup;
+  termsForm: FormGroup; 
+  isTermsModalVisible = false;
+
 
   constructor( private formBuilder: FormBuilder, private registerService: RegistroService,  private message: NzMessageService, private router: Router ) {
     this.form = this.formBuilder.group({
@@ -57,21 +62,51 @@ export class RegistroComponent {
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
       edad: [null, [Validators.required, Validators.min(18)]],
-      telefono: ['', [Validators.required]],
+      telefono: ['', [Validators.required, Validators.minLength(10),  Validators.maxLength(10)]],
       areas: [[], Validators.required],
       nombreEmpresa: ['', [Validators.required]],
       categoriaEmpresa: [null, [Validators.required]],
       role: ['Usuario'],
 
     })
+
+    this.termsForm = this.formBuilder.group({
+      termsAccepted: [false, Validators.requiredTrue]
+    });
   }
 
+  validateNumberInput(event: KeyboardEvent): void {
+    const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (!allowedKeys.includes(event.key)) {
+      event.preventDefault(); // Evita que se escriban caracteres no numéricos
+    }
+  }
   
 
     // Acceso rápido al FormArray de áreas
     get areasFormArray(): FormArray {
       return this.form.get('areas') as FormArray;
     }
+
+     // Función para abrir el modal
+  openTermsModal(): void {
+    this.isTermsModalVisible = true;
+  }
+
+  // Función para manejar el botón "Cancelar"
+  handleCancel(): void {
+    this.isTermsModalVisible = false;
+    this.form.get('termsAccepted')?.setValue(false); // Reinicia el checkbox
+  }
+
+  // Función para manejar el botón "Aceptar" en el modal
+  handleOk(): void {
+    if (this.termsForm.get('termsAccepted')?.value) { // Verifica que el checkbox esté marcado
+      this.isTermsModalVisible = false; // Cierra el modal
+      this.onClickRegister(); // Llama a la función de registro
+    }
+  }
+
 
   onClickRegister(): void  {
     console.log(this.form.value);
@@ -101,7 +136,7 @@ export class RegistroComponent {
       // Retrasa la redirección por 2 segundos
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1500);
+      }, 1000);
     })
     .catch((error)=>{console.log('Error al registrar',error)
     this.message.error('Error al realizar el registro, correo ya registrado.');

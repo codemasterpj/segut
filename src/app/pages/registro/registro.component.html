@@ -2,7 +2,7 @@
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Correo</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un correo valido">
-        <input nz-input formControlName="email" id="email" />
+        <input nz-input formControlName="email" type="email" id="email" placeholder="correo@mail.com" />
       </nz-form-control>
     </nz-form-item>
 
@@ -67,7 +67,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="telefono">Teléfono</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un número de teléfono válido">
-      <input nz-input formControlName="telefono" id="telefono" />
+      <input nz-input type="tel" formControlName="telefono" id="telefono" (keypress)="validateNumberInput($event)" placeholder="09X-XXX-XXXX"/>
     </nz-form-control>
   </nz-form-item>
   
@@ -109,9 +109,52 @@
   
     <nz-form-item nz-row class="btn-container">
       <nz-form-control [nzSpan]="14" [nzOffset]="6">
-        <button nz-button nzType="primary" type="button" (click)="onClickRegister()" [disabled]="form.invalid">Registrarme</button>
+        <button nz-button nzType="primary" type="button" (click)="openTermsModal()" [disabled]="form.invalid">Registrarme</button>
         </nz-form-control>
     </nz-form-item>
 
 
   </form>
+
+  <nz-modal
+  [(nzVisible)]="isTermsModalVisible"
+  nzTitle="Términos y Condiciones"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkDisabled]="!termsForm.get('termsAccepted')?.value"
+>
+  <!-- Asociamos el modal al nuevo formGroup termsForm -->
+  <div *nzModalContent [formGroup]="termsForm">
+    <div class="legal-container">
+      <h2 class="legal-title">Términos y Condiciones</h2>
+      <p class="legal-intro">Al utilizar nuestros servicios, aceptas cumplir con los siguientes términos y condiciones. Estos se encuentran diseñados para garantizar una relación transparente y segura entre las partes.</p>
+    
+      <section class="legal-section">
+        <h3 class="section-title">Aceptación de los Términos</h3>
+        <p>El uso de nuestros servicios implica la aceptación completa de estos términos y condiciones. Te recomendamos leerlos detenidamente antes de continuar usando nuestros servicios.</p>
+      </section>
+    
+      <section class="legal-section">
+        <h3 class="section-title">Uso Aceptable</h3>
+        <p>Los usuarios deben utilizar nuestros servicios de manera responsable, sin incurrir en actividades ilegales, dañinas o que perjudiquen el uso de otros usuarios.</p>
+      </section>
+    
+      <section class="legal-section">
+        <h3 class="section-title">Modificaciones de los Servicios</h3>
+        <p>Nos reservamos el derecho de modificar o interrumpir nuestros servicios en cualquier momento. Cualquier cambio significativo será notificado con la debida antelación.</p>
+      </section>
+    
+      <section class="legal-section">
+        <h3 class="section-title">Limitación de Responsabilidad</h3>
+        <p>No nos hacemos responsables de los daños o perjuicios que puedan surgir del uso indebido de nuestros servicios. El usuario acepta el uso bajo su propia responsabilidad.</p>
+      </section>
+    </div>
+
+    <!-- Checkbox para aceptar términos -->
+    <label nz-checkbox formControlName="termsAccepted">
+      Acepto los términos y condiciones
+    </label>
+  </div>
+</nz-modal>
+
+  
