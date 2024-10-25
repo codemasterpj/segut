@@ -6,7 +6,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
 import { RegistroService } from '../../services/registro/registro.service';
 import { NzListModule } from 'ng-zorro-antd/list';
@@ -14,6 +14,8 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore'; 
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { TituloEncuestaPipe } from '../../pipe/titulo-encuesta.pipe';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+
 
 
 @Component({
@@ -29,7 +31,8 @@ import { TituloEncuestaPipe } from '../../pipe/titulo-encuesta.pipe';
     ReactiveFormsModule,
     NzListModule,
     FormsModule,
-    NzRateModule,NzSelectModule, TituloEncuestaPipe
+    NzRateModule,NzSelectModule, TituloEncuestaPipe,
+    NzModalModule
   ],
   templateUrl: './encuesta.component.html',
   styleUrl: './encuesta.component.css'
@@ -47,11 +50,15 @@ export class EncuestaComponent implements OnInit {
   edad: number | string = ''; 
   sexo: string = '';
   linkGenerado: string | null = null;  // Variable para almacenar el link generado
+  isModalVisible = false;
+  puntuacionTotal = 0;
+  recomendacion: string = '';
 
   constructor(
     private firestore: Firestore,
     private encuestasService: EncuestasService,
     private registroService: RegistroService,
+    
     
   ) {}
 
@@ -62,10 +69,17 @@ export class EncuestaComponent implements OnInit {
 
   cargarEncuestas(): void {
     this.encuestasService.obtenerEncuestas().subscribe((encuestas) => {
+      const encuestasLibre = encuestas.filter((encuesta) => encuesta.tipo === 'libre');
+
+      if (this.registroService.getUserId()) {
       const encuestasFiltradas = encuestas.filter((encuesta) => 
-        this.tiposDeInteres.includes(encuesta.tipo)
+        this.tiposDeInteres.includes(encuesta.tipo) && encuesta.tipo !== 'libre'
       );
       this.encuestasPorTipo = this.agruparPorTipo(encuestasFiltradas);
+    } else {
+
+      this.encuestasPorTipo = this.agruparPorTipo(encuestasLibre);
+    }
     });
   }
 
@@ -168,13 +182,56 @@ export class EncuestaComponent implements OnInit {
     this.linkGenerado = null;  // Limpiar el link después de enviar la encuesta
   }
 
+  mostrarResultadoModal(): void {
+    const puntuaciones: { [key in 'nunca' | 'a veces' | 'frecuentemente' | 'siempre']: number } = {
+      'nunca': 0,
+      'a veces': 1,
+      'frecuentemente': 2,
+      'siempre': 3
+    };
+
+    this.puntuacionTotal = this.respuestas.reduce((total, respuesta) => {
+      const puntuacion = this.obtenerPuntuacion(respuesta, puntuaciones) ?? 0;
+      return total + puntuacion;
+    }, 0);
+
+    if (this.puntuacionTotal < 5) {
+      this.recomendacion = 'Se recomienda mejorar algunos aspectos.';
+    } else if (this.puntuacionTotal < 10) {
+      this.recomendacion = 'Estás en un nivel aceptable. ¡Sigue así!';
+    } else {
+      this.recomendacion = '¡Excelente desempeño!';
+    }
+
+    this.isModalVisible = true;
+  }
+
+  cerrarModal(): void {
+    this.isModalVisible = false;
+  }
+
+  // Obtener la puntuación basada en la respuesta
+  
+  obtenerPuntuacion(respuesta: string | null, puntuaciones: { [key: string]: number }): number | null {
+    return respuesta ? puntuaciones[respuesta.toLowerCase() as keyof typeof puntuaciones] : null;
+  }
+
+  
+
   mostrarLink(): void {
     if (this.encuestaSeleccionada) {
-      this.linkGenerado = this.generarLinkEncuesta(this.encuestaSeleccionada);
+      // Si la encuesta es de tipo 'gratis', muestra el modal con el resultado
+      if (this.encuestaSeleccionada.tipo === 'libre' && !this.registroService.getUserId()) {
+        this.mostrarResultadoModal();
+      } else {
+        // Si no es gratis o el usuario está logueado, generar el link de la encuesta
+        this.linkGenerado = this.generarLinkEncuesta(this.encuestaSeleccionada);
+      }
     } else {
-      alert('Selecciona una encuesta para generar el link.');
+      alert('Selecciona una encuesta para continuar.');
     }
   }
+
 
 
 }

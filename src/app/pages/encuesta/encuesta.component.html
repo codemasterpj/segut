@@ -109,7 +109,7 @@
 
    <!-- Botón para generar el link de la encuesta -->
 <button nz-button nzType="primary" (click)="mostrarLink()">
-  Generar Link para esta Encuesta
+  {{ encuestaSeleccionada.tipo === 'libre' ? 'Ver Resultado' : 'Generar Link para esta Encuesta' }}
 </button>
 
 <!-- Mostrar el link generado si existe -->
@@ -119,3 +119,11 @@
 
   </div>
 </div>
+
+
+<nz-modal [(nzVisible)]="isModalVisible" nzTitle="Resultado de la Encuesta" (nzOnCancel)="cerrarModal()" (nzOnOk)="cerrarModal()">
+  <div *nzModalContent>
+  <p><strong>Calificación:</strong> {{ puntuacionTotal }}</p>
+  <p><strong>Recomendación:</strong> {{ recomendacion }}</p>
+</div>
+</nz-modal>

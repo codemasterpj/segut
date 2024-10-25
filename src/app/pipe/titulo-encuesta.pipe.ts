@@ -12,7 +12,8 @@ export class TituloEncuestaPipe implements PipeTransform {
       'acosoLaboral': 'Acoso Laboral',
       'acosoEscolar': 'Acoso Escolar',
       'saludMental': 'Salud Mental',
-      'temasVariados': 'Otros'
+      'temasVariados': 'Otros',
+      'libre': 'Encuesta Libre'
     };
     return titulosAmigables[tipo] || tipo;
   }
