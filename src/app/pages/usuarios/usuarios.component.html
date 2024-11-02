@@ -21,7 +21,7 @@
           <td>{{ usuario.nombreEmpresa }}</td>
           <td>
             <button nz-button nzType="link" nz-tooltip="Ver detalles del usuario" (click)="verDetalles(usuario)">Detalles</button>
-            <button nz-button nzType="default" nzDanger nz-tooltip="Eliminar usuario" (click)="eliminarUsuario(usuario)">Eliminar</button>
+            <button *ngIf="isAdmin" nz-button nzType="default" nzDanger nz-tooltip="Eliminar usuario" (click)="eliminarUsuario(usuario)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -34,7 +34,7 @@
         <!-- Formulario en modo edición -->
         <form [formGroup]="usuarioForm" *ngIf="editMode">
           <label>Email: 
-            <input formControlName="email" />
+            <input formControlName="email" [disabled]="true"  class="input-disabled" title="No es editable"/>
             <div *ngIf="usuarioForm.get('email')?.invalid && (usuarioForm.get('email')?.dirty || usuarioForm.get('email')?.touched)">
                 <small *ngIf="usuarioForm.get('email')?.errors?.['required']" class="error">El correo es obligatorio.</small>
                 <small *ngIf="usuarioForm.get('email')?.errors?.['email']" class="error">Formato de correo inválido.</small>
@@ -65,7 +65,7 @@
           <label>Categoría de Empresa: <input formControlName="categoriaEmpresa" /></label>
           
           <!-- Selector para el rol solo en modo edición -->
-          <label>Rol:
+          <label *ngIf="isAdmin">Rol:
             <select formControlName="role">
               <option *ngFor="let rol of rolesDisponibles" [value]="rol">{{ rol }}</option>
             </select>

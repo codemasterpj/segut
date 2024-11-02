@@ -46,10 +46,15 @@
   
           <!-- Opción (radio) -->
           <ng-container *ngSwitchCase="'opcion'">
-            <nz-radio-group [(ngModel)]="respuestas[i]" class="radio-group">
-                <label nz-radio nzValue="opcion1">si</label>
-                <label nz-radio nzValue="opcion2">no</label>
-              </nz-radio-group>
+            <div class="escala-botones">
+              <button *ngFor="let valor of ['1', '2', '3', '4', '5']; let j = index" 
+                      nz-button 
+                      nzType="default" 
+                      (click)="respuestas[i] = valor" 
+                      [ngClass]="{'selected': respuestas[i] === valor}">
+                {{ valor }}
+              </button>
+            </div>
           </ng-container>
   
           <!-- Desplegable (select) -->
@@ -84,6 +89,11 @@
     </div>
   
     <!-- Botón para enviar respuestas -->
-    <button nz-button nzType="primary" (click)="enviarRespuestas()">Enviar Respuestas</button>
+    <!-- Botón para enviar respuestas -->
+<button nz-button nzType="primary" (click)="enviarRespuestas()" [disabled]="!formularioCompleto()">Enviar Respuestas</button>
+
+<!-- Mensaje de advertencia si no todas las preguntas están respondidas -->
+<p *ngIf="!formularioCompleto()" class="mensaje-advertencia">Por favor, responda todas las preguntas antes de enviar.</p>
+
   </div>
   

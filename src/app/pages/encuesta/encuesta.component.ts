@@ -183,28 +183,41 @@ export class EncuestaComponent implements OnInit {
   }
 
   mostrarResultadoModal(): void {
-    const puntuaciones: { [key in 'nunca' | 'a veces' | 'frecuentemente' | 'siempre']: number } = {
-      'nunca': 0,
-      'a veces': 1,
-      'frecuentemente': 2,
-      'siempre': 3
+    // Definimos las puntuaciones para respuestas tipo frecuencia
+    const puntuacionesFrecuencia: { [key in 'Nunca' | 'A veces' | 'Frecuentemente' | 'Siempre']: number } = {
+      'Nunca': 1,
+      'A veces': 2,
+      'Frecuentemente': 4,
+      'Siempre': 5
     };
-
+  
     this.puntuacionTotal = this.respuestas.reduce((total, respuesta) => {
-      const puntuacion = this.obtenerPuntuacion(respuesta, puntuaciones) ?? 0;
+      let puntuacion = 0;
+  
+      // Convertir la respuesta a número si está en una escala de 1 a 5
+      if (!isNaN(Number(respuesta))) {
+        puntuacion = Number(respuesta);
+      } 
+      // Si es una respuesta de frecuencia, buscar su puntuación
+      else if (respuesta && puntuacionesFrecuencia[respuesta as keyof typeof puntuacionesFrecuencia] !== undefined) {
+        puntuacion = puntuacionesFrecuencia[respuesta as keyof typeof puntuacionesFrecuencia];
+      }
+  
       return total + puntuacion;
     }, 0);
-
-    if (this.puntuacionTotal < 5) {
-      this.recomendacion = 'Se recomienda mejorar algunos aspectos.';
-    } else if (this.puntuacionTotal < 10) {
-      this.recomendacion = 'Estás en un nivel aceptable. ¡Sigue así!';
+  
+    // Determinamos la recomendación en base al total de puntos
+    if (this.puntuacionTotal >= 1 && this.puntuacionTotal <= 10) {
+      this.recomendacion = 'Refleja áreas significativas para mejorar, sugiriendo revisar hábitos de sueño, actividad física y conexiones sociales.';
+    } else if (this.puntuacionTotal >= 11 && this.puntuacionTotal <= 20) {
+      this.recomendacion = 'Indica un equilibrio moderado, pero con áreas que podrían optimizarse, como satisfacción personal o relajación emocional.';
     } else {
-      this.recomendacion = '¡Excelente desempeño!';
+      this.recomendacion = 'Bienestar Alto: Señala un bienestar integral, con hábitos saludables y un manejo adecuado del estrés, relaciones y emociones positivas.';
     }
-
+  
     this.isModalVisible = true;
   }
+  
 
   cerrarModal(): void {
     this.isModalVisible = false;

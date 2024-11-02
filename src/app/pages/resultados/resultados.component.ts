@@ -65,10 +65,15 @@ export class ResultadosComponent implements OnInit {
   filtroArea: string = '';
   respuestaSeleccionada: Respuesta | null = null;
   puntuaciones: { [key: string]: number } = {
-    'nunca': 0,
-    'a veces': 1,
-    'frecuentemente': 2,
-    'siempre': 3
+    'Nunca': 1,
+    'A veces': 2,
+    'Frecuentemente': 4,
+    'Siempre': 5,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5
   };
 
   constructor(
@@ -96,7 +101,7 @@ export class ResultadosComponent implements OnInit {
     let puntuacionTotal = 0;
     respuesta.respuestas.forEach(resp => {
       const puntuacion = this.puntuaciones[resp.respuesta?.toLowerCase() ?? ''];
-      if (puntuacion !== undefined) {
+      if (puntuacion !== null) {
         puntuacionTotal += puntuacion;
       }
     });

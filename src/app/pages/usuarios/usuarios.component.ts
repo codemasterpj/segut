@@ -8,11 +8,15 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { TituloEncuestaPipe } from '../../pipe/titulo-encuesta.pipe';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { AuthService } from '../../services/auth/auth.service';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [NzTableModule, CommonModule, FormsModule, NzPaginationModule, NzModalModule, ReactiveFormsModule, NzSelectModule, TituloEncuestaPipe],
+  imports: [NzTableModule, CommonModule, FormsModule, NzPaginationModule, NzModalModule, ReactiveFormsModule, 
+    NzSelectModule, TituloEncuestaPipe, NzInputModule],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })
@@ -21,6 +25,7 @@ export class UsuariosComponent implements OnInit{
   usuarioSeleccionado: Register | null = null;
   editMode: boolean = false;
   usuarioForm: FormGroup;
+  isAdmin= false;
   rolesDisponibles: string[] = ['Administrador', 'Gestor', 'Encuestador', 'Usuario'];
 
   opcionesAreas = [
@@ -32,9 +37,10 @@ export class UsuariosComponent implements OnInit{
   ];
   
 
-  constructor(private registroService: RegistroService, private fb: FormBuilder, private message: NzMessageService) {
+  constructor(private registroService: RegistroService, private fb: FormBuilder, 
+    private message: NzMessageService, private authService: AuthService) {
     this.usuarioForm = this.fb.group({
-      email: ['', Validators.email],
+      email: [{ value: '', disabled: true }, Validators.email],
       nombre: [''],
       apellido: [''],
       edad: [''],
@@ -48,7 +54,29 @@ export class UsuariosComponent implements OnInit{
 
   ngOnInit(): void {
     this.cargarUsuarios();
+  // Verifica si el usuario actual es administrador
+  const user = this.authService.getCurrentUser();
+  if (user?.uid) {
+    this.registroService.getRegister(user.uid).then(querySnapshot => {
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          const register = doc.data() as Register;
+
+          // Asigna el valor de `isAdmin` basado en el rol
+          this.isAdmin = register.role?.trim() === 'Administrador';
+
+          // Mensaje de depuración
+          console.log('Rol del usuario:', register.role);
+          console.log('isAdmin:', this.isAdmin);
+        });
+      } else {
+        console.log('No se encontró el registro del usuario.');
+      }
+    }).catch(error => {
+      console.error('Error al obtener el registro del usuario:', error);
+    });
   }
+}
 
   cargarUsuarios(): void {
     this.registroService.getRegisters().subscribe((data: Register[]) => {
@@ -97,6 +125,10 @@ export class UsuariosComponent implements OnInit{
   
 
   eliminarUsuario(usuario: Register): void {
+    if (!this.isAdmin) {
+      this.message.warning('No tienes permiso para eliminar usuarios.');
+      return;
+    }
     if (confirm(`¿Estás seguro de eliminar a ${usuario.nombre} ${usuario.apellido}?`)) {
       this.registroService.deleteRegister(usuario)
         .then(() => {

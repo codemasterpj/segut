@@ -63,12 +63,19 @@
           </ng-container>
     
           <!-- Opción -->
+
           <ng-container *ngSwitchCase="'opcion'">
-            <nz-radio-group [(ngModel)]="respuestas[i]" class="radio-group">
-              <label nz-radio nzValue="opcion1">si</label>
-              <label nz-radio nzValue="opcion2">no</label>
-            </nz-radio-group>
+            <div class="escala-botones">
+              <button *ngFor="let valor of ['1', '2', '3', '4', '5']; let j = index" 
+                      nz-button 
+                      nzType="default" 
+                      (click)="respuestas[i] = valor" 
+                      [ngClass]="{'selected': respuestas[i] === valor}">
+                {{ valor }}
+              </button>
+            </div>
           </ng-container>
+
     
           <!-- Casilla 
           <ng-container *ngSwitchCase="'casilla'">
@@ -81,7 +88,7 @@
               <nz-option nzValue="opcion1" nzLabel="Siempre"></nz-option>
               <nz-option nzValue="opcion2" nzLabel="Frecuentemente"></nz-option>
               <nz-option nzValue="opcion3" nzLabel="A veces"></nz-option>
-              <nz-option nzValue="opcion3" nzLabel="Nunca"></nz-option>
+              <nz-option nzValue="opcion4" nzLabel="Nunca"></nz-option>
             </nz-select>
           </ng-container>
     

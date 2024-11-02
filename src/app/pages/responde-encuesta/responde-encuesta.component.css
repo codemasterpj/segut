@@ -144,4 +144,12 @@
     color: #ff4d4f;
     font-weight: bold;
   }
+
+  /* Estilos para el botón deshabilitado */
+button[nz-button]:disabled {
+  background-color: #d3d3d3; /* Color de fondo gris claro para indicar deshabilitado */
+  color: #ffffff; /* Texto en blanco */
+  cursor: not-allowed; /* Cursor de "no permitido" */
+  opacity: 0.7; /* Opacidad para que parezca inactivo */
+}
   

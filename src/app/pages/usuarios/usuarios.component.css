@@ -1,4 +1,12 @@
 /* Contenedor principal para la administración de usuarios */
+.input-disabled {
+  background-color: #f0f0f0; /* Color de fondo gris claro */
+  color: #666; /* Texto en color gris tenue */
+  border: 1px solid #d9d9d9; /* Borde más claro */
+  cursor: not-allowed; /* Muestra un cursor que indica que no se puede interactuar */
+  pointer-events: none; /* Evita cualquier interacción del usuario */
+}
+
 .usuarios-layout {
     max-width: 1200px;
     margin: 50px auto;
@@ -8,6 +16,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     animation: fadeIn 1s ease-in-out;
   }
+
   
   /* Animación de entrada */
   @keyframes fadeIn {
@@ -45,6 +54,7 @@
   }
   
   /* Texto descriptivo */
+  
   .usuarios-layout p {
     font-size: 16px;
     color: #6c757d;
@@ -202,6 +212,7 @@
     background-color: #ff7875;
     box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
   }
+
   
   /* Responsividad */
   @media (max-width: 768px) {
@@ -218,5 +229,8 @@
     .detalle-usuario nz-select {
       width: 100%;
     }
+
+    
+
   }
   

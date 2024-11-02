@@ -51,6 +51,10 @@ export class RespondeEncuestaComponent implements OnInit {
   }
 
   enviarRespuestas(): void {
+    if (!this.formularioCompleto()) {
+      alert('Por favor, responda todas las preguntas antes de enviar.');
+      return;
+    }
     if (!this.encuesta || !this.encuesta.preguntas || !this.encuestadorId) {
       alert('No se pudo enviar la encuesta. Faltan datos de la encuesta o del encuestador.');
       return;
@@ -89,4 +93,16 @@ export class RespondeEncuestaComponent implements OnInit {
   limpiarFormulario(): void {
     this.respuestas = Array(this.encuesta?.preguntas?.length).fill(null);  // Limpiar las respuestas
   }
+
+  formularioCompleto(): boolean {
+    // Verifica si cada respuesta en el arreglo tiene un valor
+    const preguntasCompletas = this.respuestas.every((respuesta) => respuesta !== null && respuesta !== '');
+  
+    // Asegura que todos los campos adicionales estén completos
+    const camposAdicionalesCompletos = !!this.nombre && !!this.apellido && !!this.areaCurso && !!this.edad && !!this.sexo;
+  
+    return preguntasCompletas && camposAdicionalesCompletos;
+  }
+  
+  
 }
