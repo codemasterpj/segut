@@ -122,5 +122,7 @@ export class RegistroService {
       console.error('Error al eliminar usuario de Firestore:', error);
     }
   }
+
+  
   
 }

@@ -52,4 +52,10 @@ export class EncuestasService {
     const productoRef = doc(this.firestore, `encuestas/${encuesta.id}`);
     return deleteDoc(productoRef);
   }
+
+  // Método para obtener todos los resultados almacenados en "respuestas"
+  obtenerResultados(): Observable<any[]> {
+    const respuestasRef = collection(this.firestore, 'respuestas');
+    return collectionData(respuestasRef, { idField: 'id' });
+  }
 }

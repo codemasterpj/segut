@@ -1,0 +1,41 @@
+<div class="reporte-encuestas">
+    <h2>Reporte de Encuestas</h2>
+  
+    <div *ngFor="let encuestadorId of encuestadores" class="grupo-encuestador">
+      <h3>Encuestador: {{ encuestadorId }}</h3>
+  
+      <ul class="lista-encuestados">
+        <li *ngFor="let resultado of resultadosAgrupados[encuestadorId]">
+          {{ resultado.nombre }} {{ resultado.apellido }}
+          <button nz-button nzType="link" (click)="verDetalles(encuestadorId, resultado.id)">Ver Detalles</button>
+        </li>
+      </ul>
+  
+      <div class="acciones-globales">
+        <button nz-button nzType="primary" (click)="generarGraficoGlobal(encuestadorId)">Generar Gráfico Global</button>
+      </div>
+    </div>
+  
+    <!-- Modal para mostrar detalles de la encuesta completa -->
+    <nz-modal [(nzVisible)]="detallesModalVisible" nzTitle="Detalles de la Encuesta" (nzOnCancel)="detallesModalVisible = false">
+    <ng-container *nzModalContent>
+        <h3>{{ encuestaSeleccionada.titulo }}</h3>
+
+        <p><strong>Puntuación Total:</strong> {{ resultadoSeleccionado?.calificacionTotal }}</p>
+        <p><strong>Resultado Final:</strong> {{ resultadoSeleccionado?.resultadoFinal }}</p>
+
+        <div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta-respuesta">
+            <p><strong>Pregunta {{ i + 1 }}:</strong> {{ pregunta.texto }}</p>
+            <p><strong>Respuesta:</strong> {{ resultadoSeleccionado?.respuestas[i]?.respuesta || 'Sin respuesta' }}</p>
+        </div>
+
+        <div class="modal-buttons">
+            <button nz-button nzType="default" nzDanger (click)="confirmarEliminacion(resultadoSeleccionado.id)">Eliminar</button>
+            <button nz-button nzType="primary" (click)="enviarPorCorreo(resultadoSeleccionado)">Enviar por Correo</button>
+            <button nz-button nzType="dashed" (click)="generarGraficoIndividual(resultadoSeleccionado)">Generar Gráfico Individual</button>
+        </div>
+    </ng-container>
+</nz-modal>
+
+  </div>
+  

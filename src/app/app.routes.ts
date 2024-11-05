@@ -11,6 +11,7 @@ import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { RespondeEncuestaComponent } from './pages/responde-encuesta/responde-encuesta.component';
 import { LeyProteccionDatosComponent } from './pages/ley-proteccion-datos/ley-proteccion-datos.component';
 import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
+import { ReporteEncuestasComponent } from './pages/reporte-encuestas/reporte-encuestas.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'administrar', component: AdministrarComponent},
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'contacto', component: ContactoComponent},
+  { path: 'reporte-encuestas', component: ReporteEncuestasComponent},
 
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
