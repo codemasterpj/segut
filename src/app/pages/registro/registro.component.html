@@ -66,14 +66,14 @@
   <!-- Teléfono -->
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="telefono">Teléfono</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un número de teléfono válido">
-      <input nz-input type="tel" formControlName="telefono" id="telefono" (keypress)="validateNumberInput($event)" placeholder="09X-XXX-XXXX"/>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese un número de teléfono celular (09XX-XXXXXX) o convencional (0X-XXXXXXX)">
+      <input nz-input type="tel" formControlName="telefono" id="telefono" (keypress)="validateNumberInput($event)" placeholder="09X-XXX-XXXX o 02-XXXXXXX"/>
     </nz-form-control>
   </nz-form-item>
   
 <!-- Áreas -->
 <nz-form-item>
-  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="areas">Tipo de Encuesta</nz-form-label>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="areas">Tipo de Encuesta</nz-form-label>
   <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione al menos un tipo de encuesta">
     <nz-select
       formControlName="areas"
@@ -90,15 +90,15 @@
   
   <!-- Nombre de la Empresa -->
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombreEmpresa">Nombre de la Empresa</nz-form-label>
+    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="nombreEmpresa">Nombre de la Empresa</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Ingrese el nombre de la empresa">
       <input nz-input formControlName="nombreEmpresa" id="nombreEmpresa" />
     </nz-form-control>
   </nz-form-item>
   
   <!-- Categoría de la Empresa -->
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="categoriaEmpresa">Categoría de la Empresa</nz-form-label>
+  <nz-form-item *ngIf="nombreEmpresa?.value">
+    <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="categoriaEmpresa">Categoría de la Empresa</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Seleccione una categoría">
       <nz-select formControlName="categoriaEmpresa" id="categoriaEmpresa" nzPlaceHolder="Seleccione categoría">
         <nz-option *ngFor="let categoria of listaCategorias" [nzValue]="categoria" [nzLabel]="categoria"></nz-option>

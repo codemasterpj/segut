@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -45,19 +45,25 @@ export class AdministrarComponent {
   constructor(
     private fb: FormBuilder,
     private encuestasService: EncuestasService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private modal: NzModalService // Inyecta NzModalService aquí
   ) {
     this.form = this.fb.group({
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       tipo: ['', Validators.required],
-      preguntas: this.fb.array([], [Validators.required, Validators.minLength(1)])
+      preguntas: this.fb.array([], [Validators.required, Validators.minLength(1)]),
+      resultados: this.fb.array([], [Validators.required, Validators.minLength(1)], )
     });
     this.cargarEncuestas();
   }
 
   get preguntas(): FormArray {
     return this.form.get('preguntas') as FormArray;
+  }
+
+  get resultados(): FormArray {
+    return this.form.get('resultados') as FormArray;
   }
 
   nuevaPregunta(): FormGroup {
@@ -67,8 +73,28 @@ export class AdministrarComponent {
     });
   }
 
+  nuevaResultado(minCalificacion: number = 0): FormGroup {
+    return this.fb.group({
+      descripcion: ['', Validators.required],
+      calificacionMinima: [{ value: minCalificacion, disabled: true }, Validators.required],
+      calificacionMaxima: [30, Validators.required]
+    });
+  }
+
   agregarPregunta(): void {
     this.preguntas.push(this.nuevaPregunta());
+  }
+
+  agregarResultado(): void {
+    const minCalificacion = this.resultados.length > 0
+      ? this.resultados.at(this.resultados.length - 1).get('calificacionMaxima')?.value
+      : 0;
+
+    const nuevoResultado = this.nuevaResultado(minCalificacion);
+    this.resultados.push(nuevoResultado);
+
+    // Llamar a actualizar los valores mínimos de todos los resultados
+    this.actualizarMinimosAutomaticamente();
   }
 
   eliminarPregunta(index: number): void {
@@ -76,6 +102,29 @@ export class AdministrarComponent {
     if (this.preguntas.length === 0) {
       this.form.get('preguntas')?.setErrors({ 'minlength': true }); // Marca error si no hay preguntas
     }
+  }
+
+  eliminarResultado(index: number): void {
+    this.resultados.removeAt(index);
+    this.actualizarMinimosAutomaticamente();
+  }
+
+  actualizarMinimosAutomaticamente(): void {
+    this.resultados.controls.forEach((control, i) => {
+      if (i > 0) {
+        const prevMax = this.resultados.at(i - 1).get('calificacionMaxima')?.value;
+        control.get('calificacionMinima')?.setValue(prevMax);
+        control.get('calificacionMinima')?.disable();
+      } else {
+        control.get('calificacionMinima')?.setValue(0); // Asegura que el primer resultado tenga 0 como mínimo
+        control.get('calificacionMinima')?.disable();
+      }
+
+      // Suscripción a cambios en calificacionMaxima para mantener actualizados los valores mínimos
+      control.get('calificacionMaxima')?.valueChanges.subscribe(() => {
+        this.actualizarMinimosAutomaticamente();
+      });
+    });
   }
   
 
@@ -91,6 +140,7 @@ export class AdministrarComponent {
         this.message.success('Encuesta creada con éxito.');
         this.form.reset();
         this.preguntas.clear();
+        this.resultados.clear();
         this.cargarEncuestas();
       })
       .catch((error) => {
@@ -106,26 +156,42 @@ export class AdministrarComponent {
   }
 
   eliminarEncuesta(id: string): void {
-    this.encuestasService.eliminarEncuesta({id} as Encuesta)
-      .then(() => {
-        this.message.success('Encuesta eliminada con éxito.');
-        this.cargarEncuestas();
-      })
-      .catch((error) => {
-        console.error('Error al eliminar la encuesta:', error);
-        this.message.error('Error al eliminar la encuesta.');
-      });
+    this.modal.confirm({
+      nzTitle: '¿Estás seguro de que quieres eliminar esta encuesta?',
+      nzContent: 'Esta acción no se puede deshacer',
+      nzOkText: 'Sí',
+      nzOkType: 'primary',
+      nzOnOk: () => {
+        this.encuestasService.eliminarEncuesta({ id } as Encuesta)
+          .then(() => {
+            this.message.success('Encuesta eliminada con éxito.');
+            this.cargarEncuestas();
+          })
+          .catch((error) => {
+            console.error('Error al eliminar la encuesta:', error);
+            this.message.error('Error al eliminar la encuesta.');
+          });
+      },
+      nzCancelText: 'No',
+      nzOnCancel: () => {
+        this.message.info('Eliminación cancelada');
+      },
+    });
   }
 
   editarEncuesta(encuesta: Encuesta): void {
     this.isEditMode = true;
     this.encuestaSeleccionadaId = encuesta.id || null;
+
     this.form.patchValue({
       titulo: encuesta.titulo,
       tipo: encuesta.tipo,
       descripcion: encuesta.descripcion
     });
+
     this.preguntas.clear();
+    this.resultados.clear();
+
     if (encuesta.preguntas) {
       encuesta.preguntas.forEach((pregunta: any) => {
         const preguntaForm = this.fb.group({
@@ -134,6 +200,20 @@ export class AdministrarComponent {
         });
         this.preguntas.push(preguntaForm);
       });
+    }
+
+    if (encuesta.resultados) {
+      encuesta.resultados.forEach((resultado: any) => {
+        const resultadoForm = this.fb.group({
+          descripcion: [resultado.descripcion, Validators.required],
+          calificacionMinima: [resultado.calificacionMinima, Validators.required],
+          calificacionMaxima: [resultado.calificacionMaxima, Validators.required]
+        });
+        this.resultados.push(resultadoForm);
+      });
+
+      // Llama a actualizar los valores mínimos después de cargar los resultados
+      this.actualizarMinimosAutomaticamente();
     }
   }
 
@@ -157,9 +237,10 @@ export class AdministrarComponent {
         this.message.success('Encuesta actualizada con éxito.');
         this.form.reset();
         this.preguntas.clear();
+        this.resultados.clear();
         this.isEditMode = false;
         this.cargarEncuestas();
-        this.encuestaSeleccionadaId = null; // Limpia el ID seleccionado
+        this.encuestaSeleccionadaId = null;
       })
       .catch((error) => {
         console.error('Error al actualizar la encuesta:', error);
@@ -172,12 +253,23 @@ export class AdministrarComponent {
     this.isEditMode = false;
     this.form.reset();
     this.preguntas.clear();
+    this.resultados.clear();
   }
 
   preguntasCompletas(): boolean {
     return this.preguntas.controls.every((pregunta) => {
       return pregunta.get('texto')?.value && pregunta.get('tipoRespuesta')?.value;
     });
+  }
+
+  obtenerResultado(calificacion: number): string {
+    const resultado = this.resultados.controls.find((control) => {
+      const min = control.get('calificacionMinima')?.value;
+      const max = control.get('calificacionMaxima')?.value;
+      return calificacion >= min && calificacion <= max;
+    });
+
+    return resultado ? resultado.get('descripcion')?.value : 'Sin resultado';
   }
   
 }

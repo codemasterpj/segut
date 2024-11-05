@@ -62,10 +62,13 @@ export class RegistroComponent {
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
       edad: [null, [Validators.required, Validators.min(18)]],
-      telefono: ['', [Validators.required, Validators.minLength(10),  Validators.maxLength(10)]],
+      telefono: ['', [
+        Validators.required,
+        Validators.pattern(/^(09\d{8}|(02|03|04|05|06|07)\d{7})$/) // Solo 09 para celulares y 02-07 para convencionales
+      ]],
       areas: [[], Validators.required],
-      nombreEmpresa: ['', [Validators.required]],
-      categoriaEmpresa: [null, [Validators.required]],
+      nombreEmpresa: ['', ],
+      categoriaEmpresa: [null, ],
       role: ['Usuario'],
 
     })
@@ -174,6 +177,11 @@ export class RegistroComponent {
       .filter((_, i) => this.areasFormArray.at(i).value === true) // Filtra por los controles con valor `true`
       .map(area => area.label); // Mapea para obtener los nombres de las áreas seleccionadas
   }
+
+  get nombreEmpresa() {
+  return this.form.get('nombreEmpresa');
+}
+
   
 
 }

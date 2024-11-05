@@ -21,4 +21,9 @@ export class ResultadosService {
   obtenerEncuestas(): Observable<any[]> {
     return this.firestore.collection('encuestas').valueChanges();
   }
+
+  guardarResultado(data: any): Promise<void> {
+    const resultadosRef = this.firestore.collection('resultados').doc(data.encuestaId);
+    return resultadosRef.set(data);
+  }
 }

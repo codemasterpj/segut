@@ -8,6 +8,11 @@ export interface Encuesta {
   descripcion: string;
   tipo: string;
   preguntas?: { texto: string, tipoRespuesta: string }[]; 
+  resultados?: {
+    descripcion: string;
+    calificacionMinima: number;
+    calificacionMaxima: number;
+  }[]; // Añade la propiedad 'resultados' al modelo
 }
 
 @Injectable({
@@ -39,7 +44,7 @@ export class EncuestasService {
 
   actualizarEncuesta(encuesta: Encuesta): Promise<void> {
     const docRef = doc(this.firestore, `encuestas/${encuesta.id}`);
-    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, tipo: encuesta.tipo, preguntas: encuesta.preguntas});
+    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, tipo: encuesta.tipo, preguntas: encuesta.preguntas, resultados: encuesta.resultados});
     
   }
 

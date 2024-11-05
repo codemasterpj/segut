@@ -48,8 +48,27 @@
       </nz-form-control>
     </nz-form-item>
 
-    <button nz-button nzType="dashed" (click)="agregarPregunta()">
+    <button nz-button nzType="dashed" type="button" (click)="agregarPregunta()">
       <i nz-icon nzType="plus"></i> Añadir pregunta
+    </button>
+
+     <!-- Campo para añadir resultados según calificación -->
+     <nz-form-item formArrayName="resultados">
+      <nz-form-label [nzSpan]="6">Resultados</nz-form-label>
+      <nz-form-control [nzSpan]="18">
+        <div *ngFor="let resultado of resultados.controls; let i = index" [formGroupName]="i" class="resultado-item">
+          <input nz-input formControlName="descripcion" placeholder="Descripción del resultado" style="width: 60%;" />
+          <input nz-input formControlName="calificacionMinima" placeholder="Calificación mínima" style="width: 18%;" type="number" />
+          <input nz-input formControlName="calificacionMaxima" placeholder="Calificación máxima" style="width: 18%;" type="number" />
+          <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarResultado(i)" nz-tooltip="Eliminar resultado">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </button>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+    <button nz-button nzType="dashed" type="button" (click)="agregarResultado()">
+      <i nz-icon nzType="plus"></i> Añadir resultado
     </button>
 
     <div class="button-group">

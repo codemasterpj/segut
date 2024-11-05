@@ -47,7 +47,7 @@
           <!-- Opción (radio) -->
           <ng-container *ngSwitchCase="'opcion'">
             <div class="escala-botones">
-              <button *ngFor="let valor of ['1', '2', '3', '4', '5']; let j = index" 
+              <button *ngFor="let valor of ['Totalmente en desacuerdo', 'En desacuerdo', 'De acuerdo', 'Totalmente de acuerdo']; let j = index" 
                       nz-button 
                       nzType="default" 
                       (click)="respuestas[i] = valor" 
@@ -94,6 +94,11 @@
 
 <!-- Mensaje de advertencia si no todas las preguntas están respondidas -->
 <p *ngIf="!formularioCompleto()" class="mensaje-advertencia">Por favor, responda todas las preguntas antes de enviar.</p>
+
+<!-- Mostrar resultado después de enviar -->
+<p *ngIf="resultadoFinal" class="resultado-final">
+  Resultado de la encuesta: {{ resultadoFinal }}
+</p>
 
   </div>
   

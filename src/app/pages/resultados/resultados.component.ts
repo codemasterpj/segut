@@ -36,6 +36,8 @@ interface Respuesta {
   sexo: string;
   areaCurso: string;
   respuestas: { pregunta: string; respuesta: string | null }[];
+  calificacionTotal?: number;  
+  resultadoFinal?: string;
 }
 
 
@@ -65,14 +67,14 @@ export class ResultadosComponent implements OnInit {
   filtroArea: string = '';
   respuestaSeleccionada: Respuesta | null = null;
   puntuaciones: { [key: string]: number } = {
-    'Nunca': 1,
-    'A veces': 2,
-    'Frecuentemente': 4,
-    'Siempre': 5,
+    'Nunca': 0,
+    'A veces': 1,
+    'Frecuentemente': 2,
+    'Siempre': 3,
     '1': 1,
-    '2': 2,
-    '3': 3,
-    '4': 4,
+    '2': 0,
+    '3': 2,
+    '4': 3,
     '5': 5
   };
 
@@ -96,32 +98,26 @@ export class ResultadosComponent implements OnInit {
     }
   }
   
- 
-  calcularPuntuacion(respuesta: Respuesta): number {
-    let puntuacionTotal = 0;
-    respuesta.respuestas.forEach(resp => {
-      const puntuacion = this.puntuaciones[resp.respuesta?.toLowerCase() ?? ''];
-      if (puntuacion !== null) {
-        puntuacionTotal += puntuacion;
-      }
-    });
-    return puntuacionTotal;
-  }
   
-
-  obtenerPuntuacion(respuestaTexto: string | null): number | null {
-    if (respuestaTexto === null) {
-      return null;
+   // Nueva función para asignar puntuación según la respuesta de texto
+   asignarPuntuacion(respuestaTexto: string | null): number {
+    switch (respuestaTexto) {
+      case 'Nunca':
+      case 'Totalmente en desacuerdo':
+        return 0;
+      case 'A veces':
+      case 'En desacuerdo':
+        return 1;
+      case 'Frecuentemente':
+      case 'De acuerdo':
+        return 2;
+      case 'Siempre':
+      case 'Totalmente de acuerdo':
+        return 3;
+      default:
+        return 0;  // Si no coincide con ninguna opción, asigna 0
     }
-    const puntuacion = this.puntuaciones[respuestaTexto.toLowerCase()];
-    return puntuacion !== undefined ? puntuacion : null;
   }
-  
-  
-  
-  
-  
-  
   
   
 
@@ -129,10 +125,15 @@ export class ResultadosComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const respuestasRef = collection(this.firestore, 'respuestas');
       const q = query(respuestasRef, where('encuestadorId', '==', userId));
-
+  
       collectionData(q).subscribe(
         (respuestas: any[]) => {
-          this.respuestas = respuestas;
+          // Incluye calificacionTotal y resultadoFinal
+          this.respuestas = respuestas.map(res => ({
+            ...res,
+            calificacionTotal: res.calificacionTotal ?? null,
+            resultadoFinal: res.resultadoFinal ?? 'Sin resultado'
+          }));
           resolve();
         },
         (error: unknown) => {
@@ -142,10 +143,6 @@ export class ResultadosComponent implements OnInit {
       );
     });
   }
-  
-  
-
-  
   
   
   
@@ -203,7 +200,6 @@ export class ResultadosComponent implements OnInit {
       return;
     }
   
-    // Encabezado del PDF
     doc.setFontSize(12);
     doc.text('Informe de Resultados de Encuesta Individual', 14, 20);
     doc.text(`Nombre del Encuestador: ${encuestadorData.nombre} ${encuestadorData.apellido}`, 14, 30);
@@ -220,36 +216,27 @@ export class ResultadosComponent implements OnInit {
     doc.text(`Edad: ${respuesta.edad}`, 14, 94);
     doc.text(`Sexo: ${respuesta.sexo}`, 14, 100);
     doc.text(`Área: ${respuesta.areaCurso}`, 14, 106);
+    doc.text(`Puntuación Total: ${respuesta.calificacionTotal}`, 14, 112);  // CAMBIO
+    doc.text(`Resultado Final: ${respuesta.resultadoFinal}`, 14, 118);      // CAMBIO
 
-
-    // Puntuación cuantitativa
-  const puntuacion = this.calcularPuntuacion(respuesta);
-  doc.text(`Puntuación: ${puntuacion.toFixed(2)}`, 14, 112);
-  
-    // Verificar que `respuesta.respuestas` sea un array y contenga preguntas válidas
+    // Agregar preguntas y respuestas en la tabla
     if (Array.isArray(respuesta.respuestas) && respuesta.respuestas.length > 0) {
-      
       const respuestaData = respuesta.respuestas.map((resp, index) => [
         index + 1,
         resp.pregunta,
         resp.respuesta || '',
-        `${this.obtenerPuntuacion(resp.respuesta) ?? 'N/A'}`
-        
+        `${this.asignarPuntuacion(resp.respuesta)}` 
       ]);
 
-      if (respuestaData.length > 0) {
-        autoTable(doc, {
-          head: [['#', 'Pregunta', 'Respuesta', 'Puntuación']],
-          body: respuestaData,
-          startY: 118
-        });
-      } else {
-        doc.text('No se encontraron preguntas y respuestas.', 14, 118);
-      }
+      autoTable(doc, {
+        head: [['#', 'Pregunta', 'Respuesta', 'Puntuación']],
+        body: respuestaData,
+        startY: 124
+      });
     } else {
-      doc.text('No se encontraron preguntas y respuestas.', 14, 112);
+      doc.text('No se encontraron preguntas y respuestas.', 14, 124);
     }
-  
+
     doc.save(`Informe_Individual_${respuesta.encuestaId}.pdf`);
   }
   
@@ -267,8 +254,7 @@ export class ResultadosComponent implements OnInit {
       respuesta.areaCurso
     ]);
 
-    // Tabla global con todas las encuestas
-    autoTable(doc,{
+    autoTable(doc, {
       head: [['#', 'Nombre', 'Apellido', 'Edad', 'Sexo', 'Área']],
       body: allData,
       startY: 80
@@ -281,8 +267,7 @@ export class ResultadosComponent implements OnInit {
     this.filtroEdad = '';
     this.filtroSexo = '';
     this.filtroArea = '';
-    this.respuestaSeleccionada = null;  // Opcional, para deseleccionar cualquier detalle activo
-    this.buscarRespuestas();  // Vuelve a filtrar las respuestas con todos los filtros vacíos
+    this.respuestaSeleccionada = null;
+    this.buscarRespuestas();
   }
-  
 }
