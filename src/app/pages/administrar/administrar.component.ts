@@ -97,12 +97,16 @@ export class AdministrarComponent {
     this.actualizarMinimosAutomaticamente();
   }
 
-  eliminarPregunta(index: number): void {
+  eliminarPregunta(index: number, event: Event): void {
+    event.preventDefault();  // Evita el envío del formulario
+
     this.preguntas.removeAt(index);
+
     if (this.preguntas.length === 0) {
       this.form.get('preguntas')?.setErrors({ 'minlength': true }); // Marca error si no hay preguntas
     }
-  }
+}
+
 
   eliminarResultado(index: number): void {
     this.resultados.removeAt(index);
@@ -218,10 +222,7 @@ export class AdministrarComponent {
   }
 
   actualizarEncuesta(): void {
-    if (!this.encuestaSeleccionadaId) {
-      this.message.error('No se ha seleccionado ninguna encuesta para actualizar.');
-      return;
-    }
+    if (!this.isEditMode || !this.encuestaSeleccionadaId) return;
     if (this.form.invalid || !this.preguntasCompletas()) {
       this.form.markAllAsTouched();
       return;

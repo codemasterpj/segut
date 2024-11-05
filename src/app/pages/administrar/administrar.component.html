@@ -41,9 +41,9 @@
             <nz-option nzValue="opcion" nzLabel="Opción"></nz-option>
             <nz-option nzValue="escala" nzLabel="Escala"></nz-option>
           </nz-select>
-          <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i)" nz-tooltip="Eliminar pregunta">
+          <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i, $event)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>
-          </button>
+        </button>
         </div>
       </nz-form-control>
     </nz-form-item>
