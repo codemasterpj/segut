@@ -11,11 +11,35 @@
         </li>
       </ul>
   
-      <div class="acciones-globales">
-        <button nz-button nzType="primary" (click)="generarGraficoGlobal(encuestadorId)">Generar Gráfico Global</button>
-      </div>
+      <!-- Botones para seleccionar el tipo de gráfico -->
+    <div class="acciones-graficos">
+      <button nz-button nzType="primary" (click)="seleccionarTipoGrafico(encuestadorId, 'pastel')">Mostrar Gráfico de Pastel</button>
+      <button nz-button nzType="primary" (click)="seleccionarTipoGrafico(encuestadorId, 'barras')">Mostrar Gráfico de Barras</button>
     </div>
-  
+
+    <!-- Gráfico de Pastel -->
+    <ngx-charts-pie-chart
+      *ngIf="graficosVisibles[encuestadorId] && tipoGraficoSeleccionado[encuestadorId] === 'pastel'"
+      [results]="obtenerDistribucionPuntuacionFinal(encuestadorId)"
+      [view]="[600, 400]" 
+      [legend]="true"
+      [labels]="true"
+      [gradient]="true"
+      [doughnut]="false">
+    </ngx-charts-pie-chart>
+
+    <!-- Gráfico de Barras -->
+    <ngx-charts-bar-vertical
+      *ngIf="graficosVisibles[encuestadorId] && tipoGraficoSeleccionado[encuestadorId] === 'barras'"
+      [results]="obtenerDistribucionPorPregunta(encuestadorId)"
+      [view]="[600, 300]"
+      [legend]="true"
+      [showXAxis]="true"
+      [showYAxis]="true"
+      [showDataLabel]="true"
+      [gradient]="true">
+    </ngx-charts-bar-vertical>
+  </div>
     <!-- Modal para mostrar detalles de la encuesta completa -->
     <nz-modal [(nzVisible)]="detallesModalVisible" nzTitle="Detalles de la Encuesta" (nzOnCancel)="detallesModalVisible = false">
     <ng-container *nzModalContent>

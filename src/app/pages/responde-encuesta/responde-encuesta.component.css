@@ -1,155 +1,163 @@
-/* Contenedor principal del layout */
 .encuesta-layout {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 800px;
-    width: 100%;
-    margin: 20px auto;
-  }
-  
-  /* Contenido del layout */
-  .titulo {
-    font-size: 24px;
-    color: #2b3e50;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #e8e8e8;
-    padding-bottom: 10px;
-  }
-  
-  .descripcion {
-    font-size: 16px;
-    color: #6c757d;
-    margin-bottom: 20px;
-  }
-  
-  /* Campos adicionales */
-  .campos-adicionales {
-    margin-bottom: 25px;
-  }
-  
-  .campo-label {
-    display: block;
-    font-weight: 600;
-    margin-top: 15px;
-    color: #2b3e50;
-  }
-  
-  .input-campo, .textarea-campo {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #d1d9e6;
-    border-radius: 4px;
-    background-color: #f9fafc;
-    transition: border-color 0.3s;
-  }
-  
-  .input-campo:focus, .textarea-campo:focus {
-    border-color: #2b3e50;
-    outline: none;
-  }
-  
-  .textarea-campo {
-    min-height: 80px;
-  }
-  
-  /* Preguntas y respuestas */
-  .pregunta {
-    margin-bottom: 20px;
-  }
-  
-  .pregunta-texto {
-    font-size: 16px;
-    font-weight: 500;
-    color: #2b3e50;
-    margin-bottom: 12px;
-  }
-  
-  .respuesta {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .radio-group {
-    display: flex;
-    gap: 15px; /* Espacio entre opciones */
-  }
-  
-  .radio-opcion {
-    font-size: 14px;
-    color: #2b3e50;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .radio-opcion label {
-    margin-right: 10px;
-  }
-  
-  /* Botones de escala */
-  .escala-botones {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .escala-botones button {
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .escala-botones button.selected {
-    background-color: #1890ff; /* Color de fondo para el botón seleccionado */
-    color: #fff; /* Color del texto para el botón seleccionado */
-  }
-  
-  /* Botón de enviar */
-  button[nz-button] {
-    margin-top: 25px;
-    background-color: #2b3e50;
-    color: #ffffff;
-    border: none;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button[nz-button]:hover {
-    background-color: #3e4e63;
-  }
-  
-  /* Link generado */
-  .link-generado {
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .link-generado a {
-    color: #1890ff;
-    text-decoration: none;
-  }
-  
-  .link-generado a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Texto advertencia tipo desconocido */
-  .texto-advertencia {
-    color: #ff4d4f;
-    font-weight: bold;
-  }
-
-  /* Estilos para el botón deshabilitado */
-button[nz-button]:disabled {
-  background-color: #d3d3d3; /* Color de fondo gris claro para indicar deshabilitado */
-  color: #ffffff; /* Texto en blanco */
-  cursor: not-allowed; /* Cursor de "no permitido" */
-  opacity: 0.7; /* Opacidad para que parezca inactivo */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
-  
+
+.encuesta-layout:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.titulo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.descripcion {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 25px;
+  text-align: justify;
+}
+
+.campos-adicionales,
+.pregunta {
+  margin-bottom: 20px;
+}
+
+.campo-label {
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.input-campo,
+.textarea-campo,
+.desplegable-campo {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.input-campo:focus,
+.textarea-campo:focus,
+.desplegable-campo:focus {
+  border-color: #1890ff;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(24, 144, 255, 0.3);
+}
+
+.textarea-campo {
+  min-height: 90px;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.pregunta-texto {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.escala-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.escala-botones button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.escala-botones button:hover {
+  background-color: #1890ff;
+  color: white;
+}
+
+.escala-botones .selected {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.mensaje-advertencia {
+  color: #ff4d4f;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.resultado-final {
+  font-size: 18px;
+  color: #52c41a;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 25px;
+}
+
+button[nz-button][nzType="primary"] {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 8px;
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[nz-button][nzType="primary"]:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+button[nz-button][nzType="primary"][disabled] {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+.emoji-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.emoji {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border-radius: 50%; /* Hace que las imágenes sean redondeadas */
+  object-fit: cover; /* Ajusta la imagen dentro del borde redondeado */
+}
+
+.emoji.selected {
+  transform: scale(1.2);
+  border: 2px solid #1890ff;
+}
+
+.emoji:hover {
+  transform: scale(1.1);
+}

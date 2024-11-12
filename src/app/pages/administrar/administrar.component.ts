@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'app-administrar',
@@ -31,7 +32,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzRadioModule,
     NzListModule,
     NzIconModule,
-    NzSelectModule  
+    NzSelectModule,
+    NzPaginationModule  
   ],
   templateUrl: './administrar.component.html',
   styleUrls: ['./administrar.component.css']
@@ -39,6 +41,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 export class AdministrarComponent {
   form: FormGroup;
   encuestas: Encuesta[] = [];
+  paginatedEncuestas: Encuesta[] = [];
+  pageIndex = 1;
+  pageSize = 5;
   isEditMode = false;
   encuestaSeleccionadaId: string | null = null;
 
@@ -156,7 +161,19 @@ export class AdministrarComponent {
   cargarEncuestas(): void {
     this.encuestasService.obtenerEncuestas().subscribe((encuestas) => {
       this.encuestas = encuestas;
+      this.actualizarPaginacion();
     });
+  }
+
+  actualizarPaginacion(): void {
+    const startIndex = (this.pageIndex - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedEncuestas = this.encuestas.slice(startIndex, endIndex);
+  }
+
+  onPageChange(page: number): void {
+    this.pageIndex = page;
+    this.actualizarPaginacion();
   }
 
   eliminarEncuesta(id: string): void {

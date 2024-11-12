@@ -71,11 +71,29 @@ export class ResultadosComponent implements OnInit {
     'A veces': 1,
     'Frecuentemente': 2,
     'Siempre': 3,
+    'No es cierto': 0,
+    'Raramente es cierto': 1,
+    'A veces es cierto': 2,
+    'Totalmente es cierto': 3,
+    'Totalmente en desacuerdo': 0,
+    'En desacuerdo': 1,
+    'De acuerdo': 2,
+    'Totalmente de acuerdo': 3,
+    'No, en absoluto': 0,
+    'Raramente': 1,
+    'A veces.': 2,
+    'Sí, a menudo': 3,
+    'Si': 1,
+    'No': 0,
+    'sad': 0,
+    'neutral': 1,
+    'happy': 2,
+    'smile': 3,
     '1': 1,
-    '2': 0,
-    '3': 2,
-    '4': 3,
-    '5': 5
+    '2': 2,
+    '3': 3,
+    '4': 3  
+    
   };
 
   constructor(
@@ -101,24 +119,8 @@ export class ResultadosComponent implements OnInit {
   
    // Nueva función para asignar puntuación según la respuesta de texto
    asignarPuntuacion(respuestaTexto: string | null): number {
-    switch (respuestaTexto) {
-      case 'Nunca':
-      case 'Totalmente en desacuerdo':
-        return 0;
-      case 'A veces':
-      case 'En desacuerdo':
-        return 1;
-      case 'Frecuentemente':
-      case 'De acuerdo':
-        return 2;
-      case 'Siempre':
-      case 'Totalmente de acuerdo':
-        return 3;
-      default:
-        return 0;  // Si no coincide con ninguna opción, asigna 0
-    }
+    return this.puntuaciones[respuestaTexto || ''] ?? 0;
   }
-  
   
 
   cargarRespuestas(userId: string): Promise<void> {

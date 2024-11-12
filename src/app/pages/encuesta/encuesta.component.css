@@ -85,6 +85,7 @@
   font-size: 16px;
   color: #6c757d;
   margin-bottom: 20px;
+  text-align: justify;
 }
 
 /* Campos adicionales */
@@ -199,4 +200,28 @@
 
 .link-generado a:hover {
   text-decoration: underline;
+}
+
+.emoji-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.emoji {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border-radius: 50%; /* Hace que las imágenes sean redondeadas */
+  object-fit: cover; /* Ajusta la imagen dentro del borde redondeado */
+}
+
+.emoji.selected {
+  transform: scale(1.2);
+  border: 2px solid #1890ff;
+}
+
+.emoji:hover {
+  transform: scale(1.1);
 }

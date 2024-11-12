@@ -44,7 +44,7 @@ export class EncuestasService {
 
   actualizarEncuesta(encuesta: Encuesta): Promise<void> {
     const docRef = doc(this.firestore, `encuestas/${encuesta.id}`);
-    return updateDoc(docRef, {nombre: encuesta.titulo, descripcion: encuesta.descripcion, tipo: encuesta.tipo, preguntas: encuesta.preguntas, resultados: encuesta.resultados});
+    return updateDoc(docRef, {titulo: encuesta.titulo, descripcion: encuesta.descripcion, tipo: encuesta.tipo, preguntas: encuesta.preguntas, resultados: encuesta.resultados});
     
   }
 

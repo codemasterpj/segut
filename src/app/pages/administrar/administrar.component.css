@@ -115,10 +115,12 @@ nz-list {
   font-size: 18px;
   color: #2b3e50;
   font-weight: bold;
+  
 }
 
 .nz-list-item-meta-description {
   color: #6c757d;
+  text-align: justify;
 }
 
 /* Botones de la Lista */
@@ -145,4 +147,77 @@ nz-list {
 .list-buttons button[nz-button][nzDanger]:hover {
   background-color: #fff1f0;
   color: #ff7875;
+}
+
+/* Estilo para la paginación */
+/* Contenedor de paginación */
+.nz-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Estilo general para paginación simple */
+.ant-pagination-simple {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #f0f5ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre elementos */
+}
+
+/* Color y tamaño del texto del paginador */
+.ant-pagination-simple-pager {
+  font-size: 14px;
+  color: #2b3e50;
+}
+
+/* Estilo para botones "prev" y "next" (anterior y siguiente) */
+.ant-pagination-simple .ant-pagination-prev,
+.ant-pagination-simple .ant-pagination-next {
+  color: #1890ff;
+  transition: color 0.3s;
+}
+
+/* Hover para botones "prev" y "next" */
+.ant-pagination-simple .ant-pagination-prev:hover,
+.ant-pagination-simple .ant-pagination-next:hover {
+  color: #40a9ff;
+}
+
+/* Estilo de los íconos de flechas */
+.ant-pagination-item-link {
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 4px 6px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Hover en los íconos de flechas */
+.ant-pagination-item-link:hover {
+  background-color: #e6f7ff;
+  border-color: #1890ff;
+}
+
+/* Estilo para el texto de página actual en el paginador */
+.ant-pagination-simple .ant-pagination-simple-pager input {
+  font-weight: bold;
+  color: #2b3e50;
+  width: 40px;
+  text-align: center;
+  border: none;
+  background-color: transparent;
+}
+
+/* Estilo de los bordes en los botones prev y next */
+.ant-pagination-simple .ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-simple .ant-pagination-next .ant-pagination-item-link {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

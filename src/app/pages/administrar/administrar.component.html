@@ -39,7 +39,13 @@
             <nz-option nzValue="corta" nzLabel="Respuesta corta"></nz-option>
             <nz-option nzValue="parrafo" nzLabel="Párrafo"></nz-option>
             <nz-option nzValue="opcion" nzLabel="Opción"></nz-option>
-            <nz-option nzValue="escala" nzLabel="Escala"></nz-option>
+            <nz-option nzValue="siNo" nzLabel="Si o No"></nz-option>
+            <nz-option nzValue="frecuencia" nzLabel="Escala de Frecuencia"></nz-option>
+            <nz-option nzValue="certeza" nzLabel="Escala de Certeza"></nz-option>
+            <nz-option nzValue="acuerdo" nzLabel="Escala de Acuerdo"></nz-option>
+            <nz-option nzValue="intensidad" nzLabel="Escala de Intensidad"></nz-option>
+            <nz-option nzValue="caritas" nzLabel="Caritas o Imágenes"></nz-option>
+
           </nz-select>
           <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i, $event)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>
@@ -82,7 +88,7 @@
 </nz-card>
 
 <!-- Lista de encuestas existentes -->
-<nz-list [nzDataSource]="encuestas" [nzRenderItem]="item" [nzBordered]="true">
+<nz-list [nzDataSource]="paginatedEncuestas" [nzRenderItem]="item" [nzBordered]="true">
   <ng-template #item let-encuesta>
     <nz-list-item>
       <nz-list-item-meta
@@ -100,3 +106,12 @@
     </nz-list-item>
   </ng-template>
 </nz-list>
+
+<!-- Paginación -->
+<nz-pagination
+  [nzPageIndex]="pageIndex"
+  [nzPageSize]="pageSize"
+  [nzTotal]="encuestas.length"
+  (nzPageIndexChange)="onPageChange($event)"
+  [nzSimple]="true"
+></nz-pagination>
