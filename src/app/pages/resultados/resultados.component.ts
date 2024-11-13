@@ -166,6 +166,11 @@ export class ResultadosComponent implements OnInit {
   verDetalles(respuesta: Respuesta): void {
     this.respuestaSeleccionada = respuesta;
   }
+  
+  cerrarDetalles(): void {
+    this.respuestaSeleccionada = null;
+  }
+  
 
   exportarPDF(): void {
     const doc = new jsPDF();

@@ -45,30 +45,30 @@
         <button nz-button nzType="link" (click)="verDetalles(respuesta)">Ver Detalles</button>
         <button nz-button nzType="default" (click)="generarPDFIndividual(respuesta)">Generar PDF</button>
       </div>
-    </div>
 
-    <!-- Detalle de la Encuesta Seleccionada -->
-    <div *ngIf="respuestaSeleccionada" class="detalle-respuesta">
-      <h3 class="detalle-titulo">Resultados de la Encuesta: {{ respuestaSeleccionada.encuestaId }}</h3>
-      <p><strong>Nombre:</strong> {{ respuestaSeleccionada.nombre }}</p>
-      <p><strong>Apellido:</strong> {{ respuestaSeleccionada.apellido }}</p>
-      <p><strong>Edad:</strong> {{ respuestaSeleccionada.edad }}</p>
-      <p><strong>Sexo:</strong> {{ respuestaSeleccionada.sexo }}</p>
-      <p><strong>Puntuación Total:</strong> {{ respuestaSeleccionada.calificacionTotal }}</p>
-      <p><strong>Resultado Final:</strong> {{ respuestaSeleccionada.resultadoFinal }}</p>
+      <!-- Detalle de la Encuesta Seleccionada -->
+      <div *ngIf="respuestaSeleccionada === respuesta" class="detalle-respuesta">
+        <h3 class="detalle-titulo">Resultados de la Encuesta</h3>
+        <p><strong>Nombre:</strong> {{ respuesta.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ respuesta.apellido }}</p>
+        <p><strong>Edad:</strong> {{ respuesta.edad }}</p>
+        <p><strong>Sexo:</strong> {{ respuesta.sexo }}</p>
+        <p><strong>Puntuación Total:</strong> {{ respuesta.calificacionTotal }}</p>
+        <p><strong>Resultado Final:</strong> {{ respuesta.resultadoFinal }}</p>
 
-      <!-- Lista de preguntas y respuestas alineadas -->
-      <div *ngFor="let resp of respuestaSeleccionada.respuestas; let i = index" class="item-pregunta-respuesta">
-        <div class="texto-pregunta">
-          <strong>{{ i + 1 }}. {{ resp.pregunta || 'Pregunta no disponible' }}</strong>
+        <!-- Lista de preguntas y respuestas alineadas -->
+        <div *ngFor="let resp of respuesta.respuestas; let i = index" class="item-pregunta-respuesta">
+          <div class="texto-pregunta">
+            <strong>{{ i + 1 }}. {{ resp.pregunta || 'Pregunta no disponible' }}</strong>
+          </div>
+          <div class="texto-respuesta">
+            <span class="respuesta-icono" *ngIf="resp.respuesta">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
+            <span *ngIf="resp.respuesta"> - Puntuación: {{ asignarPuntuacion(resp.respuesta) }}</span>
+          </div>
         </div>
-        <div class="texto-respuesta">
-          <span class="respuesta-icono" *ngIf="resp.respuesta">✔️</span> {{ resp.respuesta || 'Sin respuesta' }}
-          <!-- Mostrar la puntuación individual obtenida usando la función `asignarPuntuacion` -->
-          <span *ngIf="resp.respuesta">
-            - Puntuación: {{ asignarPuntuacion(resp.respuesta) }}
-          </span>
-        </div>
+
+        <!-- Botón para cerrar los detalles -->
+        <button nz-button nzType="default" (click)="cerrarDetalles()">Cerrar</button>
       </div>
     </div>
   </nz-content>
