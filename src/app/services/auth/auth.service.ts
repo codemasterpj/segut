@@ -6,7 +6,8 @@ import {
   signOut,
   User,
   deleteUser,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail
  } from '@angular/fire/auth';
 
  export interface LoginInfo {
@@ -51,6 +52,10 @@ export class AuthService {
       // Nuevo método para escuchar cambios de autenticación
     onAuthStateChanged(callback: (user: User | null) => void): void {
     onAuthStateChanged(this.auth, callback);
+  }
+
+  recuperarContrasena(email: string): Promise<void> {
+    return sendPasswordResetEmail(this.auth, email);
   }
   
 }

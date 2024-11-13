@@ -12,6 +12,7 @@ import { RespondeEncuestaComponent } from './pages/responde-encuesta/responde-en
 import { LeyProteccionDatosComponent } from './pages/ley-proteccion-datos/ley-proteccion-datos.component';
 import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
 import { ReporteEncuestasComponent } from './pages/reporte-encuestas/reporte-encuestas.component';
+import { RecuperarPasswordComponent } from './pages/recuperar-password/recuperar-password.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/welcome' },
@@ -25,7 +26,7 @@ export const routes: Routes = [
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'contacto', component: ContactoComponent},
   { path: 'reporte-encuestas', component: ReporteEncuestasComponent},
-
+  { path: 'recupera-password', component: RecuperarPasswordComponent},
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'proteccion-datos', component: LeyProteccionDatosComponent },
