@@ -53,6 +53,7 @@ export class EncuestaComponent implements OnInit {
   isModalVisible = false;
   puntuacionTotal = 0;
   recomendacion: string = '';
+  edades: number[] = Array.from({ length: 91 }, (_, i) => i + 10);// Edades de 10 a 100
 
   constructor(
     private firestore: Firestore,
@@ -244,6 +245,20 @@ export class EncuestaComponent implements OnInit {
       alert('Selecciona una encuesta para continuar.');
     }
   }
+
+  validarSoloNumeros(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Permitir solo números (código ASCII 48-57)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
+  
+  removerCaracteresNoNumericos(): void {
+    // Asegura que solo queden números en la variable `edad`
+    this.edad = this.edad.toString().replace(/[^0-9]/g, '');
+  }
+  
 
 
 

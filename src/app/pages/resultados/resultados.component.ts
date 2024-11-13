@@ -203,6 +203,8 @@ export class ResultadosComponent implements OnInit {
     }
   
     doc.setFontSize(12);
+  
+    // Encabezado con datos del encuestador
     doc.text('Informe de Resultados de Encuesta Individual', 14, 20);
     doc.text(`Nombre del Encuestador: ${encuestadorData.nombre} ${encuestadorData.apellido}`, 14, 30);
     doc.text(`Correo: ${encuestadorData.email}`, 14, 36);
@@ -210,37 +212,57 @@ export class ResultadosComponent implements OnInit {
     doc.text(`Cargo: ${encuestadorData.role}`, 14, 48);
     doc.text(`Empresa: ${encuestadorData.nombreEmpresa}`, 14, 54);
   
-    // Detalles del encuestado
+    // Detalles del encuestado (sin "ID de Encuesta")
     doc.text('Detalles del Encuestado:', 14, 70);
-    doc.text(`ID de Encuesta: ${respuesta.encuestaId}`, 14, 76);
-    doc.text(`Nombre: ${respuesta.nombre}`, 14, 82);
-    doc.text(`Apellido: ${respuesta.apellido}`, 14, 88);
-    doc.text(`Edad: ${respuesta.edad}`, 14, 94);
-    doc.text(`Sexo: ${respuesta.sexo}`, 14, 100);
-    doc.text(`Área: ${respuesta.areaCurso}`, 14, 106);
-    doc.text(`Puntuación Total: ${respuesta.calificacionTotal}`, 14, 112);  // CAMBIO
-    doc.text(`Resultado Final: ${respuesta.resultadoFinal}`, 14, 118);      // CAMBIO
-
-    // Agregar preguntas y respuestas en la tabla
+    doc.text(`Nombre: ${respuesta.nombre}`, 14, 76);
+    doc.text(`Apellido: ${respuesta.apellido}`, 14, 82);
+    doc.text(`Edad: ${respuesta.edad}`, 14, 88);
+    doc.text(`Sexo: ${respuesta.sexo}`, 14, 94);
+    doc.text(`Área: ${respuesta.areaCurso}`, 14, 100);
+    doc.text(`Puntuación Total: ${respuesta.calificacionTotal}`, 14, 106);
+  
+    // Justificar y dividir el texto de "Resultado Final" en líneas
+    const resultadoFinalTexto = doc.splitTextToSize(`Resultado Final: ${respuesta.resultadoFinal}`, 180);
+    resultadoFinalTexto.forEach((line: string, index: number) => {
+      doc.text(line, 14, 112 + index * 6);  // Ajuste para que el "Resultado Final" esté justo debajo de los detalles del encuestado
+    });
+  
+    // Posición de inicio para la tabla, más arriba
+    const startYForTable = 112 + resultadoFinalTexto.length * 6 + 8;
+  
     if (Array.isArray(respuesta.respuestas) && respuesta.respuestas.length > 0) {
       const respuestaData = respuesta.respuestas.map((resp, index) => [
         index + 1,
         resp.pregunta,
         resp.respuesta || '',
-        `${this.asignarPuntuacion(resp.respuesta)}` 
+        `${this.asignarPuntuacion(resp.respuesta)}`
       ]);
-
+  
       autoTable(doc, {
         head: [['#', 'Pregunta', 'Respuesta', 'Puntuación']],
         body: respuestaData,
-        startY: 124
+        startY: startYForTable,
+        styles: {
+          fontSize: 10,
+          overflow: 'linebreak',
+        },
+        columnStyles: {
+          2: { cellWidth: 50 }, // Ajuste de ancho reducido para la columna "Respuesta"
+          1: { cellWidth: 80 }, // Ancho ajustado para la columna "Pregunta"
+          3: { cellWidth: 30 }, // Ancho ajustado para la columna "Puntuación"
+        },
       });
     } else {
-      doc.text('No se encontraron preguntas y respuestas.', 14, 124);
+      doc.text('No se encontraron preguntas y respuestas.', 14, startYForTable);
     }
-
+  
     doc.save(`Informe_Individual_${respuesta.encuestaId}.pdf`);
   }
+  
+  
+  
+  
+  
   
   
 

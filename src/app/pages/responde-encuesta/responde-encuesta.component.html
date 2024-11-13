@@ -14,12 +14,8 @@
         <input nz-input [(ngModel)]="areaCurso" placeholder="Ingrese su área o curso" class="input-campo" />
         
         <label class="campo-label">Edad:</label>
-        <nz-select [(ngModel)]="edad" placeholder="Seleccione su rango de edad" class="input-campo">
-          <nz-option nzValue="18-25" nzLabel="18-25 años"></nz-option>
-          <nz-option nzValue="26-35" nzLabel="26-35 años"></nz-option>
-          <nz-option nzValue="36-45" nzLabel="36-45 años"></nz-option>
-          <nz-option nzValue="46-55" nzLabel="46-55 años"></nz-option>
-          <nz-option nzValue="56+" nzLabel="56 años o más"></nz-option>
+        <nz-select [(ngModel)]="edad" placeholder="Seleccione su edad" class="input-campo">
+          <nz-option *ngFor="let age of edades" [nzValue]="age" [nzLabel]="age"></nz-option>
         </nz-select>
   
         <label class="campo-label">Sexo:</label>
@@ -158,10 +154,10 @@
 <!-- Mensaje de advertencia si no todas las preguntas están respondidas -->
 <p *ngIf="!formularioCompleto()" class="mensaje-advertencia">Por favor, responda todas las preguntas antes de enviar.</p>
 
-<!-- Mostrar resultado después de enviar -->
+<!-- Mostrar resultado después de enviar 
 <p *ngIf="resultadoFinal" class="resultado-final">
   Resultado de la encuesta: {{ resultadoFinal }}
-</p>
+</p>-->
 
   </div>
   

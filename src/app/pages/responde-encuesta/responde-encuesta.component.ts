@@ -25,6 +25,35 @@ export class RespondeEncuestaComponent implements OnInit {
   edad: number | string = ''; 
   sexo: string = '';
   resultadoFinal: string = ''; // Almacena el resultado final
+  edades: number[] = Array.from({ length: 91 }, (_, i) => i + 10);// Edades de 10 a 100
+  puntuaciones: { [key: string]: number } = {
+    'Nunca': 0,
+    'A veces': 1,
+    'Frecuentemente': 2,
+    'Siempre': 3,
+    'No es cierto': 0,
+    'Raramente es cierto': 1,
+    'A veces es cierto': 2,
+    'Totalmente es cierto': 3,
+    'Totalmente en desacuerdo': 0,
+    'En desacuerdo': 1,
+    'De acuerdo': 2,
+    'Totalmente de acuerdo': 3,
+    'No, en absoluto': 0,
+    'Raramente': 1,
+    'A veces.': 2,
+    'Sí, a menudo': 3,
+    'Si': 1,
+    'No': 0,
+    'sad': 0,
+    'neutral': 1,
+    'happy': 2,
+    'smile': 3,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 3  
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -56,31 +85,13 @@ export class RespondeEncuestaComponent implements OnInit {
 
   calcularCalificacionTotal(): number {
     let total = 0;
-  
+
+    // Suma las puntuaciones de cada respuesta según el objeto `puntuaciones`
     this.respuestas.forEach((respuesta) => {
-      switch (respuesta) {
-        case 'Nunca':
-        case 'Totalmente en desacuerdo':
-          total += 0;
-          break;
-        case 'A veces':
-        case 'En desacuerdo':
-          total += 1;
-          break;
-        case 'Frecuentemente':
-        case 'De acuerdo':
-          total += 2;
-          break;
-        case 'Siempre':
-        case 'Totalmente de acuerdo':
-          total += 3;
-          break;
-        default:
-          total += 0;
-      }
+      total += this.puntuaciones[respuesta ?? ''] || 0;
     });
-  
-    console.log('Calificación total calculada:', total); // Verificar el valor de calificación total
+
+    console.log('Calificación total calculada:', total); 
     return total;
   }
   
@@ -127,8 +138,7 @@ export class RespondeEncuestaComponent implements OnInit {
     const calificacionTotal = this.calcularCalificacionTotal();
     this.determinarResultado(calificacionTotal);
   
-    console.log('Calificación total antes de enviar:', calificacionTotal);
-    console.log('Resultado final antes de enviar:', this.resultadoFinal);
+    
   
     const preguntasYRespuestas = this.encuesta.preguntas.map((pregunta, index) => ({
       pregunta: pregunta.texto,
@@ -151,7 +161,7 @@ export class RespondeEncuestaComponent implements OnInit {
     const respuestasRef = collection(this.firestore, 'respuestas');
     addDoc(respuestasRef, respuesta)
       .then(() => {
-        alert('Respuestas enviadas con éxito. ' + this.resultadoFinal);
+        alert('Su encuesta se ha guardado exitosamente.');
         this.limpiarFormulario();
       })
       .catch(error => {

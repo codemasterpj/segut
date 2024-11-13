@@ -11,9 +11,18 @@
   <app-root></app-root>
 
     <!-- Script del Chatbot de SnatchBot -->
-    <script src="https://account.snatchbot.me/script.js"></script>
-    <script>
-      window.sntchChat.Init(400413); <!-- Asegúrate de usar tu ID correcto -->
+    <script type="text/javascript">
+      (function(d, t) {
+          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+          v.onload = function() {
+            window.voiceflow.chat.load({
+              verify: { projectID: '673392d5ed3106dc006665dd' },
+              url: 'https://general-runtime.voiceflow.com',
+              versionID: 'production'
+            });
+          }
+          v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+      })(document, 'script');
     </script>
 </body>
 </html>
