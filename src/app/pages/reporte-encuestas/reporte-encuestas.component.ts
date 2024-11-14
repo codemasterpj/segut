@@ -8,6 +8,8 @@ import { catchError, combineLatest, groupBy, map, of, switchMap } from 'rxjs';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 
@@ -41,6 +43,7 @@ export class ReporteEncuestasComponent implements OnInit {
   };
   graficosVisibles: { [key: string]: boolean } = {};
   tipoGraficoSeleccionado: { [key: string]: 'pastel' | 'barras' } = {};
+ 
 
   
 
@@ -55,6 +58,7 @@ export class ReporteEncuestasComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarResultadosConNombres();
+    
   }
 
   cargarResultadosConNombres(): void {
@@ -151,7 +155,7 @@ export class ReporteEncuestasComponent implements OnInit {
 
   seleccionarTipoGrafico(encuestadorId: string, tipo: 'pastel' | 'barras'): void {
     this.tipoGraficoSeleccionado[encuestadorId] = tipo;
-    this.graficosVisibles[encuestadorId] = true; // Asegura que el gráfico esté visible
+    this.graficosVisibles[encuestadorId] = true;   
   }
 
 // Distribución de puntuaciones
@@ -194,6 +198,8 @@ obtenerDistribucionPorPregunta(encuestadorId: string): any[] {
 }
 
 
+}
+
+
 
   
-}

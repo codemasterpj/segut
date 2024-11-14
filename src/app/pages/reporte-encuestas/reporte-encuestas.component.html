@@ -25,9 +25,11 @@
       [legend]="true"
       [labels]="true"
       [gradient]="true"
-      [doughnut]="false">
-    </ngx-charts-pie-chart>
-
+      [doughnut]="false"
+      [animations]="false"
+      id="grafico-{{ encuestadorId }}"
+    ></ngx-charts-pie-chart>
+    
     <!-- Gráfico de Barras -->
     <ngx-charts-bar-vertical
       *ngIf="graficosVisibles[encuestadorId] && tipoGraficoSeleccionado[encuestadorId] === 'barras'"
@@ -37,8 +39,11 @@
       [showXAxis]="true"
       [showYAxis]="true"
       [showDataLabel]="true"
-      [gradient]="true">
-    </ngx-charts-bar-vertical>
+      [gradient]="true"
+      ></ngx-charts-bar-vertical>
+
+ 
+    
   </div>
 
   <!-- Modal para mostrar detalles de la encuesta completa -->
