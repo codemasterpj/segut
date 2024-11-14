@@ -4,7 +4,7 @@ import { Firestore, doc, deleteDoc } from '@angular/fire/firestore';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { CommonModule } from '@angular/common';
-import { groupBy } from 'rxjs';
+import { catchError, combineLatest, groupBy, map, of, switchMap } from 'rxjs';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -54,26 +54,48 @@ export class ReporteEncuestasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarResultados();
-    // Prueba llamando a la función con un encuestador específico
-  console.log(this.obtenerDistribucionPuntuacionFinal('encuestadorIdEjemplo'));
-  console.log(this.obtenerDistribucionPorPregunta('encuestadorIdEjemplo'));
+    this.cargarResultadosConNombres();
   }
 
-  cargarResultados(): void {
-    this.encuestasService.obtenerResultados().subscribe(resultados => {
-      this.resultadosAgrupados = {};
-
-      resultados.forEach(resultado => {
-        const encuestadorId = resultado.encuestadorId;
-        if (!this.resultadosAgrupados[encuestadorId]) {
-          this.resultadosAgrupados[encuestadorId] = [];
-        }
-        this.resultadosAgrupados[encuestadorId].push(resultado);
-      });
-
+  cargarResultadosConNombres(): void {
+    this.encuestasService.obtenerResultados().pipe(
+      switchMap(resultados => {
+        const observables = resultados.map(resultado => {
+          if (!resultado.encuestadorId) {
+            console.warn(`El resultado con ID ${resultado.id} no tiene encuestadorId.`);
+            return of({ ...resultado, nombreEncuestador: 'Nombre desconocido' });
+          }
+          
+          return this.encuestasService.obtenerNombreEncuestador(resultado.encuestadorId).pipe(
+            map(nombre => ({
+              ...resultado,
+              nombreEncuestador: nombre
+            })),
+            catchError(error => {
+              console.error(`Error obteniendo nombre para encuestador ID ${resultado.encuestadorId}:`, error);
+              return of({ ...resultado, nombreEncuestador: 'Nombre desconocido' });
+            })
+          );
+        });
+        return combineLatest(observables);
+      })
+    ).subscribe(resultadosConNombres => {
+      this.resultadosAgrupados = this.agruparResultadosPorEncuestador(resultadosConNombres);
       this.encuestadores = Object.keys(this.resultadosAgrupados);
     });
+  }
+  
+
+  agruparResultadosPorEncuestador(resultados: any[]): any {
+    const agrupados: any = {};
+    resultados.forEach(resultado => {
+      const encuestadorId = resultado.encuestadorId;
+      if (!agrupados[encuestadorId]) {
+        agrupados[encuestadorId] = [];
+      }
+      agrupados[encuestadorId].push(resultado);
+    });
+    return agrupados;
   }
 
   verDetalles(encuestadorId: string, resultadoId: string): void {
@@ -101,11 +123,13 @@ export class ReporteEncuestasComponent implements OnInit {
     });
   }
 
+  
+
   eliminarResultado(resultadoId: string): void {
     const docRef = doc(this.firestore, `respuestas/${resultadoId}`);
     deleteDoc(docRef).then(() => {
       this.messageService.success('Resultado eliminado correctamente.');
-      this.cargarResultados();
+      this.cargarResultadosConNombres();
       this.detallesModalVisible = false;
     }).catch(error => {
       this.messageService.error('Error al eliminar el resultado.');
@@ -137,18 +161,21 @@ mostrarGraficos(encuestadorId: string): void {
 
 obtenerDistribucionPuntuacionFinal(encuestadorId: string): any[] {
   const resultados = this.resultadosAgrupados[encuestadorId];
-  const conteoPuntuaciones: { 0: number; 1: number; 2: number; 3: number } = { 0: 0, 1: 0, 2: 0, 3: 0 };
+  const conteoRangos = { '0-10': 0, '11-20': 0, '21-30': 0 };
 
   resultados.forEach((resultado: Resultado) => {
-    const puntuacion = resultado.calificacionTotal || 0;
-    conteoPuntuaciones[puntuacion as keyof typeof conteoPuntuaciones]++;
+    const calificacion = resultado.calificacionTotal || 0;
+    if (calificacion <= 10) conteoRangos['0-10']++;
+    else if (calificacion <= 20) conteoRangos['11-20']++;
+    else conteoRangos['21-30']++;
   });
 
   const total = resultados.length;
-  return Object.keys(conteoPuntuaciones).map(key => ({
-    name: `Puntuación ${key}`,
-    value: (conteoPuntuaciones[key as unknown as 0 | 1 | 2 | 3] / total) * 100
+  return Object.keys(conteoRangos).map(rango => ({
+    name: `Rango ${rango}`,
+    value: (conteoRangos[rango as keyof typeof conteoRangos] / total) * 100
   }));
+  
 }
 
 

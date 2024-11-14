@@ -1,17 +1,17 @@
 <div class="reporte-encuestas">
-    <h2>Reporte de Encuestas</h2>
-  
-    <div *ngFor="let encuestadorId of encuestadores" class="grupo-encuestador">
-      <h3>Encuestador: {{ encuestadorId }}</h3>
-  
-      <ul class="lista-encuestados">
-        <li *ngFor="let resultado of resultadosAgrupados[encuestadorId]">
-          {{ resultado.nombre }} {{ resultado.apellido }}
-          <button nz-button nzType="link" (click)="verDetalles(encuestadorId, resultado.id)">Ver Detalles</button>
-        </li>
-      </ul>
-  
-      <!-- Botones para seleccionar el tipo de gráfico -->
+  <h2>Reporte de Encuestas</h2>
+
+  <div *ngFor="let encuestadorId of encuestadores" class="grupo-encuestador">
+    <h3>Encuestador: {{ resultadosAgrupados[encuestadorId][0]?.nombreEncuestador }}</h3>
+
+    <ul class="lista-encuestados">
+      <li *ngFor="let resultado of resultadosAgrupados[encuestadorId]">
+        {{ resultado.nombre }} {{ resultado.apellido }}
+        <button nz-button nzType="link" (click)="verDetalles(encuestadorId, resultado.id)">Ver Detalles</button>
+      </li>
+    </ul>
+
+    <!-- Botones para seleccionar el tipo de gráfico -->
     <div class="acciones-graficos">
       <button nz-button nzType="primary" (click)="seleccionarTipoGrafico(encuestadorId, 'pastel')">Mostrar Gráfico de Pastel</button>
       <button nz-button nzType="primary" (click)="seleccionarTipoGrafico(encuestadorId, 'barras')">Mostrar Gráfico de Barras</button>
@@ -21,7 +21,7 @@
     <ngx-charts-pie-chart
       *ngIf="graficosVisibles[encuestadorId] && tipoGraficoSeleccionado[encuestadorId] === 'pastel'"
       [results]="obtenerDistribucionPuntuacionFinal(encuestadorId)"
-      [view]="[600, 400]" 
+      [view]="[600, 400]"
       [legend]="true"
       [labels]="true"
       [gradient]="true"
@@ -31,7 +31,7 @@
     <!-- Gráfico de Barras -->
     <ngx-charts-bar-vertical
       *ngIf="graficosVisibles[encuestadorId] && tipoGraficoSeleccionado[encuestadorId] === 'barras'"
-      [results]="obtenerDistribucionPorPregunta(encuestadorId)"
+      [results]="obtenerDistribucionPuntuacionFinal(encuestadorId)"
       [view]="[600, 300]"
       [legend]="true"
       [showXAxis]="true"
@@ -40,26 +40,24 @@
       [gradient]="true">
     </ngx-charts-bar-vertical>
   </div>
-    <!-- Modal para mostrar detalles de la encuesta completa -->
-    <nz-modal [(nzVisible)]="detallesModalVisible" nzTitle="Detalles de la Encuesta" (nzOnCancel)="detallesModalVisible = false">
+
+  <!-- Modal para mostrar detalles de la encuesta completa -->
+  <nz-modal [(nzVisible)]="detallesModalVisible" nzTitle="Detalles de la Encuesta" (nzOnCancel)="detallesModalVisible = false">
     <ng-container *nzModalContent>
-        <h3>{{ encuestaSeleccionada.titulo }}</h3>
+      <h3>{{ encuestaSeleccionada.titulo }}</h3>
 
-        <p><strong>Puntuación Total:</strong> {{ resultadoSeleccionado?.calificacionTotal }}</p>
-        <p><strong>Resultado Final:</strong> {{ resultadoSeleccionado?.resultadoFinal }}</p>
+      <p><strong>Puntuación Total:</strong> {{ resultadoSeleccionado?.calificacionTotal }}</p>
+      <p><strong>Resultado Final:</strong> {{ resultadoSeleccionado?.resultadoFinal }}</p>
 
-        <div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta-respuesta">
-            <p><strong>Pregunta {{ i + 1 }}:</strong> {{ pregunta.texto }}</p>
-            <p><strong>Respuesta:</strong> {{ resultadoSeleccionado?.respuestas[i]?.respuesta || 'Sin respuesta' }}</p>
-        </div>
+      <div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta-respuesta">
+        <p><strong>Pregunta {{ i + 1 }}:</strong> {{ pregunta.texto }}</p>
+        <p><strong>Respuesta:</strong> {{ resultadoSeleccionado?.respuestas[i]?.respuesta || 'Sin respuesta' }}</p>
+      </div>
 
-        <div class="modal-buttons">
-            <button nz-button nzType="default" nzDanger (click)="confirmarEliminacion(resultadoSeleccionado.id)">Eliminar</button>
-            <button nz-button nzType="primary" (click)="enviarPorCorreo(resultadoSeleccionado)">Enviar por Correo</button>
-            
-        </div>
+      <div class="modal-buttons">
+        <button nz-button nzType="default" nzDanger (click)="confirmarEliminacion(resultadoSeleccionado.id)">Eliminar</button>
+        <button nz-button nzType="primary" (click)="enviarPorCorreo(resultadoSeleccionado)">Enviar por Correo</button>
+      </div>
     </ng-container>
-</nz-modal>
-
-  </div>
-  
+  </nz-modal>
+</div>

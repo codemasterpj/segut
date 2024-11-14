@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { fromCollectionRef } from '@angular/fire/compat/firestore';
+import { addDoc, collectionData, deleteDoc, doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
+import { catchError, from, map, Observable, of } from 'rxjs';
+import { collection, query, where, getDocs } from '@angular/fire/firestore';
 
 export interface Encuesta {
   id?: string;
@@ -58,4 +60,25 @@ export class EncuestasService {
     const respuestasRef = collection(this.firestore, 'respuestas');
     return collectionData(respuestasRef, { idField: 'id' });
   }
+
+  obtenerNombreEncuestador(encuestadorId: string): Observable<string> {
+    const registersRef = collection(this.firestore, 'registers');
+    const q = query(registersRef, where('uid', '==', encuestadorId));
+  
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => {
+        if (querySnapshot.empty) {
+          console.warn(`No se encontraron datos para el encuestador con ID: ${encuestadorId}`);
+          return 'Nombre desconocido';
+        }
+        const data = querySnapshot.docs[0].data();
+        return `${data['nombre']} ${data['apellido']}`; // Acceso con notación de índice
+      }),
+      catchError(error => {
+        console.error(`Error obteniendo nombre para encuestador ID ${encuestadorId}:`, error);
+        return of('Nombre desconocido');
+      })
+    );
+  }
+  
 }
