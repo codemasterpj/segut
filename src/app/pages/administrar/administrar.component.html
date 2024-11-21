@@ -52,7 +52,15 @@
           <input type="file" accept="image/*" (change)="cargarImagen($event, i)" class="input-file" />
 
           <!-- Mostrar imagen cargada -->
-          <img *ngIf="preguntas.controls[i].get('imgUrl')?.value" [src]="preguntas.controls[i].get('imgUrl')?.value" alt="Imagen de la pregunta" class="imagen-preview" />
+          <div *ngIf="preguntas.controls[i].get('imgUrl')?.value" class="imagen-container">
+            <img [src]="preguntas.controls[i].get('imgUrl')?.value" alt="Imagen de la pregunta" class="imagen-preview" />
+            <button type="button" class="eliminar-imagen-boton" (click)="eliminarImagen(i, $event)" nz-tooltip="Eliminar imagen">
+              <i nz-icon nzType="close" nzTheme="outline"></i>
+            </button>
+          </div>
+          
+          
+
           
           <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i, $event)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>

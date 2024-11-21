@@ -148,20 +148,7 @@ export class EncuestasService {
   }
 }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   
-    
-    
-
   eliminarEncuesta(encuesta : Encuesta): Promise<void> {
     const productoRef = doc(this.firestore, `encuestas/${encuesta.id}`);
     return deleteDoc(productoRef);
@@ -193,6 +180,26 @@ export class EncuestasService {
     );
   }
 
+  // Método para eliminar imagen en Cloudinary
+
+
+
+async obtenerImagenesDisponibles(): Promise<string[]> {
+  const cloudinaryListUrl = `https://api.cloudinary.com/v1_1/${environment.cloudinaryConfig.cloudName}/resources/image`;
+
+  try {
+    const response = await axios.get(cloudinaryListUrl, {
+      headers: {
+        'Authorization': `Basic ${btoa(environment.cloudinaryConfig.apiKey + ':' + environment.cloudinaryConfig.apiSecret)}`
+      }
+    });
+
+    return response.data.resources.map((resource: any) => resource.secure_url);
+  } catch (error) {
+    console.error('Error al obtener imágenes de Cloudinary:', error);
+    return [];
+  }
+}
 
 
 

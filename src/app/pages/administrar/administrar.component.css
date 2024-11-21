@@ -226,11 +226,41 @@ nz-list {
   margin-left: 10px;
 }
 
-.imagen-preview {
-  width: 80px;
-  height: 80px;
-  margin-left: 10px;
-  border-radius: 4px;
-  object-fit: cover;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+/* Botón de Eliminar Imagen */
+.eliminar-imagen-boton {
+  background-color: transparent;
+  color: #fa8c16; /* Naranja */
+  border: 1px solid #fa8c16;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
+
+.eliminar-imagen-boton:hover {
+  background-color: #ffd591;
+  color: #d46b08;
+  border-color: #d46b08;
+}
+
+/* Contenedor de la imagen */
+.imagen-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.imagen-preview {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid #d1d9e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+

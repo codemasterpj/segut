@@ -47,6 +47,8 @@ export class AdministrarComponent {
   pageSize = 5;
   isEditMode = false;
   encuestaSeleccionadaId: string | null = null;
+  imagenesAsociadas: string[] = []; // URLs de las imágenes asociadas a las preguntas de la encuesta.
+
 
   constructor(
     private fb: FormBuilder,
@@ -216,6 +218,11 @@ export class AdministrarComponent {
     this.resultados.clear();
   
     if (encuesta.preguntas) {
+      // Extraer imágenes asociadas a las preguntas.
+      this.imagenesAsociadas = encuesta.preguntas
+      .map((pregunta) => pregunta.imgUrl)
+      .filter((url): url is string => !!url);  // Filtrar URLs no nulas.
+  
       encuesta.preguntas.forEach((pregunta: any) => {
         const preguntaForm = this.fb.group({
           texto: [pregunta.texto, Validators.required],
@@ -240,6 +247,7 @@ export class AdministrarComponent {
     }
   }
   
+  
 
   actualizarEncuesta(): void {
     if (!this.isEditMode || !this.encuestaSeleccionadaId) return;
@@ -254,7 +262,7 @@ export class AdministrarComponent {
       preguntas: this.preguntas.value, // Asegurarse de incluir las preguntas completas
     };
   
-    console.log('Encuesta antes de enviar para actualizar:', encuestaActualizada);
+    
   
     this.encuestasService.actualizarEncuesta(encuestaActualizada)
       .then(() => {
@@ -318,6 +326,17 @@ export class AdministrarComponent {
       console.warn('No se seleccionó ningún archivo.');
     }
   }
+  
+  eliminarImagen(index: number, event: Event): void {
+    event.preventDefault(); // Prevenir efectos secundarios
+    const pregunta = this.preguntas.at(index);
+    if (pregunta) {
+      pregunta.get('imgUrl')?.setValue('');
+      pregunta.get('imgUrl')?.updateValueAndValidity({ emitEvent: false }); // No emite eventos para evitar cambios en el formulario
+      this.message.info('Imagen eliminada de la pregunta.');
+    }
+  }
+  
   
   
 
