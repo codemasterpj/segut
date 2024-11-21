@@ -47,6 +47,13 @@
             <nz-option nzValue="caritas" nzLabel="Caritas o Imágenes"></nz-option>
 
           </nz-select>
+
+          <!-- Botón para cargar imagen -->
+          <input type="file" accept="image/*" (change)="cargarImagen($event, i)" class="input-file" />
+
+          <!-- Mostrar imagen cargada -->
+          <img *ngIf="preguntas.controls[i].get('imgUrl')?.value" [src]="preguntas.controls[i].get('imgUrl')?.value" alt="Imagen de la pregunta" class="imagen-preview" />
+          
           <button nz-button nzType="default" nzDanger nzShape="circle" class="eliminar-boton" (click)="eliminarPregunta(i, $event)" nz-tooltip="Eliminar pregunta">
             <i nz-icon nzType="delete" nzTheme="outline"></i>
         </button>

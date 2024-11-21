@@ -26,126 +26,112 @@
       </div>
   
     <!-- Preguntas de la encuesta -->
-    <div *ngFor="let pregunta of encuesta.preguntas; let i = index" class="pregunta">
-      <p class="pregunta-texto">{{ pregunta.texto }}</p>
-      <div class="respuesta">
+<div *ngFor="let pregunta of encuesta.preguntas; let i = index" class="pregunta-contenedor">
+  <!-- Contenedor de pregunta y respuesta -->
+  <div class="pregunta-texto-respuesta">
+    <!-- Texto de la pregunta -->
+    <p class="pregunta-texto">{{ pregunta.texto }}</p>
+
+    <!-- Respuesta -->
+    <div class="respuesta">
+      <ng-container [ngSwitch]="pregunta.tipoRespuesta">
         <!-- Respuesta corta -->
-        <ng-container [ngSwitch]="pregunta.tipoRespuesta">
-          <ng-container *ngSwitchCase="'corta'">
-            <input nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta corta" class="input-campo" />
-          </ng-container>
-  
-          <!-- Párrafo -->
-          <ng-container *ngSwitchCase="'parrafo'">
-            <textarea nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta en párrafo" class="textarea-campo"></textarea>
-          </ng-container>
-  
-          <!-- Opción -->
-
-          <ng-container *ngSwitchCase="'opcion'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['1', '2', '3', '4']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-  
-          <!-- Desplegable (select) -->
-          <ng-container *ngSwitchCase="'desplegable'">
-            <nz-select [(ngModel)]="respuestas[i]" placeholder="Seleccione una opción" class="desplegable-campo">
-                <nz-option nzValue="opcion1" nzLabel="Siempre"></nz-option>
-                <nz-option nzValue="opcion2" nzLabel="Frecuentemente"></nz-option>
-                <nz-option nzValue="opcion3" nzLabel="A veces"></nz-option>
-                <nz-option nzValue="opcion3" nzLabel="Nunca"></nz-option>
-              </nz-select>
-          </ng-container>
-  
-          <!-- Escala de Frecuencia-->
-          <ng-container *ngSwitchCase="'frecuencia'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['Nunca', 'A veces', 'Frecuentemente', 'Siempre']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-
-          <!-- Escala de Certeza-->
-          <ng-container *ngSwitchCase="'certeza'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['No es cierto', 'Raramente es cierto', 'A veces es cierto', 'Totalmente es cierto']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-
-          <!-- Escala de Acuerdo-->
-          <ng-container *ngSwitchCase="'acuerdo'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['Totalmente en desacuerdo', 'En desacuerdo', 'De acuerdo', 'Totalmente de acuerdo']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-
-          <!-- Escala de Intensidad-->
-          <ng-container *ngSwitchCase="'intensidad'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['No, en absoluto', 'Raramente', 'A veces.', 'Sí, a menudo']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-
-          <!-- Escala Sí o No-->
-          <ng-container *ngSwitchCase="'siNo'">
-            <div class="escala-botones">
-              <button *ngFor="let valor of ['Si', 'No']; let j = index" 
-                      nz-button 
-                      nzType="default" 
-                      (click)="respuestas[i] = valor" 
-                      [ngClass]="{'selected': respuestas[i] === valor}">
-                {{ valor }}
-              </button>
-            </div>
-          </ng-container>
-
-                    <!-- Escala imagenes-->
-                    <ng-container *ngSwitchCase="'caritas'">
-                      <div class="emoji-options">
-                        <img src="assets/emojis/sad1.JPG" (click)="respuestas[i] = 'sad'" class="emoji" [ngClass]="{'selected': respuestas[i] === 'sad'}" alt="Triste" title="Triste" />
-                        <img src="assets/emojis/neutral1.JPG" (click)="respuestas[i] = 'neutral'" class="emoji" [ngClass]="{'selected': respuestas[i] === 'neutral'}" alt="Neutral" title="Neutral" />
-                        <img src="assets/emojis/happy1.JPG" (click)="respuestas[i] = 'happy'" class="emoji" [ngClass]="{'selected': respuestas[i] === 'happy'}" alt="Feliz" title="Feliz" />
-                        <img src="assets/emojis/smile1.JPG" (click)="respuestas[i] = 'smile'" class="emoji" [ngClass]="{'selected': respuestas[i] === 'smile'}" alt="Muy feliz" title="Muy feliz" />
-                      </div>
-                    </ng-container>
-  
-          <!-- Tipo desconocido (fallback) -->
-          <ng-container *ngSwitchDefault>
-            <p class="texto-advertencia">Tipo de respuesta desconocido.</p>
-          </ng-container>
+        <ng-container *ngSwitchCase="'corta'">
+          <input nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta corta" class="input-campo" />
         </ng-container>
-      </div>
+
+        <!-- Párrafo -->
+        <ng-container *ngSwitchCase="'parrafo'">
+          <textarea nz-input [(ngModel)]="respuestas[i]" placeholder="Escriba su respuesta en párrafo" class="textarea-campo"></textarea>
+        </ng-container>
+
+        <!-- Opción -->
+        <ng-container *ngSwitchCase="'opcion'">
+          <div class="escala-botones">
+            <button *ngFor="let valor of ['1', '2', '3', '4']; let j = index" 
+                    nz-button 
+                    nzType="default" 
+                    (click)="respuestas[i] = valor" 
+                    [ngClass]="{'selected': respuestas[i] === valor}">
+              {{ valor }}
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Desplegable (select) -->
+        <ng-container *ngSwitchCase="'desplegable'">
+          <nz-select [(ngModel)]="respuestas[i]" placeholder="Seleccione una opción" class="desplegable-campo">
+            <nz-option nzValue="Siempre" nzLabel="Siempre"></nz-option>
+            <nz-option nzValue="Frecuentemente" nzLabel="Frecuentemente"></nz-option>
+            <nz-option nzValue="A veces" nzLabel="A veces"></nz-option>
+            <nz-option nzValue="Nunca" nzLabel="Nunca"></nz-option>
+          </nz-select>
+        </ng-container>
+
+        <!-- Escala de Frecuencia -->
+        <ng-container *ngSwitchCase="'frecuencia'">
+          <div class="escala-botones">
+            <button *ngFor="let valor of ['Nunca', 'A veces', 'Frecuentemente', 'Siempre']; let j = index" 
+                    nz-button 
+                    nzType="default" 
+                    (click)="respuestas[i] = valor" 
+                    [ngClass]="{'selected': respuestas[i] === valor}">
+              {{ valor }}
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Escala Sí o No -->
+        <ng-container *ngSwitchCase="'siNo'">
+          <div class="escala-botones">
+            <button *ngFor="let valor of ['Si', 'No']; let j = index" 
+                    nz-button 
+                    nzType="default" 
+                    (click)="respuestas[i] = valor" 
+                    [ngClass]="{'selected': respuestas[i] === valor}">
+              {{ valor }}
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Escala de imágenes (caritas) -->
+        <ng-container *ngSwitchCase="'caritas'">
+          <div class="emoji-options">
+            <img src="assets/emojis/sad1.JPG" 
+                 (click)="respuestas[i] = 'sad'" 
+                 class="emoji" 
+                 [ngClass]="{'selected': respuestas[i] === 'sad'}" 
+                 alt="Triste" title="Triste" />
+            <img src="assets/emojis/neutral1.JPG" 
+                 (click)="respuestas[i] = 'neutral'" 
+                 class="emoji" 
+                 [ngClass]="{'selected': respuestas[i] === 'neutral'}" 
+                 alt="Neutral" title="Neutral" />
+            <img src="assets/emojis/happy1.JPG" 
+                 (click)="respuestas[i] = 'happy'" 
+                 class="emoji" 
+                 [ngClass]="{'selected': respuestas[i] === 'happy'}" 
+                 alt="Feliz" title="Feliz" />
+            <img src="assets/emojis/smile1.JPG" 
+                 (click)="respuestas[i] = 'smile'" 
+                 class="emoji" 
+                 [ngClass]="{'selected': respuestas[i] === 'smile'}" 
+                 alt="Muy feliz" title="Muy feliz" />
+          </div>
+        </ng-container>
+
+        <!-- Fallback para tipo desconocido -->
+        <ng-container *ngSwitchDefault>
+          <p class="texto-advertencia">Tipo de respuesta desconocido.</p>
+        </ng-container>
+      </ng-container>
     </div>
+  </div>
+
+  <!-- Imagen asociada -->
+  <img *ngIf="pregunta.imgUrl" [src]="pregunta.imgUrl" alt="Imagen asociada" class="imagen-pregunta" />
+</div>
+
   
     <!-- Botón para enviar respuestas -->
     <!-- Botón para enviar respuestas -->

@@ -221,3 +221,16 @@ nz-list {
   align-items: center;
   justify-content: center;
 }
+
+.input-file {
+  margin-left: 10px;
+}
+
+.imagen-preview {
+  width: 80px;
+  height: 80px;
+  margin-left: 10px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

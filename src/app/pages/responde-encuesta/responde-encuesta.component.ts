@@ -66,7 +66,7 @@ export class RespondeEncuestaComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.encuestaId = params['encuestaId'];
       this.encuestadorId = params['encuestadorId'];
-
+  
       // Cargar la encuesta usando el encuestaId
       if (this.encuestaId) {
         this.encuestasService.obtenerEncuestaPorId(this.encuestaId).subscribe((encuesta) => {
@@ -77,6 +77,13 @@ export class RespondeEncuestaComponent implements OnInit {
           // Inicializar respuestas vacías según el número de preguntas
           if (this.encuesta && this.encuesta.preguntas) {
             this.respuestas = Array(this.encuesta.preguntas.length).fill(null);
+  
+            // Verifica si las preguntas tienen imágenes asociadas
+            this.encuesta.preguntas.forEach(pregunta => {
+              if (pregunta.imgUrl) {
+                console.log(`Imagen cargada para la pregunta "${pregunta.texto}": ${pregunta.imgUrl}`);
+              }
+            });
           }
         });
       }

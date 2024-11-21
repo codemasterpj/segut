@@ -28,7 +28,7 @@
 }
 
 .tipo-item {
-  padding: 10px;
+  padding: 12px; /* Aumentado */
   cursor: pointer;
   border-radius: 6px;
   transition: background-color 0.3s;
@@ -37,6 +37,7 @@
 .tipo-titulo {
   font-weight: bold;
   color: #ffffff;
+  font-size: 18px; /* Aumentado */
 }
 
 .tipo-item:hover {
@@ -50,11 +51,12 @@
 }
 
 .encuesta-item {
-  padding: 8px 12px;
+  padding: 10px 14px; /* Aumentado */
   cursor: pointer;
   color: #b3c2d1;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
+  font-size: 16px; /* Aumentado */
 }
 
 .encuesta-item:hover {
@@ -74,7 +76,7 @@
 
 /* Contenido del panel derecho */
 .titulo {
-  font-size: 24px;
+  font-size: 26px; /* Aumentado */
   color: #2b3e50;
   margin-bottom: 15px;
   border-bottom: 2px solid #e8e8e8;
@@ -82,7 +84,7 @@
 }
 
 .descripcion {
-  font-size: 16px;
+  font-size: 18px; /* Aumentado */
   color: #6c757d;
   margin-bottom: 20px;
   text-align: justify;
@@ -98,11 +100,13 @@
   font-weight: 600;
   margin-top: 15px;
   color: #2b3e50;
+  font-size: 16px; /* Aumentado */
 }
 
-.input-campo, .textarea-campo {
+.input-campo,
+.textarea-campo {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* Aumentado */
   margin-top: 5px;
   border: 1px solid #d1d9e6;
   border-radius: 4px;
@@ -110,26 +114,44 @@
   transition: border-color 0.3s;
 }
 
-.input-campo:focus, .textarea-campo:focus {
+.input-campo:focus,
+.textarea-campo:focus {
   border-color: #2b3e50;
   outline: none;
 }
 
 .textarea-campo {
-  min-height: 80px;
+  min-height: 100px; /* Aumentado */
 }
 
 /* Preguntas y respuestas */
-.pregunta {
-  margin-bottom: 20px;
+/* Contenedor para la pregunta con la imagen */
+.pregunta-contenedor {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Espaciado entre preguntas */
+  gap: 20px; /* Espaciado entre el texto y la imagen */
 }
 
-.pregunta-texto {
-  font-size: 16px;
-  font-weight: 500;
-  color: #2b3e50;
-  margin-bottom: 12px;
+/* Contenedor de texto (pregunta y respuesta) */
+.pregunta-texto-respuesta {
+  flex: 1; /* Ocupa el espacio disponible */
+  display: flex;
+  flex-direction: column; /* Coloca la pregunta y la respuesta en columna */
+  gap: 10px; /* Espaciado entre la pregunta y la respuesta */
 }
+
+/* Imagen alineada al lado derecho */
+.imagen-pregunta {
+  max-width: 150px; /* Limita el ancho máximo de la imagen */
+  max-height: 100px; /* Limita el alto máximo de la imagen */
+  object-fit: cover; /* Asegura que la imagen mantenga su proporción */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Añade sombra para destacar */
+  align-self: center; /* Centra la imagen verticalmente en el lado derecho */
+}
+
+
 
 .respuesta {
   display: flex;
@@ -142,7 +164,7 @@
 }
 
 .radio-opcion {
-  font-size: 14px;
+  font-size: 16px; /* Aumentado */
   color: #2b3e50;
   cursor: pointer;
   display: flex;
@@ -162,6 +184,7 @@
 .escala-botones button {
   border-radius: 4px;
   transition: background-color 0.3s;
+  font-size: 16px; /* Aumentado */
 }
 
 .escala-botones button.selected {
@@ -175,8 +198,8 @@
   background-color: #2b3e50;
   color: #ffffff;
   border: none;
-  padding: 12px 25px;
-  font-size: 16px;
+  padding: 14px 30px; /* Aumentado */
+  font-size: 18px; /* Aumentado */
   font-weight: 600;
   border-radius: 4px;
   cursor: pointer;
@@ -190,7 +213,7 @@
 /* Link generado */
 .link-generado {
   margin-top: 20px;
-  font-size: 14px;
+  font-size: 16px; /* Aumentado */
 }
 
 .link-generado a {
@@ -202,6 +225,7 @@
   text-decoration: underline;
 }
 
+/* Opciones de emoji */
 .emoji-options {
   display: flex;
   gap: 10px;
@@ -209,8 +233,8 @@
 }
 
 .emoji {
-  width: 40px;
-  height: 40px;
+  width: 48px; /* Aumentado */
+  height: 48px; /* Aumentado */
   cursor: pointer;
   transition: transform 0.2s ease;
   border-radius: 50%; /* Hace que las imágenes sean redondeadas */
@@ -225,3 +249,4 @@
 .emoji:hover {
   transform: scale(1.1);
 }
+

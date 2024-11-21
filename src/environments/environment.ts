@@ -9,6 +9,12 @@ export const environment = {
         authDomain: "web-segut.firebaseapp.com",
         messagingSenderId: "955600859150",
         measurementId: "G-Z8KLCZGB58",
-    }
+    },
+    cloudinaryConfig: {
+        cloudName: 'di8nyvtax',
+        apiKey: '298686258213157',
+        apiSecret: 'wWWFsjvgDeQkdqa57b6MlAowwjk',
+        uploadPreset: 'di8nyvtax', 
+      }
   };
   

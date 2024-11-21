@@ -1,3 +1,4 @@
+/* Contenedor principal de la encuesta */
 .encuesta-layout {
   max-width: 800px;
   margin: 0 auto;
@@ -27,8 +28,8 @@
   text-align: justify;
 }
 
-.campos-adicionales,
-.pregunta {
+/* Campos adicionales del encuestador */
+.campos-adicionales {
   margin-bottom: 20px;
 }
 
@@ -64,11 +65,31 @@
   margin-bottom: 15px;
 }
 
+/* Estilo de las preguntas */
+.pregunta-contenedor {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px; /* Espaciado entre el texto y la imagen */
+}
+
+.pregunta-texto-respuesta {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado entre pregunta y respuesta */
+}
+
 .pregunta-texto {
   font-size: 17px;
   color: #333;
-  margin-bottom: 12px;
   font-weight: 500;
+}
+
+/* Estilo de las respuestas */
+.respuesta {
+  display: flex;
+  flex-direction: column;
 }
 
 .escala-botones {
@@ -98,6 +119,42 @@
   border-color: #1890ff;
 }
 
+/* Estilo de las imágenes asociadas */
+.imagen-pregunta {
+  max-width: 150px; /* Limita el ancho máximo */
+  max-height: 100px; /* Limita el alto máximo */
+  object-fit: cover; /* Ajusta la imagen dentro de sus dimensiones */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Sombra para destacar */
+  align-self: center; /* Centra la imagen verticalmente */
+}
+
+/* Opciones de emoji */
+.emoji-options {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.emoji {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border-radius: 50%; /* Hace que las imágenes sean redondeadas */
+  object-fit: cover; /* Ajusta la imagen dentro del borde redondeado */
+}
+
+.emoji.selected {
+  transform: scale(1.2);
+  border: 2px solid #1890ff;
+}
+
+.emoji:hover {
+  transform: scale(1.1);
+}
+
+/* Mensaje de advertencia */
 .mensaje-advertencia {
   color: #ff4d4f;
   font-weight: bold;
@@ -105,6 +162,7 @@
   margin-top: 15px;
 }
 
+/* Resultado final */
 .resultado-final {
   font-size: 18px;
   color: #52c41a;
@@ -113,6 +171,7 @@
   margin-top: 25px;
 }
 
+/* Botón principal */
 button[nz-button][nzType="primary"] {
   display: block;
   width: 100%;
@@ -136,28 +195,4 @@ button[nz-button][nzType="primary"][disabled] {
   background-color: #ccc;
   border-color: #ccc;
   cursor: not-allowed;
-}
-
-.emoji-options {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.emoji {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  border-radius: 50%; /* Hace que las imágenes sean redondeadas */
-  object-fit: cover; /* Ajusta la imagen dentro del borde redondeado */
-}
-
-.emoji.selected {
-  transform: scale(1.2);
-  border: 2px solid #1890ff;
-}
-
-.emoji:hover {
-  transform: scale(1.1);
 }

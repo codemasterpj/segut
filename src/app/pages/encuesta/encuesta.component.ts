@@ -258,6 +258,8 @@ export class EncuestaComponent implements OnInit {
     // Asegura que solo queden números en la variable `edad`
     this.edad = this.edad.toString().replace(/[^0-9]/g, '');
   }
+
+  
   
 
 

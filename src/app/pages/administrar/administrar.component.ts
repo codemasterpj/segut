@@ -15,6 +15,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-administrar',
@@ -74,7 +75,8 @@ export class AdministrarComponent {
   nuevaPregunta(): FormGroup {
     return this.fb.group({
       texto: ['', Validators.required],
-      tipoRespuesta: [null, Validators.required]
+      tipoRespuesta: [null, Validators.required],
+      imgUrl: [''], // Cambiado a imgUrl
     });
   }
 
@@ -203,40 +205,41 @@ export class AdministrarComponent {
   editarEncuesta(encuesta: Encuesta): void {
     this.isEditMode = true;
     this.encuestaSeleccionadaId = encuesta.id || null;
-
+  
     this.form.patchValue({
       titulo: encuesta.titulo,
       tipo: encuesta.tipo,
-      descripcion: encuesta.descripcion
+      descripcion: encuesta.descripcion,
     });
-
+  
     this.preguntas.clear();
     this.resultados.clear();
-
+  
     if (encuesta.preguntas) {
       encuesta.preguntas.forEach((pregunta: any) => {
         const preguntaForm = this.fb.group({
           texto: [pregunta.texto, Validators.required],
-          tipoRespuesta: [pregunta.tipoRespuesta, Validators.required]
+          tipoRespuesta: [pregunta.tipoRespuesta, Validators.required],
+          imgUrl: [pregunta.imgUrl || ''], // Asegurarse de cargar el imgUrl
         });
         this.preguntas.push(preguntaForm);
       });
     }
-
+  
     if (encuesta.resultados) {
       encuesta.resultados.forEach((resultado: any) => {
         const resultadoForm = this.fb.group({
           descripcion: [resultado.descripcion, Validators.required],
           calificacionMinima: [resultado.calificacionMinima, Validators.required],
-          calificacionMaxima: [resultado.calificacionMaxima, Validators.required]
+          calificacionMaxima: [resultado.calificacionMaxima, Validators.required],
         });
         this.resultados.push(resultadoForm);
       });
-
-      // Llama a actualizar los valores mínimos después de cargar los resultados
+  
       this.actualizarMinimosAutomaticamente();
     }
   }
+  
 
   actualizarEncuesta(): void {
     if (!this.isEditMode || !this.encuestaSeleccionadaId) return;
@@ -247,8 +250,11 @@ export class AdministrarComponent {
   
     const encuestaActualizada: Encuesta = {
       id: this.encuestaSeleccionadaId,
-      ...this.form.value
+      ...this.form.value, // Valores del formulario
+      preguntas: this.preguntas.value, // Asegurarse de incluir las preguntas completas
     };
+  
+    console.log('Encuesta antes de enviar para actualizar:', encuestaActualizada);
   
     this.encuestasService.actualizarEncuesta(encuestaActualizada)
       .then(() => {
@@ -265,6 +271,8 @@ export class AdministrarComponent {
         this.message.error('Error al actualizar la encuesta.');
       });
   }
+  
+  
   
 
   cancelarEdicion(): void {
@@ -289,5 +297,32 @@ export class AdministrarComponent {
 
     return resultado ? resultado.get('descripcion')?.value : 'Sin resultado';
   }
+  
+  async cargarImagen(event: Event, preguntaIndex: number): Promise<void> {
+    const input = event.target as HTMLInputElement;
+  
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      console.log('Archivo seleccionado:', file);
+  
+      try {
+        const imgUrl = await this.encuestasService.subirImagen(file);
+        console.log('URL devuelto al cargar la imagen:', imgUrl);
+  
+        // Asigna el URL generado al campo imgUrl de la pregunta
+        this.preguntas.at(preguntaIndex).get('imgUrl')?.setValue(imgUrl);
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error);
+      }
+    } else {
+      console.warn('No se seleccionó ningún archivo.');
+    }
+  }
+  
+  
+
+
+
+  
   
 }
