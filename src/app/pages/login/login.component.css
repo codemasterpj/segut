@@ -3,9 +3,23 @@
   max-width: 400px;
   margin: 100px auto;
   padding: 30px;
-  background-color: #ffffff;
+  background-color: #ffffff; /* Fondo blanco */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
+  border: 2px solid #063b6f; /* Borde azul profundo */
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Elementos de formulario */
@@ -15,16 +29,17 @@
 
 .nz-form-control input[nz-input] {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #d1d9e6;
+  padding: 12px; /* Espaciado más cómodo */
+  border: 1px solid #8ab448; /* Verde vibrante */
   border-radius: 4px;
-  background-color: #f9fafc;
-  transition: border-color 0.3s;
+  background-color: #f9fafc; /* Fondo claro */
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input[nz-input]:focus {
-  border-color: #2b3e50;
+  border-color: #063b6f; /* Azul profundo */
   outline: none;
+  box-shadow: 0 0 8px rgba(6, 59, 111, 0.3); /* Sombra azul */
 }
 
 /* Iconos de grupo de entrada */
@@ -37,7 +52,7 @@ input[nz-input]:focus {
 }
 
 .nz-input-group .ant-input-prefix {
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
 }
 
 /* Checkbox y enlace de olvidar contraseña */
@@ -48,17 +63,17 @@ input[nz-input]:focus {
 
 label[nz-checkbox] span {
   font-weight: 500;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
 }
 
 .login-form-forgot {
   float: right;
-  color: #1890ff;
+  color: #8ab448; /* Verde vibrante */
   transition: color 0.3s;
 }
 
 .login-form-forgot:hover {
-  color: #40a9ff;
+  color: #063b6f; /* Azul profundo */
 }
 
 /* Botón de Login */
@@ -69,31 +84,32 @@ label[nz-checkbox] span {
   width: 100%; /* El botón ocupa todo el ancho del contenedor */
   padding: 12px 0; /* Espacio dentro del botón (solo vertical) */
   margin-bottom: 20px; /* Espacio debajo del botón de "Iniciar Sesión" */
-  background-color: #2b3e50;
+  background-color: #8ab448; /* Verde vibrante */
   color: #ffffff;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
 }
 
 .login-form-button:hover {
-  background-color: #3e4e63;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: #063b6f; /* Azul profundo */
+  box-shadow: 0 4px 8px rgba(6, 59, 111, 0.3); /* Sombra azul */
+  transform: scale(1.05); /* Efecto de agrandamiento */
 }
 
 /* Enlace para registrarse */
 a[routerLink] {
-  color: #1890ff;
+  color: #8ab448; /* Verde vibrante */
   font-weight: 500;
   margin-left: 5px;
   transition: color 0.3s;
 }
 
 a[routerLink]:hover {
-  color: #40a9ff;
+  color: #063b6f; /* Azul profundo */
 }
 
 /* Responsividad */

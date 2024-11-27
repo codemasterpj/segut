@@ -1,236 +1,224 @@
 /* Contenedor principal para la administración de usuarios */
-.input-disabled {
-  background-color: #f0f0f0; /* Color de fondo gris claro */
-  color: #666; /* Texto en color gris tenue */
-  border: 1px solid #d9d9d9; /* Borde más claro */
-  cursor: not-allowed; /* Muestra un cursor que indica que no se puede interactuar */
-  pointer-events: none; /* Evita cualquier interacción del usuario */
+.usuarios-layout {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
+  border: 2px solid #063b6f; /* Borde azul profundo */
+  animation: fadeIn 1s ease-in-out;
 }
 
-.usuarios-layout {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 40px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Título de la administración de usuarios */
+.usuarios-layout h2 {
+  font-size: 28px;
+  color: #063b6f; /* Azul profundo */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  animation: slideIn 1s ease-in-out;
+}
+
+/* Animación del título */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Texto descriptivo */
+.usuarios-layout p {
+  font-size: 16px;
+  color: #495567; /* Gris oscuro */
+  margin-bottom: 30px;
+  line-height: 1.8; /* Espaciado más cómodo */
+  text-align: center;
+}
+
+/* Estilo de la tabla de usuarios */
+.nz-table {
+  width: 100%;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
+}
+
+.nz-table thead tr {
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff; /* Texto blanco */
+  font-weight: bold;
+}
+
+.nz-table th,
+.nz-table td {
+  padding: 15px;
+  text-align: center;
+  font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.nz-table tr:hover td {
+  background-color: #eef9e7; /* Fondo verde claro */
+}
+
+/* Botones de acciones de la tabla */
+button[nz-button][nzType="link"] {
+  color: #063b6f; /* Azul profundo */
+  transition: color 0.3s;
+}
+
+button[nz-button][nzType="link"]:hover {
+  color: #8ab448; /* Verde vibrante */
+}
+
+button[nz-button][nzDanger] {
+  color: #ff4d4f;
+  transition: color 0.3s, box-shadow 0.3s;
+}
+
+button[nz-button][nzDanger]:hover {
+  color: #ff7875;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+}
+
+/* Detalles del usuario seleccionado */
+.detalle-usuario {
+  background-color: #f9fafc; /* Fondo claro */
+  border-radius: 10px;
+  padding: 25px;
+  margin-top: 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeInDetail 0.8s ease-in-out;
+}
+
+/* Animación de entrada de detalles */
+@keyframes fadeInDetail {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Título del detalle de usuario */
+.detalle-usuario h3 {
+  font-size: 24px;
+  color: #063b6f; /* Azul profundo */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Campos del detalle del usuario */
+.detalle-usuario p {
+  font-size: 16px;
+  color: #495567; /* Gris oscuro */
+  margin: 10px 0;
+}
+
+.detalle-usuario label {
+  font-weight: bold;
+  color: #063b6f; /* Azul profundo */
+  margin-bottom: 10px;
+  display: block;
+}
+
+.detalle-usuario input,
+.detalle-usuario select,
+.detalle-usuario nz-select {
+  width: 100%;
+  padding: 12px; /* Ajuste de padding */
+  margin-top: 5px;
+  border: 1px solid #8ab448; /* Verde vibrante */
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: border-color 0.3s;
+}
+
+.detalle-usuario input:focus,
+.detalle-usuario select:focus {
+  border-color: #063b6f; /* Azul profundo */
+  outline: none;
+}
+
+/* Botones de guardar y cancelar */
+.detalle-usuario button[nz-button] {
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.detalle-usuario button[nz-button][nzType="primary"] {
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff;
+  border: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.detalle-usuario button[nz-button][nzType="primary"]:hover {
+  background-color: #8ab448; /* Verde vibrante */
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.detalle-usuario button[nz-button][nzType="default"] {
+  background-color: #eef3f7; /* Fondo gris claro */
+  color: #063b6f; /* Azul profundo */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.detalle-usuario button[nz-button][nzType="default"]:hover {
+  background-color: #d9d9d9;
+  color: #495567; /* Gris más oscuro */
+}
+
+/* Botón para cerrar detalles */
+button[nz-button][nzType="default"][nzDanger] {
+  margin-top: 20px;
+  background-color: #ff4d4f; /* Rojo vibrante */
+  color: #ffffff;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button[nz-button][nzType="default"][nzDanger]:hover {
+  background-color: #ff7875; /* Rojo más claro */
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .usuarios-layout {
+    padding: 20px;
   }
 
-  
-  /* Animación de entrada */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Título de la administración de usuarios */
-  .usuarios-layout h2 {
-    font-size: 28px;
-    color: #2b3e50;
-    margin-bottom: 20px;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    animation: slideIn 1s ease-in-out;
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  /* Texto descriptivo */
-  
-  .usuarios-layout p {
-    font-size: 16px;
-    color: #6c757d;
-    margin-bottom: 30px;
-    line-height: 1.5;
-    text-align: center;
-  }
-  
-  /* Estilo de la tabla de usuarios */
-  .nz-table {
-    width: 100%;
-    margin-bottom: 30px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nz-table thead tr {
-    background-color: #2b3e50;
-    color: #ffffff;
-    font-weight: bold;
-  }
-  
-  .nz-table th,
-  .nz-table td {
-    padding: 15px;
-    text-align: center;
-    font-size: 15px;
-    transition: background-color 0.3s;
-  }
-  
-  .nz-table tr:hover td {
-    background-color: #f2f4f8;
-  }
-  
-  /* Botones de acciones de la tabla */
-  button[nz-button][nzType="link"] {
-    color: #1890ff;
-    transition: color 0.3s;
-  }
-  
-  button[nz-button][nzType="link"]:hover {
-    color: #40a9ff;
-  }
-  
-  button[nz-button][nzDanger] {
-    color: #ff4d4f;
-    transition: color 0.3s, box-shadow 0.3s;
-  }
-  
-  button[nz-button][nzDanger]:hover {
-    color: #ff7875;
-    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
-  }
-  
-  /* Detalles del usuario seleccionado */
   .detalle-usuario {
-    background-color: #f9fafc;
-    border-radius: 10px;
-    padding: 25px;
-    margin-top: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    animation: fadeInDetail 0.8s ease-in-out;
+    margin-top: 20px;
   }
-  
-  @keyframes fadeInDetail {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  /* Título del detalle de usuario */
-  .detalle-usuario h3 {
-    font-size: 24px;
-    color: #2b3e50;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Campos del detalle del usuario */
-  .detalle-usuario p {
-    font-size: 16px;
-    color: #495567;
-    margin: 10px 0;
-  }
-  
-  .detalle-usuario label {
-    font-weight: bold;
-    color: #2b3e50;
-    margin-bottom: 10px;
-    display: block;
-  }
-  
+
   .detalle-usuario input,
   .detalle-usuario select,
   .detalle-usuario nz-select {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #d1d9e6;
-    border-radius: 4px;
-    background-color: #ffffff;
-    transition: border-color 0.3s;
   }
-  
-  .detalle-usuario input:focus,
-  .detalle-usuario select:focus {
-    border-color: #2b3e50;
-    outline: none;
-  }
-  
-  /* Botones de guardar y cancelar */
-  .detalle-usuario button[nz-button] {
-    margin-top: 15px;
-    font-weight: 600;
-  }
-  
-  .detalle-usuario button[nz-button][nzType="primary"] {
-    background-color: #1890ff;
-    color: #ffffff;
-    border: none;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .detalle-usuario button[nz-button][nzType="primary"]:hover {
-    background-color: #40a9ff;
-    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
-  }
-  
-  .detalle-usuario button[nz-button][nzType="default"] {
-    background-color: #f0f0f0;
-    color: #2b3e50;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .detalle-usuario button[nz-button][nzType="default"]:hover {
-    background-color: #d9d9d9;
-    color: #495567;
-  }
-  
-  /* Botón para cerrar detalles */
-  button[nz-button][nzType="default"][nzDanger] {
-    margin-top: 20px;
-    background-color: #ff4d4f;
-    color: #ffffff;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  button[nz-button][nzType="default"][nzDanger]:hover {
-    background-color: #ff7875;
-    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
-  }
-
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .usuarios-layout {
-      padding: 20px;
-    }
-  
-    .detalle-usuario {
-      margin-top: 20px;
-    }
-  
-    .detalle-usuario input,
-    .detalle-usuario select,
-    .detalle-usuario nz-select {
-      width: 100%;
-    }
-
-    
-
-  }
-  
+}

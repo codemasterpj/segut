@@ -1,8 +1,9 @@
-/* Layout principal */
+/* Layout principal adaptado al estilo del footer */
 :host {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ocupa la altura completa de la ventana */
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Fondo claro general */
 }
 
 /* Contenedor completo del layout */
@@ -12,6 +13,13 @@ nz-layout {
   flex-grow: 1;
 }
 
+/* Header */
+nz-header {
+  background-color: #063b6f !important; /* Azul profundo */
+  color: #ffffff; /* Texto claro */
+  border-bottom: 4px solid #8ab448; /* Línea inferior verde vibrante */
+}
+
 /* Navbar */
 .navbar {
   display: flex;
@@ -19,17 +27,26 @@ nz-layout {
   align-items: center;
   height: 64px;
   padding: 0 24px;
-  background-color: #001529;
+  background-color: #063b6f; /* Fondo azul profundo */
 }
 
+/* Logo */
 .navbar .logo {
   display: flex;
   align-items: center;
-  height: 64px;
 }
 
-.navbar .logo img {
-  height: 40px;
+.navbar .logo .logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff; /* Texto claro */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.navbar .logo .logo-text:hover {
+  color: #8ab448; /* Verde vibrante */
 }
 
 /* Menú */
@@ -37,6 +54,8 @@ ul[nz-menu] {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  background-color: #063b6f; /* Azul profundo */
+  border: none; /* Eliminar bordes del menú */
 }
 
 ul[nz-menu] li {
@@ -44,38 +63,105 @@ ul[nz-menu] li {
   padding: 0 16px;
 }
 
+/* Estilo de enlaces en el menú */
 ul[nz-menu] li a {
-  color: #fff;
+  color: #ffffff; /* Texto claro */
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 ul[nz-menu] li a:hover {
-  color: #1890ff;
+  color: #8ab448; /* Verde vibrante */
+  transform: scale(1.05); /* Pequeño aumento en tamaño */
+}
+
+/* Enlace activo */
+ul[nz-menu] li a.active {
+  color: #8ab448;
+  font-weight: bold;
+}
+
+/* Botón de login/logout */
+ul[nz-menu] li:last-child a {
+  background-color: #8ab448;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+ul[nz-menu] li:last-child a:hover {
+  background-color: #063b6f;
+  color: #ffffff;
+  transform: scale(1.1);
 }
 
 /* Contenido principal */
 nz-content {
   padding: 24px;
-  background-color: #f0f2f5;
-  min-height: calc(100vh - 80px); /* Altura mínima del tamaño de la pantalla menos el navbar */
+  background-color: #ffffff; /* Fondo blanco */
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
+  border-top: 4px solid #063b6f; /* Línea superior azul profundo */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .router-outlet {
   padding: 24px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff; /* Fondo blanco */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  flex-grow: 1; /* Asegura que el contenido principal también se expanda */
+  flex-grow: 1;
+}
+
+/* Botones */
+button {
+  background-color: #8ab448;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #063b6f;
+  transform: scale(1.05);
 }
 
 /* Footer */
 app-footer {
-  background-color: #001529;
-  color: #ffffff;
+  background-color: #063b6f; /* Fondo azul profundo */
+  color: #ffffff; /* Texto claro */
   padding: 20px;
   text-align: center;
   font-size: 14px;
+  border-top: 4px solid #8ab448; /* Línea superior verde vibrante */
+}
+
+app-footer a {
+  color: #8ab448; /* Enlaces en verde vibrante */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+app-footer a:hover {
+  color: #ffffff;
+}
+
+
+/* Imagen del logo */
+.logo-img {
+  height: 50px; /* Ajusta la altura para encajar en la navbar */
+  border-radius: 8px; /* Bordes redondeados */
+  object-fit: cover; /* Mantiene las proporciones dentro del contenedor */
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1); /* Efecto de aumento en hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra en hover */
 }

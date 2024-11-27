@@ -1,68 +1,106 @@
 /* Contenedor principal del layout */
 .resultados-layout {
   display: flex;
-  background-color: #f1f6ff;
+  background-color: #f9fafc; /* Fondo claro */
   min-height: 100vh;
   gap: 20px;
+  padding: 20px;
 }
 
 /* Panel izquierdo */
 .panel-izquierdo {
-  background-color: #ffffff;
-  color: #ffffff;
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff; /* Texto blanco */
   padding: 20px;
   border-radius: 8px;
   max-width: 240px;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
 }
 
+/* Título del panel de filtros */
 .titulo-filtros {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
+/* Etiquetas de campo */
 .campo-label {
   display: block;
-  font-weight: 600;
+  font-weight: bold;
   margin-top: 15px;
-  color: #ffffff;
+  color: #8ab448; /* Verde vibrante */
 }
 
+/* Campos de entrada */
 .input-campo {
   width: 100%;
   margin-top: 5px;
-  padding: 8px;
-  border-radius: 4px;
-  border: none;
-  background-color: #f9fafc;
+  padding: 10px; /* Espaciado más cómodo */
+  border-radius: 6px;
+  border: 1px solid #8ab448; /* Verde vibrante */
+  background-color: #ffffff; /* Fondo blanco */
+  transition: all 0.3s ease;
 }
 
-.boton-limpiar, .boton-pdf {
+.input-campo:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+
+/* Botones en el panel izquierdo */
+.boton-limpiar,
+.boton-pdf {
   margin-top: 20px;
   width: 100%;
+  padding: 10px 12px; /* Ajuste del padding vertical */
+  font-size: 16px;
+  font-weight: bold;
+  color: #063b6f; /* Azul profundo */
+  background-color: #ffffff;
+  border: 1px solid #8ab448; /* Verde vibrante */
+  border-radius: 6px;
+  text-align: center; /* Centrado horizontal */
+  line-height: normal; /* Asegura que el texto no se desplace */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex; /* Usar flexbox para centrar el texto */
+  justify-content: center; /* Centrado horizontal con flexbox */
+  align-items: center; /* Centrado vertical con flexbox */
+}
+
+
+.boton-limpiar:hover,
+.boton-pdf:hover {
+  background-color: #8ab448; /* Verde vibrante */
+  color: #ffffff;
 }
 
 /* Panel derecho */
 .panel-derecho {
-  background-color: #ffffff;
+  background-color: #ffffff; /* Fondo blanco */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
   padding: 30px;
   flex: 1;
-  width: 100%;
 }
 
 /* Contenido del panel derecho */
 .titulo {
   font-size: 24px;
-  color: #2b3e50;
+  font-weight: bold;
+  color: #063b6f; /* Azul profundo */
   margin-bottom: 20px;
-  border-bottom: 2px solid #e8e8e8;
+  border-bottom: 2px solid #8ab448; /* Línea verde vibrante */
   padding-bottom: 10px;
 }
 
+/* Resumen de respuesta */
 .respuesta-item-resumida {
   border-bottom: 1px solid #e8e8e8;
   padding: 10px 0;
@@ -74,38 +112,52 @@
   gap: 10px;
 }
 
+/* Detalles de la respuesta */
 .detalle-respuesta {
   margin-top: 10px;
   padding: 15px;
-  background-color: #f9fafc;
+  background-color: #f5f8fb; /* Fondo claro */
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
 
 .detalle-titulo {
   font-size: 18px;
   margin-bottom: 15px;
-  color: #2b3e50;
+  font-weight: bold;
+  color: #063b6f; /* Azul profundo */
 }
 
-
+/* Preguntas y respuestas */
 .item-pregunta-respuesta {
   margin-bottom: 20px;
 }
 
 .texto-pregunta {
-  font-weight: 600;
+  font-weight: bold;
   margin-bottom: 10px;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
 }
 
 .texto-respuesta {
   font-size: 14px;
-  color: #6c757d;
+  color: #495567; /* Gris oscuro */
 }
 
+/* Icono de respuesta */
 .respuesta-icono {
-  color: #28a745; /* Icono de check en verde */
+  color: #8ab448; /* Verde vibrante */
   margin-right: 5px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .resultados-layout {
+    flex-direction: column;
+  }
+
+  .panel-izquierdo {
+    max-width: 100%;
+  }
 }

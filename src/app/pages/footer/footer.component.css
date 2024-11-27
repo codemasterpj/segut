@@ -1,83 +1,94 @@
 /* Contenedor Principal del Footer */
 .footer-container {
-    background-color: #001529;
-    color: #ffffff;
-    padding: 40px 20px;
-  }
-  
-  .footer-column {
-    text-align: left;
-    margin-bottom: 20px;
-  }
-  
-  .footer-column h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #40a9ff;
-    text-transform: uppercase;
-  }
-  
-  .footer-column p,
-  .footer-column ul,
-  .footer-column a {
-    font-size: 14px;
-    color: #d9d9d9;
-  }
-  
-  .footer-column ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-column li {
-    margin-bottom: 10px;
-  }
-  
-  .footer-column a {
-    text-decoration: none;
-    color: #d9d9d9;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-column a:hover {
-    color: #40a9ff;
-  }
-  
-  /* Estilo del Logo y Redes Sociales */
-  .footer-logo {
-    max-width: 80px;
-    margin-bottom: 15px;
-  }
-  
-  .social-icons a {
-    margin-right: 10px;
-    color: #ffffff;
-    font-size: 20px;
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-  
-  .social-icons a:hover {
-    transform: scale(1.1);
-    color: #40a9ff;
-  }
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .footer-container {
-      text-align: center;
-    }
-  
-    .footer-column {
-      margin-bottom: 20px;
-    }
-  
-    .social-icons a {
-      margin-right: 8px;
-    }
+  background-color: #063b6f; /* Fondo azul profundo */
+  color: #ffffff; /* Texto claro */
+  padding: 40px 20px;
+}
+
+/* Columnas del Footer */
+.footer-column {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.footer-column h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #8ab448; /* Verde vibrante */
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.footer-column p,
+.footer-column ul,
+.footer-column a {
+  font-size: 14px;
+  color: #d9d9d9; /* Texto gris claro */
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column li {
+  margin-bottom: 10px;
+}
+
+.footer-column a {
+  text-decoration: none;
+  color: #d9d9d9; /* Texto gris claro */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: #8ab448; /* Verde vibrante */
+  transform: scale(1.05); /* Efecto de zoom ligero */
+}
+
+/* Estilo del Logo y Redes Sociales */
+.footer-logo {
+  max-width: 80px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 2px solid #8ab448; /* Resalta el logo */
+}
+
+.social-icons a {
+  margin-right: 10px;
+  color: #ffffff; /* Blanco para los íconos */
+  font-size: 24px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: scale(1.1);
+  color: #8ab448; /* Verde vibrante en hover */
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .footer-container {
+    text-align: center;
   }
 
-  [nz-icon] {
-    margin-right: 6px;
-    font-size: 24px;
+  .footer-column {
+    margin-bottom: 20px;
   }
-  
+
+  .social-icons a {
+    margin-right: 8px;
+  }
+}
+
+/* Íconos de NG-ZORRO */
+[nz-icon] {
+  margin-right: 6px;
+  font-size: 24px;
+  color: #8ab448; /* Verde vibrante para los íconos */
+  transition: color 0.3s ease;
+}
+
+[nz-icon]:hover {
+  color: #ffffff; /* Blanco en hover */
+}

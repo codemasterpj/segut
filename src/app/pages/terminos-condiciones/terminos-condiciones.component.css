@@ -1,50 +1,77 @@
 /* Contenedor principal para la página legal */
 .legal-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 40px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
+  border: 2px solid #063b6f; /* Borde azul profundo */
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  /* Título de la página */
-  .legal-container h2 {
-    font-size: 28px;
-    color: #2b3e50;
-    margin-bottom: 20px;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    animation: slideIn 1s ease-in-out;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Texto introductorio y secciones */
-  .legal-container p {
-    font-size: 16px;
-    color: #6c757d;
-    margin-bottom: 20px;
-    line-height: 1.5;
+}
+
+/* Título de la página */
+.legal-container h2 {
+  font-size: 28px;
+  color: #063b6f; /* Azul profundo */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  animation: slideIn 1s ease-in-out;
+}
+
+/* Animación del título */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  
-  /* Título de cada sección */
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Texto introductorio y secciones */
+.legal-container p {
+  font-size: 16px;
+  color: #495567; /* Gris oscuro */
+  margin-bottom: 20px;
+  line-height: 1.8; /* Espaciado cómodo para lectura */
+}
+
+/* Título de cada sección */
+.legal-section h3 {
+  font-size: 22px;
+  color: #8ab448; /* Verde vibrante */
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .legal-container {
+    padding: 20px;
+  }
+
   .legal-section h3 {
-    font-size: 22px;
-    color: #2b3e50;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    font-size: 20px;
   }
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .legal-container {
-      padding: 20px;
-    }
-  
-    .legal-section h3 {
-      font-size: 20px;
-    }
-  }
-  
+}

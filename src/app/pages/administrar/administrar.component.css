@@ -1,10 +1,11 @@
 /* Tarjeta de Administración */
 .admin-card {
-  background-color: #ffffff;
+  background-color: #ffffff; /* Fondo blanco */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
   padding: 30px;
   margin-bottom: 40px;
+  border: 2px solid #063b6f; /* Borde azul profundo */
 }
 
 /* Formularios */
@@ -14,7 +15,7 @@ nz-form-item {
 
 nz-form-label {
   font-weight: 600;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
 }
 
 nz-form-control input[nz-input],
@@ -23,16 +24,17 @@ nz-select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 1px solid #d1d9e6;
+  border: 1px solid #8ab448; /* Verde vibrante */
   border-radius: 4px;
-  background-color: #f9fafc;
-  transition: border-color 0.3s;
+  background-color: #f9fafc; /* Fondo claro */
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input[nz-input]:focus,
 textarea[nz-input]:focus,
 nz-select:focus {
-  border-color: #2b3e50;
+  border-color: #063b6f; /* Azul profundo en focus */
+  box-shadow: 0 0 8px rgba(6, 59, 111, 0.3); /* Sombra azul */
   outline: none;
 }
 
@@ -52,10 +54,12 @@ nz-select:focus {
 .eliminar-boton {
   margin-left: 10px;
   color: #ff4d4f;
+  transition: transform 0.3s, color 0.3s;
 }
 
 .eliminar-boton:hover {
   color: #ff7875;
+  transform: scale(1.1); /* Efecto de agrandamiento */
 }
 
 /* Botones de formulario */
@@ -65,33 +69,33 @@ button[nz-button] {
 }
 
 button[nz-button]:hover {
-  background-color: #3e4e63;
+  background-color: #063b6f;
   color: #ffffff;
 }
 
 /* Botón Añadir Pregunta */
 button[nz-button][nzType="dashed"] {
   margin-bottom: 20px;
-  border-color: #1890ff;
-  color: #1890ff;
+  border-color: #8ab448; /* Verde vibrante */
+  color: #8ab448;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 button[nz-button][nzType="dashed"]:hover {
-  border-color: #40a9ff;
-  color: #40a9ff;
+  border-color: #063b6f; /* Azul profundo */
+  color: #063b6f;
 }
 
 /* Botón de Crear/Actualizar Encuesta */
 button[nz-button][nzType="primary"] {
-  background-color: #2b3e50;
-  color: #ffffff;
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff; /* Blanco */
   font-weight: 600;
   border: none;
 }
 
 button[nz-button][nzType="primary"]:hover {
-  background-color: #3e4e63;
+  background-color: #8ab448; /* Verde vibrante */
 }
 
 /* Grupo de botones (Formulario) */
@@ -113,13 +117,12 @@ nz-list {
 
 .nz-list-item-meta-title {
   font-size: 18px;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
   font-weight: bold;
-  
 }
 
 .nz-list-item-meta-description {
-  color: #6c757d;
+  color: #6c757d; /* Gris oscuro */
   text-align: justify;
 }
 
@@ -137,7 +140,7 @@ nz-list {
 
 .list-buttons button[nz-button]:hover {
   background-color: #e6f7ff;
-  color: #1890ff;
+  color: #063b6f;
 }
 
 .list-buttons button[nz-button][nzDanger] {
@@ -149,102 +152,45 @@ nz-list {
   color: #ff7875;
 }
 
-/* Estilo para la paginación */
-/* Contenedor de paginación */
+/* Estilo de los íconos */
+[nz-icon] {
+  font-size: 18px;
+  color: #8ab448; /* Verde vibrante */
+}
+
+/* Estilo de la paginación */
 .nz-pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-/* Estilo general para paginación simple */
 .ant-pagination-simple {
   padding: 8px 12px;
   border-radius: 6px;
-  background-color: #f0f5ff;
+  background-color: #f0f5ff; /* Fondo claro */
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* Espacio entre elementos */
+  gap: 8px;
 }
 
-/* Color y tamaño del texto del paginador */
 .ant-pagination-simple-pager {
   font-size: 14px;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
 }
 
-/* Estilo para botones "prev" y "next" (anterior y siguiente) */
 .ant-pagination-simple .ant-pagination-prev,
 .ant-pagination-simple .ant-pagination-next {
-  color: #1890ff;
-  transition: color 0.3s;
+  color: #8ab448;
 }
 
-/* Hover para botones "prev" y "next" */
-.ant-pagination-simple .ant-pagination-prev:hover,
-.ant-pagination-simple .ant-pagination-next:hover {
-  color: #40a9ff;
-}
-
-/* Estilo de los íconos de flechas */
-.ant-pagination-item-link {
-  background-color: #ffffff;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  padding: 4px 6px;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-/* Hover en los íconos de flechas */
 .ant-pagination-item-link:hover {
   background-color: #e6f7ff;
-  border-color: #1890ff;
-}
-
-/* Estilo para el texto de página actual en el paginador */
-.ant-pagination-simple .ant-pagination-simple-pager input {
-  font-weight: bold;
-  color: #2b3e50;
-  width: 40px;
-  text-align: center;
-  border: none;
-  background-color: transparent;
-}
-
-/* Estilo de los bordes en los botones prev y next */
-.ant-pagination-simple .ant-pagination-prev .ant-pagination-item-link,
-.ant-pagination-simple .ant-pagination-next .ant-pagination-item-link {
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-color: #063b6f;
 }
 
 .input-file {
   margin-left: 10px;
-}
-
-/* Botón de Eliminar Imagen */
-.eliminar-imagen-boton {
-  background-color: transparent;
-  color: #fa8c16; /* Naranja */
-  border: 1px solid #fa8c16;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-}
-
-.eliminar-imagen-boton:hover {
-  background-color: #ffd591;
-  color: #d46b08;
-  border-color: #d46b08;
 }
 
 /* Contenedor de la imagen */
@@ -259,8 +205,7 @@ nz-list {
   width: 60px;
   height: 60px;
   object-fit: cover;
-  border: 2px solid #d1d9e6;
+  border: 2px solid #8ab448; /* Verde vibrante */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-

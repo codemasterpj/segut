@@ -20,12 +20,20 @@
 
 
   <!-- Panel Derecho (centrado y con fondo blanco) -->
-  <div class="panel-derecho" *ngIf="encuestaSeleccionada">
+  <div class="panel-derecho" >
+    <img *ngIf="!encuestaSeleccionada" 
+     src="https://res.cloudinary.com/di8nyvtax/image/upload/v1732738780/wuv19erl6gxuwun0hsjx.jpg" 
+     alt="Marca de agua" 
+     class="marca-agua" />
+
+
+    <div class="panel-derecho-content">
+    <ng-container *ngIf="encuestaSeleccionada">
     <h2 class="titulo">{{ encuestaSeleccionada.titulo }}</h2>
     <p class="descripcion">{{ encuestaSeleccionada.descripcion }}</p>
     
     <!-- Campos adicionales para el encuestador -->
-    <div class="campos-adicionales">
+    
       <label class="campo-label">Nombre:</label>
       <input nz-input [(ngModel)]="nombre" placeholder="Ingrese su nombre" class="input-campo" />
       
@@ -39,6 +47,7 @@
       <nz-select [(ngModel)]="edad" placeholder="Seleccione su edad" class="input-campo">
         <nz-option *ngFor="let age of edades" [nzValue]="age" [nzLabel]="age"></nz-option>
       </nz-select>
+      
 
 
       <label class="campo-label">Sexo:</label>
@@ -46,7 +55,8 @@
         <nz-option nzValue="M" nzLabel="Masculino"></nz-option>
         <nz-option nzValue="F" nzLabel="Femenino"></nz-option>
       </nz-select>
-    </div>
+      <br><br>
+    
 
     <!-- Preguntas de la encuesta -->
     <div *ngFor="let pregunta of encuestaSeleccionada.preguntas; let i = index" class="pregunta-contenedor">
@@ -194,6 +204,7 @@
 <!-- Mostrar el link generado si existe -->
  
 <p *ngIf="linkGenerado">Link generado: <a [href]="linkGenerado" target="_blank">{{ linkGenerado }}</a></p>
+</ng-container>
 
 
   </div>

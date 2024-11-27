@@ -3,9 +3,10 @@
   max-width: 800px;
   margin: 50px auto;
   padding: 40px;
-  background-color: #ffffff;
+  background-color: #ffffff; /* Fondo blanco */
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra más intensa */
+  border: 2px solid #063b6f; /* Borde azul profundo */
   animation: fadeIn 1s ease-in-out;
 }
 
@@ -24,7 +25,7 @@
 /* Título del formulario de contacto */
 .contacto-container h2 {
   font-size: 28px;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
   margin-bottom: 20px;
   font-weight: bold;
   text-align: center;
@@ -47,7 +48,7 @@
 /* Texto descriptivo */
 .contacto-container p {
   font-size: 16px;
-  color: #6c757d;
+  color: #495567; /* Gris oscuro */
   margin-bottom: 30px;
   line-height: 1.5;
   text-align: center;
@@ -68,23 +69,23 @@
 
 .form-group label {
   font-weight: bold;
-  color: #2b3e50;
+  color: #063b6f; /* Azul profundo */
   margin-bottom: 8px;
 }
 
 .form-control {
   width: 100%;
   padding: 12px;
-  border: 1px solid #d1d9e6;
+  border: 1px solid #8ab448; /* Verde vibrante */
   border-radius: 8px;
-  background-color: #f9fafc;
+  background-color: #f9fafc; /* Fondo claro */
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-control:focus {
-  border-color: #2b3e50;
+  border-color: #063b6f; /* Azul profundo en focus */
+  box-shadow: 0 0 8px rgba(6, 59, 111, 0.3); /* Sombra azul */
   outline: none;
-  box-shadow: 0 0 8px rgba(43, 62, 80, 0.1);
 }
 
 /* Botón de Enviar Mensaje */
@@ -92,7 +93,7 @@
   width: 100%;
   padding: 15px;
   margin-top: 20px;
-  background-color: #2b3e50;
+  background-color: #8ab448; /* Verde vibrante */
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -103,8 +104,8 @@
 }
 
 .boton-enviar:hover {
-  background-color: #3e4e63;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #063b6f; /* Azul profundo */
+  box-shadow: 0 4px 12px rgba(6, 59, 111, 0.3); /* Sombra azul intensa */
 }
 
 /* Responsividad */

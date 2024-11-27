@@ -165,13 +165,13 @@ mostrarGraficos(encuestadorId: string): void {
 
 obtenerDistribucionPuntuacionFinal(encuestadorId: string): any[] {
   const resultados = this.resultadosAgrupados[encuestadorId];
-  const conteoRangos = { '0-10': 0, '11-20': 0, '21-30': 0 };
+  const conteoRangos = { 'Bajo': 0, 'Medio': 0, 'Alto': 0 };
 
   resultados.forEach((resultado: Resultado) => {
     const calificacion = resultado.calificacionTotal || 0;
-    if (calificacion <= 10) conteoRangos['0-10']++;
-    else if (calificacion <= 20) conteoRangos['11-20']++;
-    else conteoRangos['21-30']++;
+    if (calificacion <= 10) conteoRangos['Bajo']++;
+    else if (calificacion <= 20) conteoRangos['Medio']++;
+    else conteoRangos['Alto']++;
   });
 
   const total = resultados.length;

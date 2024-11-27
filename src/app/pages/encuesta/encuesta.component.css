@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: #f2f4f8;
+  background-color: #f0f4f7; /* Fondo claro */
   min-height: 100vh;
   padding: 40px 20px;
   gap: 20px;
@@ -11,14 +11,14 @@
 
 /* Panel izquierdo */
 .panel-izquierdo {
-  background-color: #2b3e50;
-  color: #ffffff;
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff; /* Texto claro */
   padding: 20px;
   border-radius: 8px;
   width: 20%;
   min-width: 240px;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .tipo-lista {
@@ -28,20 +28,22 @@
 }
 
 .tipo-item {
-  padding: 12px; /* Aumentado */
+  padding: 12px;
   cursor: pointer;
   border-radius: 6px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .tipo-titulo {
   font-weight: bold;
-  color: #ffffff;
-  font-size: 18px; /* Aumentado */
+  color: #8ab448; /* Verde vibrante */
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
 .tipo-item:hover {
-  background-color: #1f2d3d;
+  background-color: #052c54;
+  transform: scale(1.05);
 }
 
 .encuestas-lista {
@@ -51,12 +53,12 @@
 }
 
 .encuesta-item {
-  padding: 10px 14px; /* Aumentado */
+  padding: 10px 14px;
   cursor: pointer;
   color: #b3c2d1;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
-  font-size: 16px; /* Aumentado */
+  font-size: 16px;
 }
 
 .encuesta-item:hover {
@@ -65,27 +67,56 @@
 }
 
 /* Panel derecho */
+.marca-agua {
+  position: absolute; /* Coloca la imagen como fondo absoluto */
+  top: 0;
+  left: 0;
+  width: 100%; /* Abarca todo el ancho */
+  height: 100%; /* Abarca todo el alto del contenedor */
+  object-fit: cover; /* Asegura que la imagen mantenga su proporción */
+  /*opacity: 0.2;  Ajusta la opacidad para que sea visible pero no dominante */
+  z-index: 0; /* Coloca la imagen detrás del contenido */
+  pointer-events: none; /* Evita que interfiera con clics u otras interacciones */
+}
+
 .panel-derecho {
-  background-color: #ffffff;
+  position: relative; /* Permite posicionar elementos sobre la imagen */
+  background-color: #ffffff; /* Fondo blanco para el contenido */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   padding: 30px;
   flex-grow: 1;
   width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinea el contenido correctamente */
+  align-items: stretch; /* Asegura que el contenido ocupe el ancho completo */
+  min-height: 100vh; /* Asegura que abarque todo el alto de la pantalla */
+  z-index: 1; /* Eleva el contenido por encima de la imagen */
+  overflow: hidden; /* Evita que el contenido desborde */
 }
+
+.panel-derecho-content {
+  position: relative; /* Se asegura de posicionar el contenido sobre la imagen */
+  z-index: 1; /* Garantiza que el contenido esté por encima de la imagen */
+}
+
+
+
+
 
 /* Contenido del panel derecho */
 .titulo {
-  font-size: 26px; /* Aumentado */
-  color: #2b3e50;
+  font-size: 26px;
+  color: #063b6f; /* Azul profundo */
   margin-bottom: 15px;
-  border-bottom: 2px solid #e8e8e8;
+  border-bottom: 2px solid #8ab448; /* Verde vibrante */
   padding-bottom: 10px;
 }
 
 .descripcion {
-  font-size: 18px; /* Aumentado */
-  color: #6c757d;
+  font-size: 18px;
+  color: #495567; /* Gris oscuro */
   margin-bottom: 20px;
   text-align: justify;
 }
@@ -97,127 +128,102 @@
 
 .campo-label {
   display: block;
-  font-weight: 600;
+  font-weight: bold;
   margin-top: 15px;
-  color: #2b3e50;
-  font-size: 16px; /* Aumentado */
+  color: #063b6f; /* Azul profundo */
+  font-size: 16px;
 }
 
 .input-campo,
 .textarea-campo {
   width: 100%;
-  padding: 12px; /* Aumentado */
+  padding: 12px;
   margin-top: 5px;
-  border: 1px solid #d1d9e6;
+  border: 1px solid #8ab448; /* Verde vibrante */
   border-radius: 4px;
   background-color: #f9fafc;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .input-campo:focus,
 .textarea-campo:focus {
-  border-color: #2b3e50;
+  border-color: #063b6f; /* Azul profundo */
+  box-shadow: 0 0 8px rgba(6, 59, 111, 0.3);
   outline: none;
 }
 
 .textarea-campo {
-  min-height: 100px; /* Aumentado */
+  min-height: 100px;
 }
 
 /* Preguntas y respuestas */
-/* Contenedor para la pregunta con la imagen */
 .pregunta-contenedor {
   display: flex;
   align-items: center;
-  margin-bottom: 20px; /* Espaciado entre preguntas */
-  gap: 20px; /* Espaciado entre el texto y la imagen */
+  margin-bottom: 20px;
+  gap: 20px;
 }
 
-/* Contenedor de texto (pregunta y respuesta) */
 .pregunta-texto-respuesta {
-  flex: 1; /* Ocupa el espacio disponible */
+  flex: 1;
   display: flex;
-  flex-direction: column; /* Coloca la pregunta y la respuesta en columna */
-  gap: 10px; /* Espaciado entre la pregunta y la respuesta */
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Imagen alineada al lado derecho */
 .imagen-pregunta {
-  max-width: 150px; /* Limita el ancho máximo de la imagen */
-  max-height: 100px; /* Limita el alto máximo de la imagen */
-  object-fit: cover; /* Asegura que la imagen mantenga su proporción */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Añade sombra para destacar */
-  align-self: center; /* Centra la imagen verticalmente en el lado derecho */
-}
-
-
-
-.respuesta {
-  display: flex;
-  align-items: center;
+  max-width: 150px;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  align-self: center;
 }
 
 .radio-group {
   display: flex;
-  gap: 15px; /* Espacio entre opciones */
+  gap: 15px;
 }
 
 .radio-opcion {
-  font-size: 16px; /* Aumentado */
-  color: #2b3e50;
+  font-size: 16px;
+  color: #063b6f; /* Azul profundo */
   cursor: pointer;
   display: flex;
   align-items: center;
 }
 
-.radio-opcion label {
-  margin-right: 10px;
-}
-
-/* Botones de escala */
-.escala-botones {
-  display: flex;
-  gap: 10px;
-}
-
-.escala-botones button {
-  border-radius: 4px;
-  transition: background-color 0.3s;
-  font-size: 16px; /* Aumentado */
-}
-
-.escala-botones button.selected {
-  background-color: #1890ff; /* Color de fondo para el botón seleccionado */
-  color: #fff; /* Color del texto para el botón seleccionado */
+.radio-opcion:hover label {
+  color: #8ab448; /* Verde vibrante en hover */
 }
 
 /* Botón de enviar */
 .boton-enviar {
   margin-top: 25px;
-  background-color: #2b3e50;
+  background-color: #8ab448; /* Verde vibrante */
   color: #ffffff;
   border: none;
-  padding: 14px 30px; /* Aumentado */
-  font-size: 18px; /* Aumentado */
-  font-weight: 600;
+  padding: 14px 30px;
+  font-size: 18px;
+  font-weight: bold;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .boton-enviar:hover {
-  background-color: #3e4e63;
+  background-color: #063b6f; /* Azul profundo */
+  transform: scale(1.05);
 }
 
 /* Link generado */
 .link-generado {
   margin-top: 20px;
-  font-size: 16px; /* Aumentado */
+  font-size: 16px;
 }
 
 .link-generado a {
-  color: #1890ff;
+  color: #8ab448; /* Verde vibrante */
   text-decoration: none;
 }
 
@@ -233,20 +239,19 @@
 }
 
 .emoji {
-  width: 48px; /* Aumentado */
-  height: 48px; /* Aumentado */
+  width: 48px;
+  height: 48px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  border-radius: 50%; /* Hace que las imágenes sean redondeadas */
-  object-fit: cover; /* Ajusta la imagen dentro del borde redondeado */
+  transition: transform 0.2s ease, border 0.3s;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .emoji.selected {
   transform: scale(1.2);
-  border: 2px solid #1890ff;
+  border: 2px solid #8ab448; /* Verde vibrante */
 }
 
 .emoji:hover {
   transform: scale(1.1);
 }
-

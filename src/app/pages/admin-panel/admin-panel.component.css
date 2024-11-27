@@ -1,137 +1,138 @@
 /* Contenedor principal del panel de administración */
 .admin-panel {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to bottom, #f0f4f7, #e3eef5); /* Fondo degradado claro */
+  padding: 50px 20px;
+  min-height: 100vh;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Título del panel */
+.titulo {
+  font-size: 28px;
+  color: #063b6f; /* Azul profundo */
+  margin-bottom: 25px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  animation: slideIn 1s ease-in-out;
+}
+
+/* Animación del título */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Contenedor de tarjetas */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Estilo de las tarjetas */
+.admin-card {
+  background: linear-gradient(to top, #ffffff, #f7faff); /* Fondo degradado */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  padding: 25px;
+  text-align: center;
+  border: 2px solid #063b6f; /* Borde azul profundo */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Descripción de la tarjeta */
+.card-description {
+  font-size: 16px;
+  color: #495567; /* Gris oscuro */
+  margin-bottom: 20px;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.admin-card:hover .card-description {
+  color: #063b6f; /* Azul profundo */
+}
+
+/* Botón centrado */
+.centered-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Botones de la tarjeta */
+button[nz-button] {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Botón de acción principal */
+button[nz-button][nzType="primary"] {
+  background-color: #8ab448; /* Verde vibrante */
+  color: #ffffff;
+  border: none;
+}
+
+button[nz-button][nzType="primary"]:hover {
+  background-color: #063b6f; /* Azul profundo */
+  box-shadow: 0 4px 12px rgba(6, 59, 111, 0.3);
+}
+
+/* Botón de Cerrar Sesión */
+button[nz-button][nzDanger] {
+  background-color: #ff4d4f;
+  color: #ffffff;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button[nz-button][nzDanger]:hover {
+  background-color: #ff7875;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .cards-container {
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to bottom, #f2f4f8, #e2e6ec);
-    padding: 50px 20px;
-    min-height: 100vh;
-    animation: fadeIn 1s ease-in-out;
   }
-  
-  /* Animación de entrada */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Título del panel */
-  .titulo {
-    font-size: 28px;
-    color: #2b3e50;
-    margin-bottom: 25px;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    animation: slideIn 1s ease-in-out;
-  }
-  
-  /* Animación del título */
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  /* Contenedor de tarjetas */
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
-    max-width: 1200px;
-    width: 100%;
-  }
-  
-  /* Estilo de las tarjetas */
+
   .admin-card {
-    background: linear-gradient(to top, #ffffff, #f9fafc);
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    width: 280px;
-    padding: 25px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 90%;
   }
-  
-  .admin-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Descripción de la tarjeta */
-  .card-description {
-    font-size: 16px;
-    color: #6c757d;
-    margin-bottom: 20px;
-    line-height: 1.5;
-    transition: color 0.3s ease;
-  }
-  
-  .admin-card:hover .card-description {
-    color: #495567;
-  }
-  
-  /* Botón centrado */
-  .centered-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  /* Botones de la tarjeta */
-  button[nz-button] {
-    width: 100%;
-    padding: 12px;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  button[nz-button][nzType="primary"] {
-    background-color: #1890ff;
-    color: #ffffff;
-    border: none;
-  }
-  
-  button[nz-button][nzType="primary"]:hover {
-    background-color: #40a9ff;
-    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
-  }
-  
-  /* Botón de Cerrar Sesión */
-  button[nz-button][nzDanger] {
-    background-color: #ff4d4f;
-    color: #ffffff;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  button[nz-button][nzDanger]:hover {
-    background-color: #ff7875;
-    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
-  }
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .cards-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .admin-card {
-      width: 90%;
-    }
-  }
-  
+}
