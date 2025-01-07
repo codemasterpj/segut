@@ -311,11 +311,11 @@ export class AdministrarComponent {
   
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      console.log('Archivo seleccionado:', file);
+      
   
       try {
         const imgUrl = await this.encuestasService.subirImagen(file);
-        console.log('URL devuelto al cargar la imagen:', imgUrl);
+        
   
         // Asigna el URL generado al campo imgUrl de la pregunta
         this.preguntas.at(preguntaIndex).get('imgUrl')?.setValue(imgUrl);

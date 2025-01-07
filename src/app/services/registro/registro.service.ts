@@ -15,7 +15,11 @@ import { AuthService, LoginInfo } from '../auth/auth.service';
 import { UserCredential } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
-
+export interface Encuesta {
+  id: string;
+  titulo: string;
+  tipo: string;
+}
 export interface Register {
   uid: string;
   email: string;
@@ -27,6 +31,7 @@ export interface Register {
   nombreEmpresa: string;
   categoriaEmpresa: string;
   role: string;
+  encuestasAsignadas?: string[];
 }
 
   
@@ -88,13 +93,13 @@ export class RegistroService {
         return error;
       });
     const uid = userCredential.user.uid;
-    this.currentRegister = {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role};
+    this.currentRegister = {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role, encuestasAsignadas : []};
     const registersRef = collection(this.firestore, 'registers');
-    return addDoc(registersRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role});
+    return addDoc(registersRef, {uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role, encuestasAsignadas : []});
   }
 
 
-  updateRegister({uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role}: Register) : Promise<any> {
+  updateRegister({uid, email, nombre, apellido, edad, telefono, areas, nombreEmpresa, categoriaEmpresa, role, encuestasAsignadas}: Register) : Promise<any> {
     const docRef = doc(this.firestore, `registers/${uid}`);
     
     // Crea un objeto solo con los campos que se van a actualizar, sin el `uid`
@@ -107,7 +112,8 @@ export class RegistroService {
       areas,
       nombreEmpresa,
       categoriaEmpresa,
-      role
+      role,
+      encuestasAsignadas: encuestasAsignadas ?? []
     };
     
     return updateDoc(docRef, updatedData); // Solo actualiza los campos relevantes, el uid no cambia

@@ -10,6 +10,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '../../services/auth/auth.service';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { Encuesta, EncuestasService } from '../../services/encuestas/encuestas.service';
 
 
 @Component({
@@ -35,10 +36,14 @@ export class UsuariosComponent implements OnInit{
     { label: 'Salud Mental', value: 'saludMental' },
     { label: 'Temas Variados', value: 'temasVariados' }
   ];
+
+  opcionesEncuestas: Encuesta[] = [];
+  opcionesEncuestasFiltradas: Encuesta[] = [];
   
 
   constructor(private registroService: RegistroService, private fb: FormBuilder, 
-    private message: NzMessageService, private authService: AuthService) {
+    private message: NzMessageService, private authService: AuthService,
+    private encuestasService: EncuestasService ) {
     this.usuarioForm = this.fb.group({
       email: [{ value: '', disabled: true }, Validators.email],
       nombre: [''],
@@ -46,6 +51,7 @@ export class UsuariosComponent implements OnInit{
       edad: [''],
       telefono: [''],
       areas: [''],
+      encuestasAsignadas: [[]], 
       nombreEmpresa: [''],
       categoriaEmpresa: [''],
       role: ['']
@@ -54,29 +60,58 @@ export class UsuariosComponent implements OnInit{
 
   ngOnInit(): void {
     this.cargarUsuarios();
-  // Verifica si el usuario actual es administrador
-  const user = this.authService.getCurrentUser();
-  if (user?.uid) {
-    this.registroService.getRegister(user.uid).then(querySnapshot => {
-      if (!querySnapshot.empty) {
-        querySnapshot.forEach((doc) => {
-          const register = doc.data() as Register;
+    this.cargarEncuestas(); 
+    this.verificarAdmin();
+    // Cuando el usuario elige (o quita) áreas en el formulario, filtrar encuestas
+    this.usuarioForm.get('areas')?.valueChanges.subscribe((selectedAreas: string[]) => {
+    this.filtrarEncuestasPorAreas(selectedAreas);
+  });
+  }
 
-          // Asigna el valor de `isAdmin` basado en el rol
-          this.isAdmin = register.role?.trim() === 'Administrador';
-
-          // Mensaje de depuración
-          console.log('Rol del usuario:', register.role);
-          console.log('isAdmin:', this.isAdmin);
-        });
-      } else {
-        console.log('No se encontró el registro del usuario.');
-      }
-    }).catch(error => {
-      console.error('Error al obtener el registro del usuario:', error);
+   // Carga la lista de encuestas desde Firestore
+   cargarEncuestas(): void {
+    this.encuestasService.obtenerEncuestas().subscribe((encuestas: Encuesta[]) => {
+      // Guardamos todas las encuestas en memoria
+      this.opcionesEncuestas = encuestas;
+  
+      // Filtrar en base a lo que ya esté seleccionado en 'areas' (si es que ya hay algo)
+      const currentAreas = this.usuarioForm.get('areas')?.value as string[] || [];
+      this.filtrarEncuestasPorAreas(currentAreas);
     });
   }
-}
+
+  filtrarEncuestasPorAreas(selectedAreas: string[]): void {
+    // Si no hay áreas seleccionadas, podrías mostrar un array vacío o todas,
+    // según tu preferencia. Aquí, mostraremos un array vacío.
+    if (!selectedAreas || selectedAreas.length === 0) {
+      this.opcionesEncuestasFiltradas = [];
+      return;
+    }
+  
+    // Filtramos únicamente las encuestas cuyo 'tipo' coincida con al menos
+    // una de las áreas seleccionadas.
+    this.opcionesEncuestasFiltradas = this.opcionesEncuestas.filter(encuesta =>
+      selectedAreas.includes(encuesta.tipo)
+    );
+  }
+  
+
+  // Verifica si el usuario actual es administrador
+  verificarAdmin(): void {
+    const user = this.authService.getCurrentUser();
+    if (user?.uid) {
+      this.registroService.getRegister(user.uid).then(querySnapshot => {
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const register = doc.data() as Register;
+            this.isAdmin = register.role?.trim() === 'Administrador';
+          });
+        }
+      }).catch(error => {
+        console.error('Error al obtener el registro del usuario:', error);
+      });
+    }
+  }
 
   cargarUsuarios(): void {
     this.registroService.getRegisters().subscribe((data: Register[]) => {

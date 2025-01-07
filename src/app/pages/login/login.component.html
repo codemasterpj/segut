@@ -10,9 +10,17 @@
 
   <nz-form-item>
     <nz-form-control nzErrorTip="Ingrese la contraseña!">
-      <nz-input-group nzPrefixIcon="lock">
-        <input type="password" nz-input formControlName="password" placeholder="Password" />
+      <nz-input-group [nzPrefixIcon]="'lock'" [nzSuffix]="eyeIcon">
+        <input 
+          [type]="passwordVisible ? 'text' : 'password'" 
+          nz-input 
+          formControlName="password" 
+          placeholder="Password" 
+        />
       </nz-input-group>
+      <ng-template #eyeIcon>
+        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="togglePasswordVisibility()" class="password-toggle-icon"></i>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
 

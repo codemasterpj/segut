@@ -71,8 +71,7 @@ export class RespondeEncuestaComponent implements OnInit {
       if (this.encuestaId) {
         this.encuestasService.obtenerEncuestaPorId(this.encuestaId).subscribe((encuesta) => {
           this.encuesta = encuesta;
-          console.log('Encuesta cargada:', this.encuesta); // Verifica que la encuesta se cargue
-          console.log('Resultados cargados:', this.encuesta.resultados); // Verifica que resultados esté presente
+
   
           // Inicializar respuestas vacías según el número de preguntas
           if (this.encuesta && this.encuesta.preguntas) {

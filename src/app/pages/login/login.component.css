@@ -76,6 +76,17 @@ label[nz-checkbox] span {
   color: #063b6f; /* Azul profundo */
 }
 
+/* Estilo para el ícono de mostrar/ocultar contraseña */
+.password-toggle-icon {
+  cursor: pointer;
+  color: #8ab448; /* Verde vibrante */
+  transition: color 0.3s ease;
+}
+
+.password-toggle-icon:hover {
+  color: #063b6f; /* Azul profundo */
+}
+
 /* Botón de Login */
 .login-form-button {
   display: flex; /* Hace que el botón use Flexbox */

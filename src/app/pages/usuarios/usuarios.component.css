@@ -220,5 +220,36 @@ button[nz-button][nzType="default"][nzDanger]:hover {
   .detalle-usuario select,
   .detalle-usuario nz-select {
     width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #8ab448; /* Verde vibrante */
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: border-color 0.3s;
   }
+}
+
+
+/* ============================= */
+/* ESTILOS EXTRAS PARA ENCUESTAS */
+/* ============================= */
+
+/* Sección del label de "Encuestas" en modo edición */
+.detalle-usuario label[for="encuestas"] {
+  margin-top: 15px; /* Separación extra respecto al campo anterior */
+  font-size: 16px;
+}
+
+/* Ajustes específicos para el nz-select de encuestas */
+.detalle-usuario nz-select[formControlName="encuestas"] {
+  border: 2px dashed #8ab448; /* Ejemplo: línea punteada más gruesa */
+  background-color: #f9fff2;  /* Ejemplo: color de fondo muy suave */
+  margin-bottom: 15px;        /* Para separar este campo del siguiente */
+  transition: all 0.3s;
+}
+
+/* Efecto hover/focus específico al pasar sobre el nz-select */
+.detalle-usuario nz-select[formControlName="encuestas"]:hover,
+.detalle-usuario nz-select[formControlName="encuestas"]:focus-within {
+  border-color: #063b6f; /* Azul profundo al hacer hover/focus */
 }

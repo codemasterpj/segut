@@ -112,7 +112,7 @@ export class RegistroComponent {
 
 
   onClickRegister(): void  {
-    console.log(this.form.value);
+    
     if (this.form.invalid) {
       this.form.markAllAsTouched(); // Muestra todos los errores si el formulario es inválido
       return;
@@ -122,7 +122,7 @@ export class RegistroComponent {
     const password = this.form.value.password;
     const areasSeleccionadas = this.form.value.areas; // Obtén las áreas seleccionadas
 
-    console.log('Áreas seleccionadas:', areasSeleccionadas);
+    
     
     const datosParaGuardar = {
       ...this.form.value,
@@ -132,7 +132,7 @@ export class RegistroComponent {
 
     this.registerService.createRegister({email, password}, datosParaGuardar)
     .then((response)=>{
-      console.log('Registro exitoso',response);
+      
       this.message.success('¡Registro exitoso!'); // Muestra el mensaje de éxito
       this.form.reset();
       

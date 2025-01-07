@@ -18,7 +18,10 @@
             window.voiceflow.chat.load({
               verify: { projectID: '673392d5ed3106dc006665dd' },
               url: 'https://general-runtime.voiceflow.com',
-              versionID: 'production'
+              versionID: 'production',
+              settings: {
+              collapsed: true, // Asegura que esté colapsado al cargar
+            },
             });
           }
           v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);

@@ -103,6 +103,34 @@
 
 
 
+.indicaciones-texto {
+  font-size: 16px;
+  color: #495567; /* Gris oscuro */
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Información de calificación */
+.info-calificacion {
+  background-color: #f9fafc; /* Fondo claro */
+  border: 1px solid #d1d5db; /* Borde gris claro */
+  border-left: 5px solid #8ab448; /* Borde izquierdo verde vibrante */
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: #495567; /* Texto gris */
+}
+
+.info-calificacion p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.info-calificacion strong {
+  color: #063b6f; /* Azul profesional */
+}
 
 
 /* Contenido del panel derecho */
@@ -126,35 +154,48 @@
   margin-bottom: 25px;
 }
 
-.campo-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 15px;
-  color: #063b6f; /* Azul profundo */
-  font-size: 16px;
-}
-
-.input-campo,
-.textarea-campo {
+.fila {
+  display: flex; /* Flexbox para alinear elementos horizontalmente */
+  gap: 20px; /* Espacio entre columnas */
   width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  border: 1px solid #8ab448; /* Verde vibrante */
-  border-radius: 4px;
-  background-color: #f9fafc;
-  transition: border-color 0.3s, box-shadow 0.3s;
+}
+/* Contenedor de cada campo */
+.campo-contenedor {
+  display: flex;
+  flex-direction: column; /* Label encima del input */
+  flex: 1; /* Cada campo ocupa el mismo espacio */
+  gap: 5px; /* Espacio entre label y input */
 }
 
-.input-campo:focus,
-.textarea-campo:focus {
-  border-color: #063b6f; /* Azul profundo */
-  box-shadow: 0 0 8px rgba(6, 59, 111, 0.3);
+/* Estilo uniforme del label */
+.campo-label {
+  font-weight: bold;
+  color: #063b6f; /* Azul profesional */
+  font-size: 14px;
+}
+
+/* Estilo de los inputs y selects */
+.input-campo, 
+.textarea-campo, 
+nz-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-campo:focus, 
+.textarea-campo:focus, 
+nz-select:focus {
+  border-color: #3b82f6; /* Borde azul */
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
   outline: none;
 }
 
-.textarea-campo {
-  min-height: 100px;
-}
 
 /* Preguntas y respuestas */
 .pregunta-contenedor {
@@ -255,3 +296,4 @@
 .emoji:hover {
   transform: scale(1.1);
 }
+

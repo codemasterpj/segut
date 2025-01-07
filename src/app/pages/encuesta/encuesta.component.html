@@ -31,31 +31,69 @@
     <ng-container *ngIf="encuestaSeleccionada">
     <h2 class="titulo">{{ encuestaSeleccionada.titulo }}</h2>
     <p class="descripcion">{{ encuestaSeleccionada.descripcion }}</p>
+
+    <p class="indicaciones-texto">
+      <strong>Indicaciones:</strong> Presiona el botón "Vista Previa" para revisar la encuesta antes de compartirla o generar el link.
+    </p>
     
+
+     <!-- Botones de vista previa y generar link -->
+  <div class="botones-encuesta">
+    <button nz-button nzType="default" (click)="mostrarVistaPrevia = !mostrarVistaPrevia">
+      {{ encuestaSeleccionada?.tipo === 'libre' ? 'Realizar Encuesta' : (mostrarVistaPrevia ? 'Ocultar Vista Previa' : 'Vista Previa') }}
+    </button>
+
+    
+  </div>
+
     <!-- Campos adicionales para el encuestador -->
-    
-      <label class="campo-label">Nombre:</label>
-      <input nz-input [(ngModel)]="nombre" placeholder="Ingrese su nombre" class="input-campo" />
-      
-      <label class="campo-label">Apellido:</label>
-      <input nz-input [(ngModel)]="apellido" placeholder="Ingrese su apellido" class="input-campo" />
-      
-      <label class="campo-label">Área o Curso:</label>
-      <input nz-input [(ngModel)]="areaCurso" placeholder="Ingrese su área o curso" class="input-campo" />
-      
-      <label class="campo-label">Edad:</label>
+    <div *ngIf="mostrarVistaPrevia">
+    <div class="fila">
+      <div class="campo-contenedor">
+        <label class="campo-label">Nombre</label>
+        <input nz-input [(ngModel)]="nombre" placeholder="Ingrese su nombre" class="input-campo" />
+      </div>
+      <div class="campo-contenedor">
+        <label class="campo-label">Apellido</label>
+        <input nz-input [(ngModel)]="apellido" placeholder="Ingrese su apellido" class="input-campo" />
+      </div>
+    </div>
+
+      <div class="fila">
+    <div class="campo-contenedor">
+      <label class="campo-label">Edad</label>
       <nz-select [(ngModel)]="edad" placeholder="Seleccione su edad" class="input-campo">
         <nz-option *ngFor="let age of edades" [nzValue]="age" [nzLabel]="age"></nz-option>
       </nz-select>
-      
-
-
-      <label class="campo-label">Sexo:</label>
+    </div>
+    <div class="campo-contenedor">
+      <label class="campo-label">Sexo</label>
       <nz-select [(ngModel)]="sexo" placeholder="Seleccione su sexo" class="input-campo">
         <nz-option nzValue="M" nzLabel="Masculino"></nz-option>
         <nz-option nzValue="F" nzLabel="Femenino"></nz-option>
+        <nz-option nzValue="O" nzLabel="Otro"></nz-option>
       </nz-select>
+    </div>
+    <div class="campo-contenedor">
+      <label class="campo-label">Institución</label>
+      <input nz-input [(ngModel)]="areaCurso" placeholder="Ingrese su institución" class="input-campo" />
+    </div>
+  </div>
+
       <br><br>
+      
+
+    <!-- Información de calificación -->
+<div *ngIf="encuestaSeleccionada?.tipo !== 'libre'" class="info-calificacion">
+  <p>
+    <strong>Información sobre la calificación:</strong>
+    La calificación se realiza en una escala de <strong>0 a 4</strong>, donde cada respuesta tiene un puntaje asignado. 
+    Las opciones disponibles van desde "Nunca" (0 puntos) hasta "Siempre" (4 puntos).
+  </p>
+</div>  
+
+
+
     
 
     <!-- Preguntas de la encuesta -->
@@ -204,7 +242,9 @@
 <!-- Mostrar el link generado si existe -->
  
 <p *ngIf="linkGenerado">Link generado: <a [href]="linkGenerado" target="_blank">{{ linkGenerado }}</a></p>
+    </div>
 </ng-container>
+
 
 
   </div>

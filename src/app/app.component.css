@@ -1,23 +1,40 @@
-/* Layout principal adaptado al estilo del footer */
-:host {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+/* Reset de estilos básicos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo general para HTML y body */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Evita desbordamiento horizontal */
+  font-family: Arial, sans-serif; /* Fuente predeterminada */
   background-color: #f0f2f5; /* Fondo claro general */
 }
 
-/* Contenedor completo del layout */
+/* Layout principal */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
 nz-layout {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  width: 100%;
+  min-height: 100vh; /* Se asegura de llenar toda la pantalla */
 }
 
 /* Header */
 nz-header {
   background-color: #063b6f !important; /* Azul profundo */
-  color: #ffffff; /* Texto claro */
-  border-bottom: 4px solid #8ab448; /* Línea inferior verde vibrante */
+  color: #ffffff;
+  height: 64px;
+  border-bottom: 4px solid #8ab448;
+  width: 100%;
 }
 
 /* Navbar */
@@ -25,125 +42,79 @@ nz-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 64px;
+  height: 100%;
   padding: 0 24px;
-  background-color: #063b6f; /* Fondo azul profundo */
+  width: 100%;
 }
 
-/* Logo */
-.navbar .logo {
-  display: flex;
-  align-items: center;
+.navbar .logo .logo-img {
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.navbar .logo .logo-text {
-  font-size: 20px;
-  font-weight: bold;
-  color: #ffffff; /* Texto claro */
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-}
-
-.navbar .logo .logo-text:hover {
-  color: #8ab448; /* Verde vibrante */
+.navbar .logo .logo-img:hover {
+  transform: scale(1.1);
 }
 
 /* Menú */
 ul[nz-menu] {
   display: flex;
-  flex-grow: 1;
   justify-content: flex-end;
-  background-color: #063b6f; /* Azul profundo */
-  border: none; /* Eliminar bordes del menú */
+  width: 100%;
+  list-style: none;
+  background: transparent;
 }
 
 ul[nz-menu] li {
-  font-size: 16px;
   padding: 0 16px;
 }
 
-/* Estilo de enlaces en el menú */
 ul[nz-menu] li a {
-  color: #ffffff; /* Texto claro */
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
 ul[nz-menu] li a:hover {
-  color: #8ab448; /* Verde vibrante */
-  transform: scale(1.05); /* Pequeño aumento en tamaño */
-}
-
-/* Enlace activo */
-ul[nz-menu] li a.active {
   color: #8ab448;
-  font-weight: bold;
 }
 
-/* Botón de login/logout */
 ul[nz-menu] li:last-child a {
   background-color: #8ab448;
   color: #ffffff;
   padding: 8px 16px;
   border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 ul[nz-menu] li:last-child a:hover {
   background-color: #063b6f;
-  color: #ffffff;
-  transform: scale(1.1);
 }
 
 /* Contenido principal */
 nz-content {
+  flex: 1; /* Se expande automáticamente */
+  background-color: #ffffff;
+  border-top: 4px solid #063b6f;
   padding: 24px;
-  background-color: #ffffff; /* Fondo blanco */
-  min-height: calc(100vh - 80px);
+  width: 100%; /* Ocupar todo el ancho */
   display: flex;
   flex-direction: column;
-  border-top: 4px solid #063b6f; /* Línea superior azul profundo */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-.router-outlet {
-  padding: 24px;
-  background: #ffffff; /* Fondo blanco */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  flex-grow: 1;
-}
-
-/* Botones */
-button {
-  background-color: #8ab448;
-  color: #ffffff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-  background-color: #063b6f;
-  transform: scale(1.05);
 }
 
 /* Footer */
 app-footer {
-  background-color: #063b6f; /* Fondo azul profundo */
-  color: #ffffff; /* Texto claro */
+  background-color: #063b6f; /* Azul profundo */
+  color: #ffffff;
   padding: 20px;
   text-align: center;
-  font-size: 14px;
-  border-top: 4px solid #8ab448; /* Línea superior verde vibrante */
+  width: 100%;
+  border-top: 4px solid #8ab448;
 }
 
 app-footer a {
-  color: #8ab448; /* Enlaces en verde vibrante */
+  color: #8ab448;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -152,16 +123,15 @@ app-footer a:hover {
   color: #ffffff;
 }
 
-
-/* Imagen del logo */
-.logo-img {
-  height: 50px; /* Ajusta la altura para encajar en la navbar */
-  border-radius: 8px; /* Bordes redondeados */
-  object-fit: cover; /* Mantiene las proporciones dentro del contenedor */
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+/* Chatbot */
+#voiceflow-chat-widget {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+  transition: transform 0.3s ease;
 }
 
-.logo-img:hover {
-  transform: scale(1.1); /* Efecto de aumento en hover */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra en hover */
+#voiceflow-chat-widget.collapsed {
+  transform: translateY(100%);
 }

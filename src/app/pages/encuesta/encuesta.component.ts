@@ -55,6 +55,9 @@ export class EncuestaComponent implements OnInit {
   recomendacion: string = '';
   edades: number[] = Array.from({ length: 91 }, (_, i) => i + 10);// Edades de 10 a 100
 
+  mostrarVistaPrevia: boolean = false; // Estado para mostrar/ocultar vista previa
+
+
   constructor(
     private firestore: Firestore,
     private encuestasService: EncuestasService,
@@ -69,20 +72,36 @@ export class EncuestaComponent implements OnInit {
   }
 
   cargarEncuestas(): void {
-    this.encuestasService.obtenerEncuestas().subscribe((encuestas) => {
-      const encuestasLibre = encuestas.filter((encuesta) => encuesta.tipo === 'libre');
-
-      if (this.registroService.getUserId()) {
-      const encuestasFiltradas = encuestas.filter((encuesta) => 
-        this.tiposDeInteres.includes(encuesta.tipo) && encuesta.tipo !== 'libre'
-      );
-      this.encuestasPorTipo = this.agruparPorTipo(encuestasFiltradas);
-    } else {
-
-      this.encuestasPorTipo = this.agruparPorTipo(encuestasLibre);
-    }
+    this.encuestasService.obtenerEncuestas().subscribe((todasLasEncuestas) => {
+      // Verificamos si el usuario está logueado
+      const userId = this.registroService.getUserId();
+      
+      if (userId) {
+        // Obtenemos la lista de encuestas asignadas (los IDs) para este usuario
+        const encuestasAsignadas = this.registroService.currentRegister?.encuestasAsignadas || [];
+  
+        // Filtramos SOLO las encuestas cuyo 'id' esté en encuestasAsignadas
+        let encuestasFiltradas = todasLasEncuestas.filter(enc =>
+          enc.titulo && encuestasAsignadas.includes(enc.titulo)
+        );
+  
+        // (Opcional) Si sigues queriendo filtrar por áreas e ignorar tipo 'libre', 
+        // combinas ese filtro también:
+        encuestasFiltradas = encuestasFiltradas.filter((enc) =>
+          this.tiposDeInteres.includes(enc.tipo) && enc.tipo !== 'libre'
+        );
+  
+        // Finalmente, agrupar por tipo
+        this.encuestasPorTipo = this.agruparPorTipo(encuestasFiltradas);
+  
+      } else {
+        // Usuario NO logueado: asumes que solo ves encuestas "libres"
+        const encuestasLibres = todasLasEncuestas.filter((enc) => enc.tipo === 'libre');
+        this.encuestasPorTipo = this.agruparPorTipo(encuestasLibres);
+      }
     });
   }
+  
 
   agruparPorTipo(encuestas: Encuesta[]): { [tipo: string]: Encuesta[] } {
     return encuestas.reduce((grupos, encuesta) => {
@@ -101,13 +120,12 @@ export class EncuestaComponent implements OnInit {
 
   toggleTipo(tipo: string): void {
     this.tipoSeleccionado = this.tipoSeleccionado === tipo ? null : tipo;
-    console.log('Tipo Seleccionado:', this.tipoSeleccionado);
+    
   }
 
   seleccionarEncuesta(encuesta: Encuesta, event: Event): void {
     event.stopPropagation();
     this.encuestaSeleccionada = encuesta;
-    console.log('Encuesta Seleccionada:', this.encuestaSeleccionada);
     this.respuestas = Array(encuesta.preguntas?.length).fill(null);
     this.linkGenerado = null;  // Reiniciar el link cuando se selecciona una nueva encuesta
   }

@@ -29,11 +29,18 @@ export class LoginComponent {
     })
   }
 
+  passwordVisible: boolean = false;
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
+
   onClickLogin(): void  {
     if(this.form.invalid) return;
     this.registerService.login(this.form.value)
     .then((response)=>{
-      console.log('inicio exitoso',response);
+      
       this.message.success('¡Ingreso exitoso!'); // Muestra el mensaje de éxito
         // Retrasa la redirección por 2 segundos
         setTimeout(() => {
@@ -42,7 +49,7 @@ export class LoginComponent {
       
     })
     .catch((error)=>{
-      console.log('error',error);
+      
       this.message.error('Error: Usuario o contraseña incorrecto');
     })
    }
