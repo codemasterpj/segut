@@ -32,7 +32,9 @@ export class RegistroComponent {
     { label: 'Acoso Laboral', value: 'acosoLaboral' },
     { label: 'Acoso Escolar', value: 'acosoEscolar' },
     { label: 'Salud Mental', value: 'saludMental' },
-    { label: 'Temas Variados', value: 'temasVariados' }
+    { label: 'Seguridad Digital Niños y Jovenes', value: 'temasVariados' },
+    
+
   ];
 
     // Lista de categorías de empresas
